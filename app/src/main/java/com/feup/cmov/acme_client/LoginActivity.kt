@@ -32,7 +32,7 @@ import android.widget.Toast
         createAccountButton = findViewById(R.id.createNewAccountButton)
     }
 
-    fun validateInput(): Boolean {
+    private fun validateInput(): Boolean {
         var emailText = emailInput.text.toString()
         var passwordText = passwordInput.text.toString()
 
