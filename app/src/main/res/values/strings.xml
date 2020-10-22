@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">ACME-Client</string>
     <string name="first_time_user">Welcome to the ACME Coffee experience!</string>
+    <string name="action_sign_in">Log In!</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in_short">action_sign_in_short</string>
+    <string name="Create_New_Account">Create New Account</string>
+    <string name="AppLogo">AppLogo</string>
+
 </resources>
