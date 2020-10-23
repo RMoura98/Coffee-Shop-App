@@ -1,4 +1,4 @@
-    package com.feup.cmov.acme_client
+package com.feup.cmov.acme_client
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 
-    class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     val MIN_PASSWORD_LENGTH = 6 // val = const
 
     lateinit var emailInput: EditText
@@ -26,7 +26,7 @@ import android.widget.Toast
     }
 
     private fun viewInitializations() {
-        emailInput = findViewById(R.id.emailInput)
+        emailInput = findViewById(R.id.usernameInput)
         passwordInput = findViewById(R.id.passwordInput)
         loginButton = findViewById(R.id.loginButton)
         createAccountButton = findViewById(R.id.createNewAccountButton)
@@ -74,7 +74,7 @@ import android.widget.Toast
     }
 
     fun clickCreateAccount(v: View) {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, SignupActivity::class.java)
         startActivity(intent)
     }
 }
