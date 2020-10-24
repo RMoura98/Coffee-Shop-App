@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -25,13 +26,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class LoginFragment : Fragment(), LoginHandler {
 
     private val viewModel: LoginViewModel by viewModels()
+    lateinit var binding: FragmentLoginBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val binding: FragmentLoginBinding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_login, container, false)
 
@@ -40,13 +42,21 @@ class LoginFragment : Fragment(), LoginHandler {
         binding.handler = this
 
         // Watching for login result
-        viewModel.getLoginResult().observe(viewLifecycleOwner, Observer { result ->
+        viewModel.getLoginResult().observe(viewLifecycleOwner, Observer observe@ { result ->
+            // This IF fixes a bug: when going back to this fragment the view model not being cleared and so Toasts are so annoying.
+            if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED)
+                return@observe
+
             if (result === LoginViewModel.LoginResults.INVALID_USERNAME) {
                 binding.loginFragmentUsernameInput.error = "Invalid username"
             }
 
             if (result === LoginViewModel.LoginResults.INVALID_PASSWORD) {
                 binding.loginFragmentPasswordInput.error = "Invalid password"
+            }
+
+            if (result === LoginViewModel.LoginResults.NETWORK_ERROR) {
+                Toast.makeText(context, "Network Error", Toast.LENGTH_SHORT).show()
             }
 
             if (result === LoginViewModel.LoginResults.SUCCESS) {
