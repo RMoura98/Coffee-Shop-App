@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.feup.cmov.acme_client.login.LoginFragment"
+        android:name="com.feup.cmov.acme_client.screens.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/signupFragment"
-        android:name="com.feup.cmov.acme_client.signup.SignupFragment"
+        android:name="com.feup.cmov.acme_client.screens.signup.SignupFragment"
         android:label="fragment_signup"
         tools:layout="@layout/fragment_signup" />
 </navigation>

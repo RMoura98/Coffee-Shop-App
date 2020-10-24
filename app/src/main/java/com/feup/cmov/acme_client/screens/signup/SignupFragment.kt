@@ -1,4 +1,4 @@
-package com.feup.cmov.acme_client.signup
+package com.feup.cmov.acme_client.screens.signup
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

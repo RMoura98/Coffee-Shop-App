@@ -2,17 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".signup.SignupFragment">
+    tools:context=".screens.signup.SignupFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.feup.cmov.acme_client.signup.SignupViewModel" />
+            type="com.feup.cmov.acme_client.screens.signup.SignupViewModel" />
 
         <variable
             name="handler"
-            type="com.feup.cmov.acme_client.signup.SignupHandler" />
+            type="com.feup.cmov.acme_client.screens.signup.SignupHandler" />
 
     </data>
 

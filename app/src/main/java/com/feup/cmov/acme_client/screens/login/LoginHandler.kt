@@ -1,4 +1,4 @@
-package com.feup.cmov.acme_client.login
+package com.feup.cmov.acme_client.screens.login
 
 import android.view.View
 

@@ -1,11 +1,8 @@
-package com.feup.cmov.acme_client.signup;
+package com.feup.cmov.acme_client.screens.signup;
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.findNavController
-import com.feup.cmov.acme_client.R
 
 class SignupViewModel : ViewModel() {
 
