@@ -12,8 +12,9 @@ class SignupViewModel : ViewModel() {
     var name: String = ""
     var NIF: String = ""
     var card_number: String = ""
-    var card_cvv: String = ""
+    var card_cvc: String = ""
     var card_expiration: String = ""
+    var phone_number: String = ""
     var username: String = ""
     var password: String = ""
 
