@@ -1,10 +1,16 @@
 package com.feup.cmov.acme_client.repositories
 
 import com.feup.cmov.acme_client.database.AppDatabaseDao
-import com.feup.cmov.acme_client.services.WebService
+import com.feup.cmov.acme_client.network.WebService
+import com.feup.cmov.acme_client.network.requests.SignupRequest
+import com.feup.cmov.acme_client.network.responses.SignupResponse
 import java.util.concurrent.Executor
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import com.feup.cmov.acme_client.network.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.lang.Exception
+
 
 class AppRepository// Simple in-memory cache. Details omitted for brevity.
 @Inject constructor(
@@ -13,31 +19,25 @@ class AppRepository// Simple in-memory cache. Details omitted for brevity.
     private val userDao: AppDatabaseDao
 ) {
 
-    fun getUser(userId: String) { // LiveData<User>
-        refreshUser(userId)
-        // Returns a LiveData object directly from the database.
-        //return userDao.load(userId)
-    }
+    // Register user on the platform
+    suspend fun performSignup(
+        fullName: String,
+        NIF: String,
+        userName: String,
+        password: String
+    ): Result<SignupResponse> {
 
-    private fun refreshUser(userId: String) {
-        // Runs in a background thread.
-        executor.execute {
-            // Check if user data was fetched recently.
-            //val userExists = userDao.hasUser(FRESH_TIMEOUT)
-            //if (!userExists) {
-                // Refreshes the data.
-            //    val response = webservice.getUser(userId).execute()
+        return withContext(Dispatchers.IO) {
+            try {
+                val request = SignupRequest(fullName = fullName, NIF = NIF)
+                val response: SignupResponse = webService.createUser(request)
 
-                // Check for errors here.
-
-                // Updates the database. The LiveData object automatically
-                // refreshes, so we don't need to do anything else here.
-             //   userDao.save(response.body()!!)
-            //}
+                Result.Success(response)
+            }
+            catch (e: Exception) {
+                Result.Error(e)
+            }
         }
     }
 
-    companion object {
-        val FRESH_TIMEOUT = TimeUnit.DAYS.toMillis(1)
-    }
 }

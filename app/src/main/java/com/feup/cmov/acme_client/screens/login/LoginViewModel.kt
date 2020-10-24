@@ -4,10 +4,11 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.feup.cmov.acme_client.repositories.AppRepository
-import com.feup.cmov.acme_client.services.WebService
+import kotlinx.coroutines.launch
 
-class LoginViewModel @ViewModelInject constructor(appRepository: AppRepository, webService: WebService) : ViewModel() {
+class LoginViewModel @ViewModelInject constructor(val appRepository: AppRepository) : ViewModel() {
 
     /**
      * Two way bind-able fields
@@ -41,7 +42,9 @@ class LoginViewModel @ViewModelInject constructor(appRepository: AppRepository, 
             return
         }
 
-        loginResult.value = LoginResults.SUCCESS
+        viewModelScope.launch {
+            appRepository.performSignup(userName=userName, password=password, fullName="", NIF="")
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 package com.feup.cmov.acme_client.modules
 
-import com.feup.cmov.acme_client.services.WebService
+import com.feup.cmov.acme_client.network.WebService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
