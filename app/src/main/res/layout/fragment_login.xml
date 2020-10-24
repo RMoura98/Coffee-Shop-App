@@ -31,6 +31,7 @@
             app:srcCompat="@drawable/coffee_trimmed" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/loginFragment_usernameInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
@@ -41,7 +42,7 @@
             app:startIconDrawable="@drawable/ic_person_black_18dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/loginFragment_usernameInput"
+                android:id="@+id/usernameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@={viewModel.userName}"/>
@@ -58,7 +59,7 @@
             app:startIconDrawable="@drawable/ic_vpn_key_black_18dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password_edit_text"
+                android:id="@+id/passwordInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@={viewModel.password}"/>
