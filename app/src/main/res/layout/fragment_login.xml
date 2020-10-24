@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".login.LoginFragment">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.feup.cmov.acme_client.login.LoginViewModel" />
+
+        <variable
+            name="handler"
+            type="com.feup.cmov.acme_client.login.LoginHandler" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="261dp"
+            android:layout_height="217dp"
+            android:contentDescription="@string/app_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.142"
+            app:srcCompat="@drawable/coffee_trimmed" />
+
+        <EditText
+            android:id="@+id/loginFragment_usernameInput"
+            android:text="@={viewModel.userName}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:autofillHints=""
+            android:hint="@string/prompt_username"
+            android:inputType="textEmailAddress"
+            android:selectAllOnFocus="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/loginFragment_passwordInput"
+            android:text="@={viewModel.password}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:autofillHints=""
+            android:hint="@string/prompt_password"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:selectAllOnFocus="true"
+            app:layout_constraintBottom_toTopOf="@+id/loginFragment_loginButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginFragment_usernameInput"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/loginFragment_loginButton"
+            android:onClick="@{handler.onLoginButtonClick}"
+            android:layout_width="164dp"
+            android:layout_height="50dp"
+            android:layout_gravity="start"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="156dp"
+            android:enabled="true"
+            android:focusable="auto"
+            android:text="@string/action_sign_in"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loginFragment_passwordInput"
+            app:layout_constraintVertical_bias="0.2" />
+
+        <TextView
+            android:id="@+id/loginFragment_signupButton"
+            android:onClick="@{handler.onSignupButtonClick}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="@string/create_New_Account"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginFragment_loginButton" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
