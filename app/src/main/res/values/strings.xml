@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ACME-Client</string>
+    <string name="app_name">The Acme Coffee Experience</string>
     <string name="first_time_user">Welcome to the ACME Coffee experience!</string>
 
     <!--LogIn-->
