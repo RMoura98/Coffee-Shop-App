@@ -15,6 +15,9 @@ npm install
 
 ## Running the Acme Coffee Server
 
+Start by renaming the `default.env` file to `.env`.
+
+
 Run the database container
 ```bash
 docker-compose up -d
