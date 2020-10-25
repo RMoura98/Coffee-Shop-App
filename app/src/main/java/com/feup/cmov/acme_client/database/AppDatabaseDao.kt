@@ -11,7 +11,7 @@ import com.feup.cmov.acme_client.database.models.User
 interface AppDatabaseDao {
 
     @Query("SELECT * FROM user_table WHERE userName = :userName LIMIT 1")
-    fun loadUser(userName: String): LiveData<User>
+    fun loadUser(userName: String): User?
 
     @Insert(onConflict = ABORT)
     fun createUser(user: User): Void

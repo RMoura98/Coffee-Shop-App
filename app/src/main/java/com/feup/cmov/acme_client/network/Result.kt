@@ -17,7 +17,7 @@ sealed class Result<out R> {
                 msg = body.getString("error")
             }
             else {
-                msg = exception.toString()
+                msg = exception.message ?: "Unknown Error"
             }
         }
     }

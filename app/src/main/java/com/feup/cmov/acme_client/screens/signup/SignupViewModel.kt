@@ -73,8 +73,8 @@ class SignupViewModel @ViewModelInject constructor(private val appRepository: Ap
             val result: Result<SignupResponse> = appRepository.performSignup(name=name, NIF=NIF, card_number=card_number, card_cvc=card_cvc, card_expiration=card_expiration, phone_number=phone_number, userName=userName, password=password)
 
             when (result) {
-                is Result.Success -> signupResult.value = SignupResult.SUCCESS
-                is Result.NetworkError -> signupResult.value = SignupResult.NETWORK_ERROR
+                is Result.Success -> signupResult.postValue(SignupResult.SUCCESS)
+                is Result.NetworkError -> signupResult.postValue(SignupResult.NETWORK_ERROR)
                 is Result.OtherError -> {
                     signupResult.postValue(SignupResult.INVALID_FORM)
                     invalidFields.value?.add(InvalidField(fieldName="general", msg=result.msg))

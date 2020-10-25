@@ -15,6 +15,7 @@ import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentLoginBinding
 import com.feup.cmov.acme_client.forms.InvalidField
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -54,6 +55,7 @@ class LoginFragment : Fragment(), LoginHandler {
                     when(invalidField.fieldName) {
                         "name" -> binding.usernameInput.error = invalidField.msg
                         "password" -> binding.passwordInput.error = invalidField.msg
+                        "general" -> Snackbar.make(container!!, invalidField.msg, Snackbar.LENGTH_LONG).show();
                     }
                 }
             }
