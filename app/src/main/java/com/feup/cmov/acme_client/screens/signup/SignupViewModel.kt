@@ -51,31 +51,18 @@ class SignupViewModel @ViewModelInject constructor(private val appRepository: Ap
 
         // Empty all errors.
         invalidFields.value = ArrayList()
-        generalError = ""
 
-        if (name.isBlank())
-            invalidFields.value?.add(InvalidField(fieldName="name", msg="Insert name."))
-
-        if (NIF.isBlank())
-            invalidFields.value?.add(InvalidField(fieldName="NIF", msg="Insert NIF."))
-
-        if (card_number.isBlank())
-            invalidFields.value?.add(InvalidField(fieldName="card_number", msg="Insert card number."))
-
-        if (card_cvc.isBlank())
-            invalidFields.value?.add(InvalidField(fieldName="card_cvc", msg="Insert card cvc."))
-
-        if (card_expiration.isBlank())
-            invalidFields.value?.add(InvalidField(fieldName="card_expiration", msg="Insert card expiration date."))
-
-        if (phone_number.isBlank())
-            invalidFields.value?.add(InvalidField(fieldName="phone_number", msg="Insert phone number."))
-
-        if (userName.isBlank())
-            invalidFields.value?.add(InvalidField(fieldName="username", msg="Insert username."))
-
-        if (password.isBlank())
-            invalidFields.value?.add(InvalidField(fieldName="password", msg="Insert password."))
+        // Empty fields.
+        when {
+            name.isBlank() -> invalidFields.value?.add(InvalidField(fieldName="name", msg="Insert name."))
+            NIF.isBlank() -> invalidFields.value?.add(InvalidField(fieldName="NIF", msg="Insert NIF."))
+            card_number.isBlank() -> invalidFields.value?.add(InvalidField(fieldName="card_number", msg="Insert card number."))
+            card_cvc.isBlank() -> invalidFields.value?.add(InvalidField(fieldName="card_cvc", msg="Insert card cvc."))
+            phone_number.isBlank() -> invalidFields.value?.add(InvalidField(fieldName="phone_number", msg="Insert phone number."))
+            card_expiration.isBlank() -> invalidFields.value?.add(InvalidField(fieldName="card_expiration", msg="Insert card expiration date."))
+            userName.isBlank() -> invalidFields.value?.add(InvalidField(fieldName="username", msg="Insert username."))
+            password.isBlank() -> invalidFields.value?.add(InvalidField(fieldName="password", msg="Insert password."))
+        }
 
         if (invalidFields.value?.isNotEmpty()!!) {
             signupResult.postValue(SignupResult.INVALID_FORM)
@@ -83,7 +70,7 @@ class SignupViewModel @ViewModelInject constructor(private val appRepository: Ap
         }
 
         viewModelScope.launch {
-            val result = appRepository.performSignup(name=name, NIF=NIF, card_number=card_number, card_cvc=card_cvc, card_expiration=card_expiration, phone_number=phone_number, userName=userName, password=password)
+            val result: Result<SignupResponse> = appRepository.performSignup(name=name, NIF=NIF, card_number=card_number, card_cvc=card_cvc, card_expiration=card_expiration, phone_number=phone_number, userName=userName, password=password)
 
             when (result) {
                 is Result.Success -> signupResult.value = SignupResult.SUCCESS

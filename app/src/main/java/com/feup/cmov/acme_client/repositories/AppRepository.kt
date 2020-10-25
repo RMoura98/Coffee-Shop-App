@@ -17,7 +17,7 @@ import java.io.IOException
 class AppRepository
 @Inject constructor(
     private val webService: WebService,
-    private val userDao: AppDatabaseDao
+    private val appDatabaseDao: AppDatabaseDao
 ) {
 
     // Register user on the platform
@@ -38,7 +38,7 @@ class AppRepository
                 val response: SignupResponse = webService.createUser(request)
 
                 val newUser = User(name=name, uuid=response.uuid, NIF=NIF, card_number=card_number, card_cvc=card_cvc, card_expiration=card_expiration, phone_number=phone_number, userName=userName)
-                userDao.createUser(newUser)
+                appDatabaseDao.createUser(newUser)
 
                 Result.Success(response)
             }
