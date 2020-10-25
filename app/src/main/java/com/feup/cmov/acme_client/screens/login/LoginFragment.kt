@@ -85,7 +85,7 @@ class LoginFragment : Fragment(), LoginHandler {
         Snackbar.make(v, "Login is success :D.", Snackbar.LENGTH_LONG).show();
         val bundle = bundleOf("userName" to user.userName)
         v.findNavController()
-            .navigate(R.id.action_loginFragment_to_signupFragment, bundle)
+            .navigate(R.id.action_loginFragment_to_mainMenuFragment, bundle)
     }
 
 }

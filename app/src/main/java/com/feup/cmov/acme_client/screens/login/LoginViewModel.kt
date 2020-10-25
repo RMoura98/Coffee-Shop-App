@@ -38,7 +38,7 @@ class LoginViewModel @ViewModelInject constructor(val appRepository: AppReposito
             password.isBlank() -> invalidFields.add(InvalidField(fieldName="password", msg="Insert password."))
         }
 
-        if (invalidFields.isNotEmpty()!!) {
+        if (invalidFields.isNotEmpty()) {
             loginResult.postValue(LoginResults.INVALID_FORM(invalidFields))
             return
         }

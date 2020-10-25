@@ -101,10 +101,10 @@ class SignupFragment : Fragment(), SignupHandler {
     }
 
     override fun afterTextChangedCardNumber(s: Editable) {
-        TODO("Not yet implemented")
+
     }
 
     override fun afterTextChangedCardExpiration(s: Editable) {
-        TODO("Not yet implemented")
+
     }
 }

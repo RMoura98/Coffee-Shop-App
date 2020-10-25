@@ -84,7 +84,8 @@ class AppRepository
     ): Result<User> {
         return withContext(Dispatchers.IO) {
             try {
-                val user = appDatabaseDao.loadUser(userName).value!!
+                val user = appDatabaseDao.loadUser(userName) ?: throw Exception("User does not exist.")
+
                 if(!Security.isPasswordCorrect(password, user.password_hashed))
                     throw Exception("Password is not correct.")
 
@@ -102,7 +103,7 @@ class AppRepository
         }
     }
 
-    fun fetchUser(userName: String): LiveData<User> {
-        return appDatabaseDao.loadUser(userName)
+    fun fetchUser(userName: String): User {
+        return appDatabaseDao.loadUser(userName)!!
     }
 }

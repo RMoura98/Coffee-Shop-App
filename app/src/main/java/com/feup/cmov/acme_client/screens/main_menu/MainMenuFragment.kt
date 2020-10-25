@@ -21,7 +21,7 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         savedInstanceState: Bundle?
     ): View? {
 
-        Snackbar.make(container!!, "Username is" + requireArguments().get("userName") as String, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(container!!, "Username is " + requireArguments().get("userName") as String, Snackbar.LENGTH_LONG).show();
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main_menu, container, false)
