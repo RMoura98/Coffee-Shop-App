@@ -16,7 +16,7 @@
         <action
             android:id="@+id/action_loginFragment_to_mainMenuFragment"
             app:destination="@id/mainMenuFragment"
-            app:popUpTo="@id/navigation"
+            app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment

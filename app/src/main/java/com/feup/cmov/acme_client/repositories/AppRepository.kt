@@ -1,5 +1,6 @@
 package com.feup.cmov.acme_client.repositories
 
+import androidx.lifecycle.LiveData
 import com.feup.cmov.acme_client.Utils.Security
 import com.feup.cmov.acme_client.database.AppDatabaseDao
 import com.feup.cmov.acme_client.database.models.User
@@ -13,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.lang.Exception
+import java.util.*
 
 
 class AppRepository
@@ -31,7 +33,7 @@ class AppRepository
         phone_number: String,
         userName: String,
         password: String
-    ): Result<SignupResponse> {
+    ): Result<User> {
 
         return withContext(Dispatchers.IO) {
             try {
@@ -63,8 +65,9 @@ class AppRepository
                     userName = userName
                 )
                 appDatabaseDao.createUser(newUser)
+
                 // Return success.
-                Result.Success(response)
+                Result.Success(newUser)
             } catch (e: Throwable) {
                 when (e) {
                     is IOException -> Result.NetworkError
@@ -78,17 +81,17 @@ class AppRepository
     suspend fun performLogin(
         userName: String,
         password: String
-    ): Result<LoginResponse> {
+    ): Result<User> {
         return withContext(Dispatchers.IO) {
             try {
-                val user = appDatabaseDao.loadUser(userName) ?: throw Exception("User does not exist.")
+                val user = appDatabaseDao.loadUser(userName).value!!
                 if(!Security.isPasswordCorrect(password, user.password_hashed))
                     throw Exception("Password is not correct.")
 
                 val uuid = user.uuid
                 val response: LoginResponse = webService.fetchUser(uuid)
 
-                Result.Success(response)
+                Result.Success(user)
             }
             catch (e: Throwable) {
                 when (e) {
@@ -99,4 +102,7 @@ class AppRepository
         }
     }
 
+    fun fetchUser(userName: String): LiveData<User> {
+        return appDatabaseDao.loadUser(userName)
+    }
 }

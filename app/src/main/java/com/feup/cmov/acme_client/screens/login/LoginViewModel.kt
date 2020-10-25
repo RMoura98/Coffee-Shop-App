@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.forms.InvalidField
 import com.feup.cmov.acme_client.network.responses.SignupResponse
 import com.feup.cmov.acme_client.repositories.AppRepository
@@ -21,51 +22,52 @@ class LoginViewModel @ViewModelInject constructor(val appRepository: AppReposito
     var userName: String = ""
     var password: String = ""
 
-    /**
-     * To pass login result to activity
-     */
-    enum class LoginResults {
-        INVALID_FORM, NETWORK_ERROR, SUCCESS
-    }
-
-    private var invalidFields = MutableLiveData<ArrayList<InvalidField>>()
     private val loginResult = MutableLiveData<LoginResults>()
 
     fun getLoginResult(): LiveData<LoginResults> = loginResult
-    fun getInvalidFields(): LiveData<ArrayList<InvalidField>> = invalidFields
 
     /**
      * Called from activity on login button click
      */
     fun performLogin() {
 
-        // Empty all errors.
-        invalidFields.value = ArrayList()
+        val invalidFields = ArrayList<InvalidField>()
 
         when {
-            userName.isBlank() -> invalidFields.value?.add(InvalidField(fieldName="userName", msg="Insert username."))
-            password.isBlank() -> invalidFields.value?.add(InvalidField(fieldName="password", msg="Insert password."))
+            userName.isBlank() -> invalidFields.add(InvalidField(fieldName="userName", msg="Insert username."))
+            password.isBlank() -> invalidFields.add(InvalidField(fieldName="password", msg="Insert password."))
         }
 
-        if (invalidFields.value?.isNotEmpty()!!) {
-            loginResult.value = LoginResults.INVALID_FORM
+        if (invalidFields.isNotEmpty()!!) {
+            loginResult.postValue(LoginResults.INVALID_FORM(invalidFields))
             return
         }
 
 
         viewModelScope.launch {
-            val result: Result<LoginResponse> = appRepository.performLogin(userName, password)
+            val result: Result<User> = appRepository.performLogin(userName, password)
 
             when (result) {
-                is Result.Success -> loginResult.postValue(LoginResults.SUCCESS)
+                is Result.Success -> loginResult.postValue(LoginResults.SUCCESS(result.data))
                 is Result.NetworkError -> loginResult.postValue(LoginResults.NETWORK_ERROR)
                 is Result.OtherError -> {
-                    loginResult.postValue(LoginResults.INVALID_FORM)
-                    invalidFields.value?.add(InvalidField(fieldName="general", msg=result.msg))
+                    loginResult.postValue(LoginResults.INVALID_FORM(invalidFields))
+                    invalidFields.add(InvalidField(fieldName="general", msg=result.msg))
                 }
             }
         }
 
+    }
+
+    companion object {
+        /**
+         * To pass login result to fragment
+         */
+        sealed class LoginResults {
+            data class INVALID_FORM(val invalidFields: List<InvalidField>): LoginResults()
+            object NETWORK_ERROR: LoginResults()
+            data class SUCCESS(val user: User) : LoginResults()
+        }
     }
 
 }

@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".screens.main_menu.MainMenuFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+        <variable
+            name="viewModel"
+            type="com.feup.cmov.acme_client.screens.main_menu.MainMenuViewModel" />
+
+        <variable
+            name="handler"
+            type="com.feup.cmov.acme_client.screens.main_menu.MainMenuHandler" />
+
+    </data>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical">
 
-</FrameLayout>
+    </LinearLayout>
+
+</layout>

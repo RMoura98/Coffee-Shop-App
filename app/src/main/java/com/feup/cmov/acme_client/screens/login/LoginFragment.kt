@@ -6,16 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
+import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.databinding.FragmentLoginBinding
-import com.feup.cmov.acme_client.forms.InvalidField
-import com.feup.cmov.acme_client.screens.signup.SignupFragmentDirections
 import com.feup.cmov.acme_client.screens.signup.SignupFragment_GeneratedInjector
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,9 +50,8 @@ class LoginFragment : Fragment(), LoginHandler {
             if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED)
                 return@observe
 
-            if (result === LoginViewModel.LoginResults.INVALID_FORM) {
-                val invalidFields: ArrayList<InvalidField> = viewModel.getInvalidFields().value!!
-                for(invalidField in invalidFields) {
+            if (result is LoginViewModel.Companion.LoginResults.INVALID_FORM) {
+                for(invalidField in result.invalidFields) {
                     when(invalidField.fieldName) {
                         "userName" -> binding.usernameInput.error = invalidField.msg
                         "password" -> binding.passwordInput.error = invalidField.msg
@@ -61,12 +59,12 @@ class LoginFragment : Fragment(), LoginHandler {
                     }
                 }
             }
-            else if (result === LoginViewModel.LoginResults.NETWORK_ERROR) {
+            else if (result is LoginViewModel.Companion.LoginResults.NETWORK_ERROR) {
                 Toast.makeText(context, "Network Error", Toast.LENGTH_SHORT).show()
             }
 
-            else if (result === LoginViewModel.LoginResults.SUCCESS) {
-                loginSuccessful(container!!)
+            else if (result is LoginViewModel.Companion.LoginResults.SUCCESS) {
+                loginSuccessful(container!!, result.user)
             }
         })
 
@@ -82,10 +80,11 @@ class LoginFragment : Fragment(), LoginHandler {
             .navigate(LoginFragmentDirections.actionLoginFragmentToSignupFragment())
     }
 
-    fun loginSuccessful(v: View) {
+    private fun loginSuccessful(v: View, user: User) {
         Snackbar.make(v, "Login is success :D.", Snackbar.LENGTH_LONG).show();
+        val bundle = bundleOf("userName" to user.userName)
         v.findNavController()
-            .navigate(LoginFragmentDirections.actionLoginFragmentToMainMenuFragment())
+            .navigate(R.id.action_loginFragment_to_signupFragment, bundle)
     }
 
 }

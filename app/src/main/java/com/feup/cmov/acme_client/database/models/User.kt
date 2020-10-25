@@ -5,8 +5,11 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "user_table", indices = [Index(value = ["username"], unique = true)])
-data class User (
+@Entity(
+    tableName = "user_table",
+    indices = [Index(value = ["username"], unique = true), Index(value = ["uuid"], unique = true)]
+)
+data class User(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L,
 

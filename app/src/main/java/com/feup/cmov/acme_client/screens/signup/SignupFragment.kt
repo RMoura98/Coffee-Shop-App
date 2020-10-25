@@ -8,12 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
+import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.databinding.FragmentLoginBinding
 import com.feup.cmov.acme_client.databinding.FragmentSignupBinding
 import com.feup.cmov.acme_client.forms.InvalidField
@@ -51,9 +53,8 @@ class SignupFragment : Fragment(), SignupHandler {
             if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED)
                 return@observe
 
-            if (result === SignupViewModel.SignupResult.INVALID_FORM) {
-                val invalidFields: ArrayList<InvalidField> = viewModel.getInvalidFields().value!!
-                for(invalidField in invalidFields) {
+            if (result is SignupViewModel.Companion.SignupResult.INVALID_FORM) {
+                for(invalidField in result.invalidFields) {
                     when(invalidField.fieldName) {
                         "name" -> binding.nameInput.error = invalidField.msg
                         "NIF" -> binding.nifInput.error = invalidField.msg
@@ -69,13 +70,13 @@ class SignupFragment : Fragment(), SignupHandler {
                 return@observe
             }
 
-            if (result === SignupViewModel.SignupResult.NETWORK_ERROR) {
+            if (result is SignupViewModel.Companion.SignupResult.NETWORK_ERROR) {
                 Snackbar.make(container!!, "No internet connection.", Snackbar.LENGTH_LONG).show();
                 return@observe
             }
 
-            if (result === SignupViewModel.SignupResult.SUCCESS) {
-                signupSuccessful(container!!)
+            if (result is SignupViewModel.Companion.SignupResult.SUCCESS) {
+                signupSuccessful(container!!, result.user)
                 return@observe
             }
         })
@@ -83,10 +84,11 @@ class SignupFragment : Fragment(), SignupHandler {
         return binding.root
     }
 
-    fun signupSuccessful(v: View) {
+    fun signupSuccessful(v: View, user: User) {
         Snackbar.make(v, "Register is success :D.", Snackbar.LENGTH_LONG).show();
+        val bundle = bundleOf("userName" to user.userName)
         v.findNavController()
-            .navigate(SignupFragmentDirections.actionSignupFragmentToMainMenuFragment())
+            .navigate(R.id.action_signupFragment_to_mainMenuFragment, bundle)
     }
 
     override fun onSubmitButtonClick(v: View) {
