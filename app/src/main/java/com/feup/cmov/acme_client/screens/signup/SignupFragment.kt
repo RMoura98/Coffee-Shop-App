@@ -3,6 +3,7 @@ package com.feup.cmov.acme_client.screens.signup
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -54,6 +55,8 @@ class SignupFragment : Fragment(), SignupHandler {
             if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED)
                 return@observe
 
+            clearErrors()
+
             if (result is SignupViewModel.Companion.SignupResult.INVALID_FORM) {
                 for(invalidField in result.invalidFields) {
                     when(invalidField.fieldName) {
@@ -101,10 +104,53 @@ class SignupFragment : Fragment(), SignupHandler {
     }
 
     override fun afterTextChangedCardNumber(s: Editable) {
+        val space = ' '
 
+        // Remove spacing char
+        if (s.isNotEmpty() && s.length % 5 === 0) {
+            val c: Char = s[s.length - 1]
+            if (space == c) {
+                s.delete(s.length - 1, s.length)
+            }
+        }
+
+        // Insert char where needed.
+        if (s.isNotEmpty() && s.length % 5 === 0) {
+            val c: Char = s[s.length - 1]
+            // Only if its a digit where there should be a space we insert a space
+            if (Character.isDigit(c) && TextUtils.split(
+                    s.toString(),
+                    space.toString()
+                ).count() <= 3
+            ) {
+                s.insert(s.length - 1, space.toString())
+            }
+        }
     }
 
     override fun afterTextChangedCardExpiration(s: Editable) {
+        if (s.isNotEmpty() && s.length % 3 === 0) {
+            val c: Char = s[s.length - 1]
+            if ('/' == c) {
+                s.delete(s.length - 1, s.length)
+            }
+        }
+        if (s.isNotEmpty() && s.length % 3 === 0) {
+            val c: Char = s[s.length - 1]
+            if (Character.isDigit(c) && TextUtils.split(s.toString(), "/").count() <= 2) {
+                s.insert(s.length - 1, "/")
+            }
+        }
+    }
 
+    private fun clearErrors() {
+        binding.signupFragmentNameInput.error = null
+        binding.signupFragmentNifInput.error = null
+        binding.signupFragmentCardNumberInput.error = null
+        binding.signupFragmentCardCVCInput.error = null
+        binding.signupFragmentCardExpirationInput.error = null
+        binding.signupFragmentPhoneInput.error = null
+        binding.signupFragmentUserNameInput.error = null
+        binding.signupFragmentPasswordInput.error = null
     }
 }
