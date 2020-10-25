@@ -1,0 +1,2 @@
+This folder houses the constructor logic for the modules that can be dependency injected into Fragments and Views.
+The most important modules that can be dependency injected are AppDatabaseModule and WebServiceModule.

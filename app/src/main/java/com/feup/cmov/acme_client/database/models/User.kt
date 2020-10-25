@@ -10,9 +10,27 @@ data class User (
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L,
 
+    @ColumnInfo(name = "uuid")
+    val uuid: String,
+
+    @ColumnInfo(name = "name")
+    val name: String,
+
     @ColumnInfo(name = "username")
-    val userName: String = "",
+    val userName: String,
 
     @ColumnInfo(name = "nif")
-    val NIF: String = ""
+    val NIF: String,
+
+    @ColumnInfo(name = "card_number")
+    val card_number: String,
+
+    @ColumnInfo(name = "card_cvc")
+    val card_cvc: String,
+
+    @ColumnInfo(name = "card_expiration")
+    val card_expiration: String,
+
+    @ColumnInfo(name = "phone_number")
+    val phone_number: String
 )

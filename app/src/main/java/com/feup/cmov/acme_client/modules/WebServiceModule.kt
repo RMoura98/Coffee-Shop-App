@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -16,7 +17,8 @@ object WebServiceModule {
     @Singleton
     fun provideWebService(): WebService {
         return Retrofit.Builder()
-            .baseUrl(" https://localhost:8080")
+            .baseUrl(" http://10.0.2.2:3001/api/")
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(WebService::class.java)
     }

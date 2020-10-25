@@ -12,7 +12,7 @@ import retrofit2.http.Path
 
 interface WebService {
 
-    @POST("users/new")
+    @POST("user/new")
     suspend fun createUser(@Body req: SignupRequest): SignupResponse
 
 }

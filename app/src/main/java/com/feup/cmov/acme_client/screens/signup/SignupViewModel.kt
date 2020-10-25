@@ -1,10 +1,19 @@
 package com.feup.cmov.acme_client.screens.signup;
 
+import android.util.Log
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.feup.cmov.acme_client.forms.InvalidField
+import com.feup.cmov.acme_client.network.Result
+import com.feup.cmov.acme_client.network.responses.SignupResponse
+import com.feup.cmov.acme_client.repositories.AppRepository
+import com.feup.cmov.acme_client.screens.login.LoginViewModel
+import kotlinx.coroutines.launch
 
-class SignupViewModel : ViewModel() {
+class SignupViewModel @ViewModelInject constructor(private val appRepository: AppRepository): ViewModel() {
 
     /**
      * Two way bind-able fields
@@ -15,34 +24,76 @@ class SignupViewModel : ViewModel() {
     var card_cvc: String = ""
     var card_expiration: String = ""
     var phone_number: String = ""
-    var username: String = ""
+    var userName: String = ""
     var password: String = ""
+
+    // For handling errors which are not related to any specific input field.
+    var generalError: String = ""
 
     /**
      * To pass login result to activity
      */
 
-    enum class SignupResults {
-        INVALID, SUCCESS
+    enum class SignupResult {
+        INVALID_FORM, NETWORK_ERROR, SUCCESS
     }
 
-    private val signupResult = MutableLiveData<SignupResults>()
+    private var invalidFields = MutableLiveData<ArrayList<InvalidField>>()
+    private var signupResult = MutableLiveData<SignupResult>()
 
-    fun getSignupResult(): LiveData<SignupResults> = signupResult
+    fun getSignupResult(): LiveData<SignupResult> = signupResult
+    fun getInvalidFields(): LiveData<ArrayList<InvalidField>> = invalidFields
 
     /**
      * Called from activity on login button click
      */
     fun performSignup() {
 
-        if (name.isBlank()) {
-            signupResult.value = SignupResults.INVALID
+        // Empty all errors.
+        invalidFields.value = ArrayList()
+        generalError = ""
+
+        if (name.isBlank())
+            invalidFields.value?.add(InvalidField(fieldName="name", msg="Insert name."))
+
+        if (NIF.isBlank())
+            invalidFields.value?.add(InvalidField(fieldName="NIF", msg="Insert NIF."))
+
+        if (card_number.isBlank())
+            invalidFields.value?.add(InvalidField(fieldName="card_number", msg="Insert card number."))
+
+        if (card_cvc.isBlank())
+            invalidFields.value?.add(InvalidField(fieldName="card_cvc", msg="Insert card cvc."))
+
+        if (card_expiration.isBlank())
+            invalidFields.value?.add(InvalidField(fieldName="card_expiration", msg="Insert card expiration date."))
+
+        if (phone_number.isBlank())
+            invalidFields.value?.add(InvalidField(fieldName="phone_number", msg="Insert phone number."))
+
+        if (userName.isBlank())
+            invalidFields.value?.add(InvalidField(fieldName="username", msg="Insert username."))
+
+        if (password.isBlank())
+            invalidFields.value?.add(InvalidField(fieldName="password", msg="Insert password."))
+
+        if (invalidFields.value?.isNotEmpty()!!) {
+            signupResult.postValue(SignupResult.INVALID_FORM)
             return
         }
 
-        // TODO: ......
+        viewModelScope.launch {
+            val result = appRepository.performSignup(name=name, NIF=NIF, card_number=card_number, card_cvc=card_cvc, card_expiration=card_expiration, phone_number=phone_number, userName=userName, password=password)
 
-        signupResult.value = SignupResults.SUCCESS
+            when (result) {
+                is Result.Success -> signupResult.value = SignupResult.SUCCESS
+                is Result.NetworkError -> signupResult.value = SignupResult.NETWORK_ERROR
+                is Result.OtherError -> {
+                    signupResult.postValue(SignupResult.INVALID_FORM)
+                    invalidFields.value?.add(InvalidField(fieldName="general", msg=result.msg))
+                }
+            }
+        }
     }
 
 }

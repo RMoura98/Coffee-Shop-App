@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentLoginBinding
+import com.feup.cmov.acme_client.forms.InvalidField
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -47,19 +48,20 @@ class LoginFragment : Fragment(), LoginHandler {
             if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED)
                 return@observe
 
-            if (result === LoginViewModel.LoginResults.INVALID_USERNAME) {
-                binding.loginFragmentUsernameInput.error = "Invalid username"
+            if (result === LoginViewModel.LoginResults.INVALID_FORM) {
+                val invalidFields: ArrayList<InvalidField> = viewModel.getInvalidFields().value!!
+                for(invalidField in invalidFields) {
+                    when(invalidField.fieldName) {
+                        "name" -> binding.usernameInput.error = invalidField.msg
+                        "password" -> binding.passwordInput.error = invalidField.msg
+                    }
+                }
             }
-
-            if (result === LoginViewModel.LoginResults.INVALID_PASSWORD) {
-                binding.loginFragmentPasswordInput.error = "Invalid password"
-            }
-
-            if (result === LoginViewModel.LoginResults.NETWORK_ERROR) {
+            else if (result === LoginViewModel.LoginResults.NETWORK_ERROR) {
                 Toast.makeText(context, "Network Error", Toast.LENGTH_SHORT).show()
             }
 
-            if (result === LoginViewModel.LoginResults.SUCCESS) {
+            else if (result === LoginViewModel.LoginResults.SUCCESS) {
                 Toast.makeText(context, "Login Success", Toast.LENGTH_SHORT).show()
             }
         })
