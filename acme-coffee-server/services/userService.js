@@ -9,7 +9,7 @@ async function createUser(userData) {
   } catch (err) {
     if (err instanceof Sequelize.UniqueConstraintError) {
       for (const field in err.fields) {
-        if (Object.prototype.hasOwnProperty.call(err.fields, field)) throw new UniqueFieldError(`${field} already taken`);
+        if (Object.prototype.hasOwnProperty.call(err.fields, field)) throw new UniqueFieldError(`${field} is already taken.`);
       }
     }
     throw err;

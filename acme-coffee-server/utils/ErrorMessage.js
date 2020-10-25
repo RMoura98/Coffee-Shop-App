@@ -1,6 +1,6 @@
 class ErrorMessage {
-  constructor(message = 'An unexpected error occured') {
-    this.message = message;
+  constructor(error = 'An unexpected error occured') {
+    this.error = error;
   }
 }
 
