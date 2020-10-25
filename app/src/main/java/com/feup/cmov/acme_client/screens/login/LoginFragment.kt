@@ -15,6 +15,8 @@ import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentLoginBinding
 import com.feup.cmov.acme_client.forms.InvalidField
+import com.feup.cmov.acme_client.screens.signup.SignupFragmentDirections
+import com.feup.cmov.acme_client.screens.signup.SignupFragment_GeneratedInjector
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -53,7 +55,7 @@ class LoginFragment : Fragment(), LoginHandler {
                 val invalidFields: ArrayList<InvalidField> = viewModel.getInvalidFields().value!!
                 for(invalidField in invalidFields) {
                     when(invalidField.fieldName) {
-                        "name" -> binding.usernameInput.error = invalidField.msg
+                        "userName" -> binding.usernameInput.error = invalidField.msg
                         "password" -> binding.passwordInput.error = invalidField.msg
                         "general" -> Snackbar.make(container!!, invalidField.msg, Snackbar.LENGTH_LONG).show();
                     }
@@ -64,7 +66,7 @@ class LoginFragment : Fragment(), LoginHandler {
             }
 
             else if (result === LoginViewModel.LoginResults.SUCCESS) {
-                Toast.makeText(context, "Login Success", Toast.LENGTH_SHORT).show()
+                loginSuccessful(container!!)
             }
         })
 
@@ -77,7 +79,13 @@ class LoginFragment : Fragment(), LoginHandler {
 
     override fun onSignupButtonClick(v: View) {
         v.findNavController()
-            .navigate(R.id.action_loginFragment_to_signupFragment)
+            .navigate(LoginFragmentDirections.actionLoginFragmentToSignupFragment())
+    }
+
+    fun loginSuccessful(v: View) {
+        Snackbar.make(v, "Login is success :D.", Snackbar.LENGTH_LONG).show();
+        v.findNavController()
+            .navigate(LoginFragmentDirections.actionLoginFragmentToMainMenuFragment())
     }
 
 }

@@ -70,6 +70,7 @@ class SignupViewModel @ViewModelInject constructor(private val appRepository: Ap
         }
 
         viewModelScope.launch {
+
             val result: Result<SignupResponse> = appRepository.performSignup(name=name, NIF=NIF, card_number=card_number, card_cvc=card_cvc, card_expiration=card_expiration, phone_number=phone_number, userName=userName, password=password)
 
             when (result) {

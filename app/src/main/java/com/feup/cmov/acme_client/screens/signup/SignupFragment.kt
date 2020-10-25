@@ -61,7 +61,7 @@ class SignupFragment : Fragment(), SignupHandler {
                         "card_cvc" -> binding.cardCVCInput.error = invalidField.msg
                         "card_expiration" -> binding.cardExpirationInput.error = invalidField.msg
                         "phone_number" -> binding.phoneInput.error = invalidField.msg
-                        "username" -> binding.usernameInput.error = invalidField.msg
+                        "username" -> binding.userNameInput.error = invalidField.msg
                         "password" -> binding.passwordInput.error = invalidField.msg
                         "general" -> Snackbar.make(container!!, invalidField.msg, Snackbar.LENGTH_LONG).show();
                     }
