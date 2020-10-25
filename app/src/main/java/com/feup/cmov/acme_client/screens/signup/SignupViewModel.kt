@@ -1,6 +1,7 @@
 package com.feup.cmov.acme_client.screens.signup;
 
 import android.util.Log
+import android.util.Patterns
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -46,17 +47,7 @@ class SignupViewModel @ViewModelInject constructor(private val appRepository: Ap
 
         val invalidFields = ArrayList<InvalidField>()
 
-        // Empty fields.
-        when {
-            name.isBlank() -> invalidFields.add(InvalidField(fieldName="name", msg="Insert name."))
-            NIF.isBlank() -> invalidFields.add(InvalidField(fieldName="NIF", msg="Insert NIF."))
-            card_number.isBlank() -> invalidFields.add(InvalidField(fieldName="card_number", msg="Insert card number."))
-            card_cvc.isBlank() -> invalidFields.add(InvalidField(fieldName="card_cvc", msg="Insert card cvc."))
-            phone_number.isBlank() -> invalidFields.add(InvalidField(fieldName="phone_number", msg="Insert phone number."))
-            card_expiration.isBlank() -> invalidFields.add(InvalidField(fieldName="card_expiration", msg="Insert card expiration date."))
-            userName.isBlank() -> invalidFields.add(InvalidField(fieldName="username", msg="Insert username."))
-            password.isBlank() -> invalidFields.add(InvalidField(fieldName="password", msg="Insert password."))
-        }
+        checkBlankInput(invalidFields)
 
         if (invalidFields.isNotEmpty()!!) {
             signupResult.postValue(SignupResult.INVALID_FORM(invalidFields))
@@ -76,6 +67,47 @@ class SignupViewModel @ViewModelInject constructor(private val appRepository: Ap
                 }
             }
         }
+    }
+
+    private fun checkBlankInput(invalidFields: ArrayList<InvalidField>) {
+        if (name.isBlank())
+            invalidFields.add(InvalidField(fieldName="name", msg="Insert name."))
+
+        if (NIF.isBlank())
+            invalidFields.add(InvalidField(fieldName="NIF", msg="Insert NIF."))
+
+        if (card_number.isBlank())
+            invalidFields.add(InvalidField(fieldName="card_number", msg="Insert card number."))
+
+        if (card_cvc.isBlank())
+            invalidFields.add(InvalidField(fieldName="card_cvc", msg="Insert card cvc."))
+
+        if (phone_number.isBlank())
+            invalidFields.add(InvalidField(fieldName="phone_number", msg="Insert phone number."))
+
+        if (card_expiration.isBlank())
+            invalidFields.add(InvalidField(fieldName="card_expiration", msg="Insert expiration date."))
+
+        if (userName.isBlank())
+            invalidFields.add(InvalidField(fieldName="username", msg="Insert username."))
+
+        if (password.isBlank())
+            invalidFields.add(InvalidField(fieldName="password", msg="Insert password."))
+    }
+
+    private fun checkFormatInput(invalidFields: ArrayList<InvalidField>) {
+        if (!Patterns.PHONE.matcher(phone_number).matches())
+            invalidFields.add(InvalidField(fieldName="phone_number", msg="Invalid phone number."))
+
+        if (card_number.replace("\\s".toRegex(),"").length == 16)
+            invalidFields.add(InvalidField(fieldName="card_number", msg="Invalid card number."))
+
+        if (NIF.length != 9)
+            invalidFields.add(InvalidField(fieldName="NIF", msg="Invalid NIF."))
+
+        val expirationDateRegex = """(0[1-9]|10|11|12)/[0-9]{2}${'$'}""".toRegex()
+        if (!expirationDateRegex.containsMatchIn(card_expiration))
+            invalidFields.add(InvalidField(fieldName="card_expiration", msg="Invalid expiration date."))
     }
 
     companion object {

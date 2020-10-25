@@ -2,6 +2,7 @@ package com.feup.cmov.acme_client.screens.signup
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -56,15 +57,19 @@ class SignupFragment : Fragment(), SignupHandler {
             if (result is SignupViewModel.Companion.SignupResult.INVALID_FORM) {
                 for(invalidField in result.invalidFields) {
                     when(invalidField.fieldName) {
-                        "name" -> binding.nameInput.error = invalidField.msg
-                        "NIF" -> binding.nifInput.error = invalidField.msg
-                        "card_number" -> binding.cardNumberInput.error = invalidField.msg
-                        "card_cvc" -> binding.cardCVCInput.error = invalidField.msg
-                        "card_expiration" -> binding.cardExpirationInput.error = invalidField.msg
-                        "phone_number" -> binding.phoneInput.error = invalidField.msg
-                        "username" -> binding.userNameInput.error = invalidField.msg
-                        "password" -> binding.passwordInput.error = invalidField.msg
-                        "general" -> Snackbar.make(container!!, invalidField.msg, Snackbar.LENGTH_LONG).show();
+                        "name" -> binding.signupFragmentNameInput.error = invalidField.msg
+                        "NIF" -> binding.signupFragmentNifInput.error = invalidField.msg
+                        "card_number" -> binding.signupFragmentCardNumberInput.error = invalidField.msg
+                        "card_cvc" -> binding.signupFragmentCardCVCInput.error = invalidField.msg
+                        "card_expiration" -> binding.signupFragmentCardExpirationInput.error = invalidField.msg
+                        "phone_number" -> binding.signupFragmentPhoneInput.error = invalidField.msg
+                        "username" -> binding.signupFragmentUserNameInput.error = invalidField.msg
+                        "password" -> binding.signupFragmentPasswordInput.error = invalidField.msg
+                        "general" -> Snackbar.make(
+                            container!!,
+                            invalidField.msg,
+                            Snackbar.LENGTH_LONG
+                        ).show();
                     }
                 }
                 return@observe
@@ -93,5 +98,13 @@ class SignupFragment : Fragment(), SignupHandler {
 
     override fun onSubmitButtonClick(v: View) {
         viewModel.performSignup()
+    }
+
+    override fun afterTextChangedCardNumber(s: Editable) {
+        TODO("Not yet implemented")
+    }
+
+    override fun afterTextChangedCardExpiration(s: Editable) {
+        TODO("Not yet implemented")
     }
 }

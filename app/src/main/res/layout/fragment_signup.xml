@@ -56,9 +56,10 @@
                 android:id="@+id/signupFragment_nameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_marginHorizontal="15dp"
                 android:hint="@string/prompt_name"
-                app:errorEnabled="true"
+
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:startIconDrawable="@drawable/ic_face_black_18dp">
 
@@ -66,13 +67,18 @@
                     android:id="@+id/nameInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewModel.name}"/>
+                    android:maxLines="1"
+                    android:maxLength="25"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                    android:text="@={viewModel.name}"
+                    app:errorEnabled="true"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/signupFragment_phoneInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:layout_marginHorizontal="15dp"
                 android:hint="@string/prompt_phone"
                 app:errorEnabled="true"
@@ -83,6 +89,10 @@
                     android:id="@+id/phoneInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:digits="0123456789+"
+                    android:maxLength="14"
+                    android:inputType="phone"
                     android:text="@={viewModel.phone_number}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +124,12 @@
                     android:id="@+id/cardNumberInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewModel.card_number}"/>
+                    android:digits="01234 56789"
+                    android:inputType="phone"
+                    android:maxLength="19"
+                    android:maxLines="1"
+                    android:text="@={viewModel.card_number}"
+                    android:afterTextChanged="@{handler.afterTextChangedCardNumber}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -138,7 +153,12 @@
                         android:id="@+id/cardExpirationInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@={viewModel.card_expiration}"/>
+                        android:maxLength="5"
+                        android:inputType="phone"
+                        android:digits="0123456789/"
+                        android:maxLines="1"
+                        android:text="@={viewModel.card_expiration}"
+                        android:afterTextChanged="@{handler.afterTextChangedCardExpiration}"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -157,7 +177,11 @@
                         android:id="@+id/cardCVCInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@={viewModel.card_cvc}"/>
+                        android:text="@={viewModel.card_cvc}"
+                        android:digits="0123456789"
+                        android:maxLength="3"
+                        android:maxLines="1"
+                        android:inputType="phone"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -176,6 +200,10 @@
                     android:id="@+id/nifInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:maxLength="9"
+                    android:digits="0123456789"
+                    android:inputType="phone"
                     android:text="@={viewModel.NIF}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -207,6 +235,9 @@
                     android:id="@+id/userNameInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLength="15"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                    android:maxLines="1"
                     android:text="@={viewModel.userName}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -224,6 +255,8 @@
                     android:id="@+id/passwordInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:inputType="textPassword"
                     android:text="@={viewModel.password}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
