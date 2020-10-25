@@ -18,6 +18,7 @@ import com.feup.cmov.acme_client.forms.InvalidField
 import com.feup.cmov.acme_client.screens.signup.SignupFragmentDirections
 import com.feup.cmov.acme_client.screens.signup.SignupFragment_GeneratedInjector
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -55,8 +56,8 @@ class LoginFragment : Fragment(), LoginHandler {
                 val invalidFields: ArrayList<InvalidField> = viewModel.getInvalidFields().value!!
                 for(invalidField in invalidFields) {
                     when(invalidField.fieldName) {
-                        "userName" -> binding.usernameInput.error = invalidField.msg
-                        "password" -> binding.passwordInput.error = invalidField.msg
+                        "userName" -> binding.loginFragmentUsernameInput.error = invalidField.msg
+                        "password" -> binding.loginFragmentPasswordInput.error = invalidField.msg
                         "general" -> Snackbar.make(container!!, invalidField.msg, Snackbar.LENGTH_LONG).show();
                     }
                 }
