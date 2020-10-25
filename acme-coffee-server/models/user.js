@@ -30,6 +30,10 @@ const User = db.define('User', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  public_key: {
+    type: Sequelize.TEXT,
+    allowNull: false
+  },
 }, {
   indexes: [
     {

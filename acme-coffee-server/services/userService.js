@@ -16,6 +16,13 @@ async function createUser(userData) {
   }
 }
 
+async function getUser({uuid}) {
+  
+  const user = await User.findOne({where: { uuid }})
+  return user;
+}
+
 module.exports = {
   createUser,
+  getUser
 };
