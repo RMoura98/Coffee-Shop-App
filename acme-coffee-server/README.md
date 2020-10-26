@@ -15,7 +15,7 @@ npm install
 
 ## Running the Acme Coffee Server
 
-Start by renaming the `default.env` file to `.env`.
+Start by copying the `default.env` file and renaming it to `.env`.
 
 
 Run the database container
@@ -32,3 +32,6 @@ If you need to recreate the database from scratch at some point, run:
 ```bash
 npm run reset
 ```
+
+## Contributing
+This project uses the [ESLint](https://eslint.org/) linter so make sure you have it installed.
