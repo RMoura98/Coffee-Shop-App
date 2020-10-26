@@ -90,7 +90,7 @@ class AppRepository
                     throw Exception("Password is not correct.")
 
                 val uuid = user.uuid
-                val response: LoginResponse = webService.fetchUser(uuid)
+                webService.fetchUser(uuid)
 
                 Result.Success(user)
             }

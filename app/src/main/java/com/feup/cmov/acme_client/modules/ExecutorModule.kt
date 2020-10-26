@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import java.util.concurrent.Executor
+import java.util.concurrent.Executors.newCachedThreadPool
 import javax.inject.Singleton
 
 @Module
@@ -14,6 +15,6 @@ object ExecutorModule {
     @Provides
     @Singleton
     fun provideExecutor(): Executor {
-        return Executor{}
+        return newCachedThreadPool()
     }
 }

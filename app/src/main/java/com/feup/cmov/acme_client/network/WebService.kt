@@ -1,8 +1,10 @@
 package com.feup.cmov.acme_client.network
 
+import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.network.requests.SignupRequest
 import com.feup.cmov.acme_client.network.responses.LoginResponse
 import com.feup.cmov.acme_client.network.responses.SignupResponse
+import retrofit2.Call
 import retrofit2.http.*
 
 
@@ -13,5 +15,9 @@ interface WebService {
 
     @GET("user/{uuid}")
     suspend fun fetchUser(@Path("uuid") uuid: String): LoginResponse
+
+    @GET("menu")
+    suspend fun fetchMenu(): List<MenuItem>
+
 
 }

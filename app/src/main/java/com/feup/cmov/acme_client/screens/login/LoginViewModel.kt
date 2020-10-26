@@ -48,7 +48,6 @@ class LoginViewModel @ViewModelInject constructor(val appRepository: AppReposito
             return
         }
 
-
         viewModelScope.launch {
             isLoading.set(true)
             val result: Result<User> = appRepository.performLogin(userName, password)
