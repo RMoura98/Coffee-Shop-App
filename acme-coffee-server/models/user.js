@@ -4,35 +4,35 @@ const db = require('../db');
 const User = db.define('User', {
   uuid: {
     primaryKey: true,
-    type: Sequelize.UUID
+    type: Sequelize.UUID,
   },
   name: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   NIF: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   card_number: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   card_cvc: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   card_expiration: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   phone_number: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   public_key: {
     type: Sequelize.TEXT,
-    allowNull: false
+    allowNull: false,
   },
 }, {
   indexes: [
