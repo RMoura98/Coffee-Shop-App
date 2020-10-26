@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nodemon ./index.js",
     "reset": "node ./utils/resetDb.js",
+    "seed": "npx sequelize-cli db:seed:all",
     "lint": "eslint --fix --ext .js,.jsx ."
   },
   "dependencies": {
