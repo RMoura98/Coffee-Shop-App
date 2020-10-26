@@ -1,5 +1,9 @@
 package com.feup.cmov.acme_client.screens.login;
 
+import android.util.Log
+import android.view.View
+import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableField
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,12 +11,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.forms.InvalidField
-import com.feup.cmov.acme_client.network.responses.SignupResponse
+import com.feup.cmov.acme_client.network.Result
 import com.feup.cmov.acme_client.repositories.AppRepository
 import kotlinx.coroutines.launch
-import com.feup.cmov.acme_client.network.Result
-import com.feup.cmov.acme_client.network.responses.LoginResponse
-import com.feup.cmov.acme_client.screens.signup.SignupViewModel
 
 class LoginViewModel @ViewModelInject constructor(val appRepository: AppRepository) : ViewModel() {
 
@@ -22,8 +23,12 @@ class LoginViewModel @ViewModelInject constructor(val appRepository: AppReposito
     var userName: String = ""
     var password: String = ""
 
-    private val loginResult = MutableLiveData<LoginResults>()
+    /**
+     * This variable is bound to the progress bar.
+     */
+    var isLoading = ObservableField<Boolean>(false)
 
+    private val loginResult = MutableLiveData<LoginResults>()
     fun getLoginResult(): LiveData<LoginResults> = loginResult
 
     /**
@@ -45,6 +50,7 @@ class LoginViewModel @ViewModelInject constructor(val appRepository: AppReposito
 
 
         viewModelScope.launch {
+            isLoading.set(true)
             val result: Result<User> = appRepository.performLogin(userName, password)
 
             when (result) {
@@ -55,9 +61,11 @@ class LoginViewModel @ViewModelInject constructor(val appRepository: AppReposito
                     invalidFields.add(InvalidField(fieldName="general", msg=result.msg))
                 }
             }
+            isLoading.set(false)
         }
 
     }
+
 
     companion object {
         /**
@@ -67,6 +75,12 @@ class LoginViewModel @ViewModelInject constructor(val appRepository: AppReposito
             data class INVALID_FORM(val invalidFields: List<InvalidField>): LoginResults()
             object NETWORK_ERROR: LoginResults()
             data class SUCCESS(val user: User) : LoginResults()
+        }
+
+        @BindingAdapter("android:visibility")
+        @JvmStatic
+        fun setVisibility(view: View, isLoading: Boolean) {
+            view.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
         }
     }
 

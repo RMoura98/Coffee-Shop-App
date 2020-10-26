@@ -16,6 +16,6 @@ class MainMenuViewModel @ViewModelInject constructor(
 
     val userName: String =
         savedStateHandle["userName"] ?: throw IllegalArgumentException("missing username")
-    val user: User = appRepository.fetchUser(userName)
+    //val user: User = appRepository.fetchUser(userName)
 
 }
