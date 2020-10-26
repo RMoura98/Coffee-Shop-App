@@ -15,103 +15,120 @@
 
     </data>
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="vertical">
+
+
+
+                <ImageView
+                    android:layout_width="218dp"
+                    android:layout_height="197dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginBottom="80dp"
+                    app:srcCompat="@drawable/coffee_trimmed" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/loginFragment_usernameInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:hint="@string/prompt_username"
+                    app:errorEnabled="true"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:startIconDrawable="@drawable/ic_person_black_18dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/usernameInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:maxLength="15"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                        android:text="@={viewModel.userName}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/loginFragment_passwordInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:hint="@string/prompt_password"
+                    app:errorEnabled="true"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:startIconDrawable="@drawable/ic_vpn_key_black_18dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/passwordInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:inputType="textPassword"
+                        android:text="@={viewModel.password}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <RelativeLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/next_button"
+                        android:onClick="@{handler::onLoginButtonClick}"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/action_sign_in" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/cancel_button"
+                        android:onClick="@{handler::onSignupButtonClick}"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_toStartOf="@id/next_button"
+                        android:layout_toLeftOf="@id/next_button"
+                        android:text="@string/create_New_Account" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+        <ProgressBar
+            android:id="@+id/loginFragment_progressBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:orientation="vertical">
+            android:indeterminateTint="@android:color/white"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_centerInParent="true"
+            android:padding="175dp"
+            android:background="@color/colorPrimaryVariantTransparent"
+            android:visibility="@{viewModel.isLoading}">
 
-            <ProgressBar
-                android:id="@+id/loginFragment_progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.isLoading}"/>
+        </ProgressBar>
 
-            <ImageView
-                android:layout_width="218dp"
-                android:layout_height="197dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="100dp"
-                android:layout_marginBottom="80dp"
-                app:srcCompat="@drawable/coffee_trimmed" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/loginFragment_usernameInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:layout_marginHorizontal="15dp"
-                android:hint="@string/prompt_username"
-                app:errorEnabled="true"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:startIconDrawable="@drawable/ic_person_black_18dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/usernameInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:maxLength="15"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-                    android:text="@={viewModel.userName}"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/loginFragment_passwordInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
-                android:hint="@string/prompt_password"
-                app:errorEnabled="true"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:startIconDrawable="@drawable/ic_vpn_key_black_18dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/passwordInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:inputType="textPassword"
-                    android:text="@={viewModel.password}"/>
-            </com.google.android.material.textfield.TextInputLayout>
+    </RelativeLayout>
 
 
-            <RelativeLayout
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/next_button"
-                    android:onClick="@{handler::onLoginButtonClick}"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/action_sign_in" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/cancel_button"
-                    android:onClick="@{handler::onSignupButtonClick}"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_toStartOf="@id/next_button"
-                    android:layout_toLeftOf="@id/next_button"
-                    android:text="@string/create_New_Account" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-    </ScrollView>
 
 </layout>
