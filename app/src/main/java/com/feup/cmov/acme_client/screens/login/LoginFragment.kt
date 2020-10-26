@@ -51,6 +51,8 @@ class LoginFragment : Fragment(), LoginHandler {
             if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED)
                 return@observe
 
+            clearErrors()
+
             if (result is LoginViewModel.Companion.LoginResults.INVALID_FORM) {
                 for(invalidField in result.invalidFields) {
                     when(invalidField.fieldName) {
@@ -86,6 +88,11 @@ class LoginFragment : Fragment(), LoginHandler {
         val bundle = bundleOf("userName" to user.userName)
         v.findNavController()
             .navigate(R.id.action_loginFragment_to_mainMenuFragment, bundle)
+    }
+
+    private fun clearErrors() {
+        binding.loginFragmentUsernameInput.error = null
+        binding.loginFragmentPasswordInput.error = null
     }
 
 }
