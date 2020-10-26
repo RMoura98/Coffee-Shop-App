@@ -80,7 +80,7 @@ class LoginViewModel @ViewModelInject constructor(val appRepository: AppReposito
         @BindingAdapter("android:visibility")
         @JvmStatic
         fun setVisibility(view: View, isLoading: Boolean) {
-            view.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
+            view.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
     }
 
