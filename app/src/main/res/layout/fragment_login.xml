@@ -122,7 +122,7 @@
             style="?android:attr/progressBarStyleSmall"
             android:layout_centerInParent="true"
             android:padding="175dp"
-            android:background="@color/colorPrimaryVariantTransparent"
+            android:background="@color/blackOverlay"
             android:visibility="@{viewModel.isLoading}">
 
         </ProgressBar>
