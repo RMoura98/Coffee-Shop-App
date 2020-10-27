@@ -126,7 +126,7 @@ class UserRepository
     fun getLoggedInUser(): LiveData<User> {
         val preferences = AcmeApplication.getPreferences()
         val userName = preferences.getString(
-            AcmeApplication.getAppContext().getString(R.string.preferences_userName)+"w", null
+            AcmeApplication.getAppContext().getString(R.string.preferences_userName), null
         )
         if(userName == null)
             return MutableLiveData<User>(null)
