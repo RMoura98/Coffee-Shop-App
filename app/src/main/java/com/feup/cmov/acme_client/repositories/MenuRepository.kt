@@ -20,7 +20,7 @@ class MenuRepository
 ) {
 
     // Retrieves the last menu from the server.
-    fun getMenu(scope: CoroutineScope): LiveData<List<MenuItem>> {
+    fun getMenu(): LiveData<List<MenuItem>> {
         val cached = appDatabaseDao.getMenu()
         refreshMenu()
         return cached

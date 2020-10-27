@@ -1,6 +1,5 @@
 package com.feup.cmov.acme_client.screens.login;
 
-import android.util.Log
 import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableField
@@ -12,10 +11,10 @@ import androidx.lifecycle.viewModelScope
 import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.forms.InvalidField
 import com.feup.cmov.acme_client.network.Result
-import com.feup.cmov.acme_client.repositories.AppRepository
+import com.feup.cmov.acme_client.repositories.UserRepository
 import kotlinx.coroutines.launch
 
-class LoginViewModel @ViewModelInject constructor(val appRepository: AppRepository) : ViewModel() {
+class LoginViewModel @ViewModelInject constructor(val userRepository: UserRepository) : ViewModel() {
 
     /**
      * Two way bind-able fields
@@ -50,7 +49,7 @@ class LoginViewModel @ViewModelInject constructor(val appRepository: AppReposito
 
         viewModelScope.launch {
             isLoading.set(true)
-            val result: Result<User> = appRepository.performLogin(userName, password)
+            val result: Result<User> = userRepository.performLogin(userName, password)
 
             when (result) {
                 is Result.Success -> loginResult.postValue(LoginResults.SUCCESS(result.data))

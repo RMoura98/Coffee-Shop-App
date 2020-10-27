@@ -1,6 +1,5 @@
 package com.feup.cmov.acme_client.screens.signup;
 
-import android.util.Log
 import android.util.Patterns
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -10,12 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.forms.InvalidField
 import com.feup.cmov.acme_client.network.Result
-import com.feup.cmov.acme_client.network.responses.SignupResponse
-import com.feup.cmov.acme_client.repositories.AppRepository
-import com.feup.cmov.acme_client.screens.login.LoginViewModel
+import com.feup.cmov.acme_client.repositories.UserRepository
 import kotlinx.coroutines.launch
 
-class SignupViewModel @ViewModelInject constructor(private val appRepository: AppRepository) :
+class SignupViewModel @ViewModelInject constructor(private val userRepository: UserRepository) :
     ViewModel() {
 
     /**
@@ -54,7 +51,7 @@ class SignupViewModel @ViewModelInject constructor(private val appRepository: Ap
 
         viewModelScope.launch {
 
-            val result: Result<User> = appRepository.performSignup(
+            val result: Result<User> = userRepository.performSignup(
                 name = name,
                 NIF = NIF,
                 card_number = card_number,

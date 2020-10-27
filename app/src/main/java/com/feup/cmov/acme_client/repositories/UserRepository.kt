@@ -17,7 +17,7 @@ import java.lang.Exception
 import java.util.*
 
 
-class AppRepository
+class UserRepository
 @Inject constructor(
     private val webService: WebService,
     private val appDatabaseDao: AppDatabaseDao
