@@ -3,7 +3,9 @@ package com.feup.cmov.acme_client.Utils
 import android.security.KeyPairGeneratorSpec
 import android.util.Base64.DEFAULT
 import android.util.Base64.encodeToString
+import android.util.Log
 import com.feup.cmov.acme_client.AcmeApplication
+import okio.Buffer
 import org.mindrot.jbcrypt.BCrypt
 import java.math.BigInteger
 import java.security.*
@@ -40,6 +42,15 @@ class Security {
             val entry = keyStore.getEntry(userName, null)
             val privateKey = (entry as KeyStore.PrivateKeyEntry).privateKey
             return privateKey
+        }
+
+        fun makeSignature(key: PrivateKey, buffer: Buffer): String {
+             val signature = Signature.getInstance("SHA256withRSA").run {
+                initSign(key)
+                update(buffer.readByteArray())
+                sign()
+            }
+            return encodeToString(signature, DEFAULT)
         }
 
         fun getRSAKeyAsString(key: Key): String {

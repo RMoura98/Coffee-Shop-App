@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
+import com.feup.cmov.acme_client.Utils.PreferencesUtils
 import com.feup.cmov.acme_client.Utils.Security
 import com.feup.cmov.acme_client.database.AppDatabaseDao
 import com.feup.cmov.acme_client.database.models.User
@@ -35,7 +36,6 @@ class UserRepository
         userName: String,
         password: String
     ): Result<User> {
-
         return withContext(Dispatchers.IO) {
             try {
                 // Create RSA key pair.
@@ -67,16 +67,7 @@ class UserRepository
                 )
                 appDatabaseDao.createUser(newUser)
 
-                val preferences = AcmeApplication.getPreferences()
-                with(preferences.edit()) {
-                    putString(
-                        AcmeApplication.getAppContext().getString(R.string.preferences_userName),
-                        userName
-                    )
-                    apply()
-                }
-
-                // Return success.
+                PreferencesUtils.updateLoggedInUser(userName, response.uuid)
                 Result.Success(newUser)
             } catch (e: Throwable) {
                 when (e) {
@@ -103,16 +94,7 @@ class UserRepository
                 val uuid = user.uuid
                 webService.fetchUser(uuid)
 
-                val preferences = AcmeApplication.getPreferences()
-                with(preferences.edit()) {
-                    putString(
-                        AcmeApplication.getAppContext().getString(R.string.preferences_userName),
-                        userName
-                    )
-                    apply()
-                }
-                System.out.println("Saved user")
-
+                PreferencesUtils.updateLoggedInUser(userName, uuid)
                 Result.Success(user)
             } catch (e: Throwable) {
                 when (e) {
@@ -124,11 +106,9 @@ class UserRepository
     }
 
     fun getLoggedInUser(): LiveData<User> {
-        val preferences = AcmeApplication.getPreferences()
-        val userName = preferences.getString(
-            AcmeApplication.getAppContext().getString(R.string.preferences_userName), null
-        )
-        if(userName == null)
+        val (userName, uuid) = PreferencesUtils.getLoggedInUser()
+
+        if(userName == null || uuid == null)
             return MutableLiveData<User>(null)
         else
             return appDatabaseDao.loadUserAsync(userName)

@@ -39,8 +39,6 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         Snackbar.make(container!!, "Boom logged in", Snackbar.LENGTH_LONG).show();
 
         viewModel.getMenuItems().observe(viewLifecycleOwner, Observer observe@{ menuItems ->
-            System.out.println("Loaded menus")
-            System.out.println(menuItems.size)
             adapter.data = menuItems
         });
 
