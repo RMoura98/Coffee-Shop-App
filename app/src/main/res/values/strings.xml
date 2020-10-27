@@ -24,6 +24,7 @@
     <string name="action_sign_up_short">Sign Up</string>
     <string name="action_sign_up">Sign Up!</string>
     <string name="preferences_userName">userName</string>
+    <string name="serverURL">http://10.0.2.2:3001</string>
 
     <!--MainMenu-->
     <string name="item_price">%1$d €</string>

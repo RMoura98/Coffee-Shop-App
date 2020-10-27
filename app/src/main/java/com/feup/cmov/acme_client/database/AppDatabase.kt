@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.database.models.User
 
-@Database(entities = [User::class, MenuItem::class], version = 4, exportSchema = false)
+@Database(entities = [User::class, MenuItem::class], version = 5, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val appDatabaseDao: AppDatabaseDao

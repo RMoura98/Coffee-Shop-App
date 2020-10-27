@@ -7,7 +7,7 @@ import retrofit2.HttpException
 sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>()
     object NetworkError: Result<Nothing>()
-    class OtherError(exception: Throwable) : Result<Nothing>() // TODO: implement server side errors displaying in client.
+    class OtherError(exception: Throwable) : Result<Nothing>()
     {
         val msg: String
 

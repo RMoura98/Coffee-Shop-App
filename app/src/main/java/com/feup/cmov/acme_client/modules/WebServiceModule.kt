@@ -34,7 +34,7 @@ object WebServiceModule {
         val client = builder.build()
 
         return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3001/api/")
+            .baseUrl(AcmeApplication.getAppContext().getString(R.string.serverURL) + "/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
