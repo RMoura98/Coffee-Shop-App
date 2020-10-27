@@ -18,12 +18,4 @@ class MainMenuViewModel @ViewModelInject constructor(
     private var menuItems = menuRepository.getMenu()
     fun getMenuItems(): LiveData<List<MenuItem>> = menuItems
 
-    var user: User? = null
-    init {
-        // Redirect to Main Menu if user is logged in.
-        viewModelScope.launch {
-            val user = userRepository.getLoggedInUser()
-        }
-    }
-
 }

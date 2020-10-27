@@ -122,20 +122,7 @@ class UserRepository
         }
     }
 
-    suspend fun getLoggedInUser(): User? {
-        return withContext(Dispatchers.IO) {
-            val preferences = AcmeApplication.getPreferences()
-            val userName = preferences.getString(
-                AcmeApplication.getAppContext().getString(R.string.preferences_userName), null
-            )
-            if(userName == null)
-                null
-            else
-                appDatabaseDao.loadUser(userName)
-        }
-    }
-
-    fun getLoggedInUserLiveData(): LiveData<User> {
+    fun getLoggedInUser(): LiveData<User> {
         val preferences = AcmeApplication.getPreferences()
         val userName = preferences.getString(
             AcmeApplication.getAppContext().getString(R.string.preferences_userName), null

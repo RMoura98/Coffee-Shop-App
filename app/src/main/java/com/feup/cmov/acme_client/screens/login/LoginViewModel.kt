@@ -6,7 +6,6 @@ import androidx.databinding.ObservableField
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.feup.cmov.acme_client.database.models.User
@@ -31,7 +30,7 @@ class LoginViewModel @ViewModelInject constructor(val userRepository: UserReposi
     private val loginResult = MutableLiveData<LoginResults>()
     fun getLoginResult(): LiveData<LoginResults> = loginResult
 
-    fun retrieveLoggedInUser() = userRepository.getLoggedInUserLiveData()
+    fun retrieveLoggedInUser() = userRepository.getLoggedInUser()
 
     /**
      * Called from activity on login button click
