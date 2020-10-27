@@ -24,7 +24,14 @@
     <string name="action_sign_up_short">Sign Up</string>
     <string name="action_sign_up">Sign Up!</string>
     <string name="preferences_userName">userName</string>
+
+    <!--MainMenu-->
+    <string name="item_price">%1$d €</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 
 </resources>
