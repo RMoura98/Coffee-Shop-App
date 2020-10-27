@@ -11,6 +11,10 @@ const MenuItem = db.define('MenuItem', {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  imageName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
   category: {
     type: Sequelize.STRING,
     allowNull: false,
