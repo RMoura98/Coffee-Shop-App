@@ -1,6 +1,7 @@
 package com.feup.cmov.acme_client.repositories
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.Utils.Security
@@ -125,10 +126,10 @@ class UserRepository
     fun getLoggedInUser(): LiveData<User> {
         val preferences = AcmeApplication.getPreferences()
         val userName = preferences.getString(
-            AcmeApplication.getAppContext().getString(R.string.preferences_userName), null
+            AcmeApplication.getAppContext().getString(R.string.preferences_userName)+"w", null
         )
         if(userName == null)
-            throw Exception("User is not logged in.")
+            return MutableLiveData<User>(null)
         else
             return appDatabaseDao.loadUserAsync(userName)
     }
