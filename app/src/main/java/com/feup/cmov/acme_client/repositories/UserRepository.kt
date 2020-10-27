@@ -11,12 +11,10 @@ import com.feup.cmov.acme_client.network.requests.SignupRequest
 import com.feup.cmov.acme_client.network.responses.SignupResponse
 import javax.inject.Inject
 import com.feup.cmov.acme_client.network.Result
-import com.feup.cmov.acme_client.network.responses.LoginResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.lang.Exception
-import java.util.*
 
 
 class UserRepository
@@ -50,7 +48,7 @@ class UserRepository
                     card_cvc = card_cvc,
                     card_expiration = card_expiration,
                     phone_number = phone_number,
-                    public_key = Security.getPublicKey(keyPair.public)
+                    public_key = Security.getRSAKeyAsString(keyPair.public)
                 )
                 // Send HTTP request.
                 val response: SignupResponse = webService.createUser(request)
@@ -135,5 +133,16 @@ class UserRepository
             else
                 appDatabaseDao.loadUser(userName)
         }
+    }
+
+    fun getLoggedInUserLiveData(): LiveData<User> {
+        val preferences = AcmeApplication.getPreferences()
+        val userName = preferences.getString(
+            AcmeApplication.getAppContext().getString(R.string.preferences_userName), null
+        )
+        if(userName == null)
+            throw Exception("User is not logged in.")
+        else
+            return appDatabaseDao.loadUserAsync(userName)
     }
 }

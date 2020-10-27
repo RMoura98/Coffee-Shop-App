@@ -68,8 +68,14 @@ class LoginFragment : Fragment(), LoginHandler {
             }
 
             else if (result is LoginViewModel.Companion.LoginResults.SUCCESS) {
-                loginSuccessful(container!!, result.user)
+                loginSuccessful(container!!)
             }
+        })
+
+        // Incase user is already logged in we just redirect him to the main menu.
+        viewModel.retrieveLoggedInUser().observe(viewLifecycleOwner, Observer observe@{ result ->
+            if(result != null)
+                loginSuccessful(binding.root)
         })
 
         return binding.root
@@ -84,7 +90,7 @@ class LoginFragment : Fragment(), LoginHandler {
             .navigate(LoginFragmentDirections.actionLoginFragmentToSignupFragment())
     }
 
-    private fun loginSuccessful(v: View, user: User) {
+    private fun loginSuccessful(v: View) {
         Snackbar.make(v, "Login is success :D.", Snackbar.LENGTH_LONG).show();
         v.findNavController()
             .navigate(R.id.action_loginFragment_to_mainMenuFragment)

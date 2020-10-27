@@ -6,10 +6,7 @@ import android.util.Base64.encodeToString
 import com.feup.cmov.acme_client.AcmeApplication
 import org.mindrot.jbcrypt.BCrypt
 import java.math.BigInteger
-import java.security.KeyFactory
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.PublicKey
+import java.security.*
 import java.security.spec.X509EncodedKeySpec
 import java.util.*
 import javax.security.auth.x500.X500Principal
@@ -37,10 +34,18 @@ class Security {
             return kpg.generateKeyPair()
         }
 
-        fun getPublicKey(publicKey: PublicKey): String {
+        fun retrieveRsaPrivateKey(userName: String): PrivateKey {
+            val keyStore = KeyStore.getInstance("AndroidKeyStore")
+            keyStore.load(null)
+            val entry = keyStore.getEntry(userName, null)
+            val privateKey = (entry as KeyStore.PrivateKeyEntry).privateKey
+            return privateKey
+        }
+
+        fun getRSAKeyAsString(key: Key): String {
             val fact = KeyFactory.getInstance("DSA")
             val spec: X509EncodedKeySpec = fact.getKeySpec(
-                publicKey,
+                key,
                 X509EncodedKeySpec::class.java
             )
             return encodeToString(spec.getEncoded(), DEFAULT);

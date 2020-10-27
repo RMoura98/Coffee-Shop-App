@@ -19,6 +19,9 @@ interface AppDatabaseDao {
     @Query("SELECT * FROM user_table WHERE userName = :userName LIMIT 1")
     fun loadUser(userName: String): User?
 
+    @Query("SELECT * FROM user_table WHERE userName = :userName LIMIT 1")
+    fun loadUserAsync(userName: String): LiveData<User>
+
     @Insert(onConflict = ABORT)
     fun createUser(user: User): Void
 
