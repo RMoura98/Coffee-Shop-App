@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.ListenableWorker
 import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.forms.InvalidField
 import com.feup.cmov.acme_client.network.Result
@@ -29,6 +30,15 @@ class LoginViewModel @ViewModelInject constructor(val userRepository: UserReposi
 
     private val loginResult = MutableLiveData<LoginResults>()
     fun getLoginResult(): LiveData<LoginResults> = loginResult
+
+    init {
+        // Redirect to Main Menu if user is logged in.
+        viewModelScope.launch {
+            val user = userRepository.getLoggedInUser()
+            if(user != null)
+                loginResult.postValue(LoginResults.SUCCESS(user))
+        }
+    }
 
     /**
      * Called from activity on login button click

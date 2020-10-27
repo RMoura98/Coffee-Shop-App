@@ -23,6 +23,7 @@
     <string name="prompt_phone">Phone Number</string>
     <string name="action_sign_up_short">Sign Up</string>
     <string name="action_sign_up">Sign Up!</string>
+    <string name="preferences_userName">userName</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

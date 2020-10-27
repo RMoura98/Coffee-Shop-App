@@ -1,6 +1,8 @@
 package com.feup.cmov.acme_client.repositories
 
 import androidx.lifecycle.LiveData
+import com.feup.cmov.acme_client.AcmeApplication
+import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.Utils.Security
 import com.feup.cmov.acme_client.database.AppDatabaseDao
 import com.feup.cmov.acme_client.database.models.User
@@ -48,7 +50,7 @@ class UserRepository
                     card_cvc = card_cvc,
                     card_expiration = card_expiration,
                     phone_number = phone_number,
-                    public_key=Security.getPublicKey(keyPair.public)
+                    public_key = Security.getPublicKey(keyPair.public)
                 )
                 // Send HTTP request.
                 val response: SignupResponse = webService.createUser(request)
@@ -65,6 +67,15 @@ class UserRepository
                     userName = userName
                 )
                 appDatabaseDao.createUser(newUser)
+
+                val preferences = AcmeApplication.getPreferences()
+                with(preferences.edit()) {
+                    putString(
+                        AcmeApplication.getAppContext().getString(R.string.preferences_userName),
+                        userName
+                    )
+                    apply()
+                }
 
                 // Return success.
                 Result.Success(newUser)
@@ -84,17 +95,27 @@ class UserRepository
     ): Result<User> {
         return withContext(Dispatchers.IO) {
             try {
-                val user = appDatabaseDao.loadUser(userName) ?: throw Exception("User does not exist.")
+                val user =
+                    appDatabaseDao.loadUser(userName) ?: throw Exception("User does not exist.")
 
-                if(!Security.isPasswordCorrect(password, user.password_hashed))
+                if (!Security.isPasswordCorrect(password, user.password_hashed))
                     throw Exception("Password is not correct.")
 
                 val uuid = user.uuid
                 webService.fetchUser(uuid)
 
+                val preferences = AcmeApplication.getPreferences()
+                with(preferences.edit()) {
+                    putString(
+                        AcmeApplication.getAppContext().getString(R.string.preferences_userName),
+                        userName
+                    )
+                    apply()
+                }
+                System.out.println("Saved user")
+
                 Result.Success(user)
-            }
-            catch (e: Throwable) {
+            } catch (e: Throwable) {
                 when (e) {
                     is IOException -> Result.NetworkError
                     else -> Result.OtherError(e)
@@ -103,7 +124,16 @@ class UserRepository
         }
     }
 
-    fun fetchUser(userName: String): User {
-        return appDatabaseDao.loadUser(userName)!!
+    suspend fun getLoggedInUser(): User? {
+        return withContext(Dispatchers.IO) {
+            val preferences = AcmeApplication.getPreferences()
+            val userName = preferences.getString(
+                AcmeApplication.getAppContext().getString(R.string.preferences_userName), null
+            )
+            if(userName == null)
+                null
+            else
+                appDatabaseDao.loadUser(userName)
+        }
     }
 }

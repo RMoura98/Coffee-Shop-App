@@ -1,5 +1,7 @@
 package com.feup.cmov.acme_client.modules
 
+import android.app.Application
+import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.network.WebService
 import dagger.Module
 import dagger.Provides
@@ -7,6 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.security.PrivateKey
 import javax.inject.Singleton
 
 @Module

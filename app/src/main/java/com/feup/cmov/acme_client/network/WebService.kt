@@ -5,6 +5,8 @@ import com.feup.cmov.acme_client.network.requests.SignupRequest
 import com.feup.cmov.acme_client.network.responses.LoginResponse
 import com.feup.cmov.acme_client.network.responses.SignupResponse
 import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 
@@ -18,6 +20,5 @@ interface WebService {
 
     @GET("menu")
     suspend fun fetchMenu(): List<MenuItem>
-
 
 }

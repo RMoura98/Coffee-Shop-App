@@ -36,6 +36,7 @@ class LoginFragment : Fragment(), LoginHandler {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(
             inflater,
@@ -85,9 +86,8 @@ class LoginFragment : Fragment(), LoginHandler {
 
     private fun loginSuccessful(v: View, user: User) {
         Snackbar.make(v, "Login is success :D.", Snackbar.LENGTH_LONG).show();
-        val bundle = bundleOf("userName" to user.userName)
         v.findNavController()
-            .navigate(R.id.action_loginFragment_to_mainMenuFragment, bundle)
+            .navigate(R.id.action_loginFragment_to_mainMenuFragment)
     }
 
     private fun clearErrors() {

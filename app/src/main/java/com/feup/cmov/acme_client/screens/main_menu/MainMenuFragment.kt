@@ -19,15 +19,13 @@ import java.lang.IllegalArgumentException
 class MainMenuFragment : Fragment(), MainMenuHandler {
 
     private val viewModel: MainMenuViewModel by viewModels()
-    lateinit var userName: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        this.userName = requireArguments().get("userName") as String? ?: throw IllegalArgumentException("No userName passed to MainMenuFragment")
-        Snackbar.make(container!!, "Username is " + requireArguments().get("userName") as String, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(container!!, "Boom logged in", Snackbar.LENGTH_LONG).show();
 
         viewModel.getMenuItems().observe(viewLifecycleOwner, Observer observe@{ menuItems ->
             System.out.println("Loaded menus")

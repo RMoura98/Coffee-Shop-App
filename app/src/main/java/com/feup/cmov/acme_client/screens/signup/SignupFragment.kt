@@ -94,9 +94,8 @@ class SignupFragment : Fragment(), SignupHandler {
 
     fun signupSuccessful(v: View, user: User) {
         Snackbar.make(v, "Register is success :D.", Snackbar.LENGTH_LONG).show();
-        val bundle = bundleOf("userName" to user.userName)
         v.findNavController()
-            .navigate(R.id.action_signupFragment_to_mainMenuFragment, bundle)
+            .navigate(R.id.action_signupFragment_to_mainMenuFragment)
     }
 
     override fun onSubmitButtonClick(v: View) {
