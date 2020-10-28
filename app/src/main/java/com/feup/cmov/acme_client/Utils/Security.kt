@@ -1,8 +1,7 @@
 package com.feup.cmov.acme_client.Utils
 
 import android.security.KeyPairGeneratorSpec
-import android.util.Base64.DEFAULT
-import android.util.Base64.encodeToString
+import android.util.Base64.*
 import android.util.Log
 import com.feup.cmov.acme_client.AcmeApplication
 import okio.Buffer
@@ -27,7 +26,7 @@ class Security {
                 .Builder(AcmeApplication.getAppContext())
                 .setAlias(userName)
                 .setKeySize(2048)
-                .setSubject(X500Principal("CN=ACME, O=ACME Inc., C=PT"))
+                .setSubject(X500Principal("CN=AcmeExperience, O=AcmeExperience Inc., C=PT"))
                 .setSerialNumber(BigInteger.ONE)
                 .setStartDate(start.time).setEndDate(end.time)
                 .build();
@@ -50,16 +49,11 @@ class Security {
                 update(buffer.readByteArray())
                 sign()
             }
-            return encodeToString(signature, DEFAULT)
+            return encodeToString(signature, NO_WRAP)
         }
 
         fun getRSAKeyAsString(key: Key): String {
-            val fact = KeyFactory.getInstance("DSA")
-            val spec: X509EncodedKeySpec = fact.getKeySpec(
-                key,
-                X509EncodedKeySpec::class.java
-            )
-            return encodeToString(spec.getEncoded(), DEFAULT);
+            return encodeToString(key.encoded, DEFAULT);
         }
 
         fun generateHashedPassword(pass: String): String {

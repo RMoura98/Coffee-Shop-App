@@ -7,6 +7,7 @@ import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.database.AppDatabaseDao
 import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.network.WebService
+import com.feup.cmov.acme_client.network.requests.SignupRequest
 import kotlinx.coroutines.*
 import retrofit2.await
 import javax.inject.Inject

@@ -45,38 +45,37 @@ object WebServiceModule {
     class AuthenticatedRequestInterceptor : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
 
-            Log.e("WebServiceModule", "Tried to intercept.")
             val request: Request = chain.request()
             val invocation: Invocation? = request.tag(Invocation::class.java)
             val authenticatedRequest = invocation?.method()?.getAnnotation(WebService.Companion.AuthenticatedRequest::class.java)
-            val requestBody = request.body()?: return chain.proceed(request)
             if (authenticatedRequest != null){
                 val (userName, uuid) = PreferencesUtils.getLoggedInUser()
                 if (userName == null || uuid == null) return chain.proceed(request)
                 val key = Security.retrieveRsaPrivateKey(userName)
 
-                if(request.method() == "GET") {
+                val signature: String
+                if(request.method() == "GET" || request.method() == "DELETE") {
+                    val toSign: String
+                    if (request.url().url().query == null)
+                        toSign = request.url().url().path
+                    else
+                        toSign = request.url().url().path + "?" + request.url().url().query
+                    Log.e("toSign", toSign)
                     val buffer = okio.Buffer()
-                    buffer.write(uuid.toByteArray())
-                    val signature = Security.makeSignature(key, buffer)
-                    val authHeader = encodeToString("$uuid,$signature".toByteArray(), Base64.NO_WRAP)
-                    val newRequest = request.newBuilder()
-                        .addHeader("Authorization", authHeader)
-                        .build()
-                    return chain.proceed(newRequest)
+                    buffer.write(toSign.toByteArray())
+                    signature = Security.makeSignature(key, buffer)
                 }
                 else { // POST, etc
+                    val requestBody = request.body()?: return chain.proceed(request)
                     val buffer = okio.Buffer()
                     requestBody.writeTo(buffer)
-                    buffer.write(",".toByteArray())
-                    buffer.write(uuid.toByteArray())
-                    val signature = Security.makeSignature(key, buffer)
-                    val authHeader = encodeToString("$uuid,$signature".toByteArray(), Base64.NO_WRAP)
-                    val newRequest = request.newBuilder()
-                        .addHeader("Authorization", authHeader)
-                        .build()
-                    return chain.proceed(newRequest)
+                    signature = Security.makeSignature(key, buffer)
                 }
+                val authHeader = "$uuid,$signature"
+                val newRequest = request.newBuilder()
+                    .addHeader("Authorization", authHeader)
+                    .build()
+                return chain.proceed(newRequest)
             }
             return chain.proceed(request)
         }

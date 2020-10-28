@@ -12,7 +12,6 @@ interface WebService {
     @POST("user/new")
     suspend fun createUser(@Body req: SignupRequest): SignupResponse
 
-    @AuthenticatedRequest
     @GET("user/{uuid}")
     suspend fun fetchUser(@Path("uuid") uuid: String): LoginResponse
 
