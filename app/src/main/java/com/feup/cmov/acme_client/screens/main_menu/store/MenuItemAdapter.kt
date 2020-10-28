@@ -36,10 +36,11 @@ class MenuItemAdapter : RecyclerView.Adapter<MenuItemAdapter.ViewHolder>() {
         private val category: TextView = itemView.findViewById(R.id.item_category)
         private val imageView: ImageView =  itemView.findViewById(R.id.item_image)
         private val assetPath : String = AcmeApplication.getAppContext().getString(R.string.serverURL) + "/assets/"
+        private val priceStringFormat : String = AcmeApplication.getAppContext().getString(R.string.item_price)
 
         fun bind(item: MenuItem) {
             name.text = item.name
-            price.text = item.price.toString() + "€"
+            price.text = String.format(priceStringFormat, item.price)
             category.text = item.category
 
             val imagePath = assetPath + item.imageName

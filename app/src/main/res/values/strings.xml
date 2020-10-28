@@ -28,7 +28,7 @@
     <string name="serverURL">http://10.0.2.2:3001</string>
 
     <!--MainMenu-->
-    <string name="item_price">%1$d €</string>
+    <string name="item_price">%.2f €</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
