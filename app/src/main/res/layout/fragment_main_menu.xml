@@ -15,38 +15,28 @@
 
     </data>
 
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/content_frame"
+            android:layout_above="@id/bottom_navigation"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/mainMenuFragment_itemsList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="0dp"
-                android:layout_marginBottom="0dp"
-                app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:itemBackground="@color/colorPrimary"
+            app:itemIconTint="@color/bottom_nav_icon_color_selector"
+            app:itemTextColor="@color/bottom_nav_icon_color_selector"
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+            app:menu="@menu/bottom_navigation_menu"
+            app:labelVisibilityMode="labeled"/>
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                app:itemBackground="@color/colorPrimary"
-                app:itemIconTint="@color/white"
-                app:itemTextColor="@color/white"
-                app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
-                app:menu="@menu/bottom_navigation_menu" />
-
-        </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </layout>

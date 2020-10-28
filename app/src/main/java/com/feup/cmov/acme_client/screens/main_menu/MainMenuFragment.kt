@@ -1,31 +1,34 @@
 package com.feup.cmov.acme_client.screens.main_menu
 
+import android.app.Activity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.navArgs
+import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
-import com.feup.cmov.acme_client.databinding.FragmentLoginBinding
 import com.feup.cmov.acme_client.databinding.FragmentMainMenuBinding
-import com.feup.cmov.acme_client.databinding.FragmentSignupBinding
-import com.feup.cmov.acme_client.screens.login.LoginViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.feup.cmov.acme_client.screens.main_menu.store.StoreFragment
+import com.feup.cmov.acme_client.screens.profile.ProfileFragment
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.IllegalArgumentException
+
 
 @AndroidEntryPoint
 class MainMenuFragment : Fragment(), MainMenuHandler {
 
+    private lateinit var myContext: FragmentActivity
     private val viewModel: MainMenuViewModel by viewModels()
     lateinit var binding: FragmentMainMenuBinding
-    private lateinit var adapter: MenuItemAdapter
+
+    override fun onAttach(activity: Activity) {
+        super.onAttach(activity)
+        myContext = activity as FragmentActivity
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,19 +39,41 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
             inflater,
             R.layout.fragment_main_menu, container, false
         )
-        Snackbar.make(container!!, "Boom logged in", Snackbar.LENGTH_LONG).show();
 
-        viewModel.getMenuItems().observe(viewLifecycleOwner, Observer observe@{ menuItems ->
-            adapter.data = menuItems
-        });
+        val bottomNavigation = binding.bottomNavigation
+
+        var badge = bottomNavigation.getOrCreateBadge(R.id.cartAction)
+        badge.isVisible = true
+        badge.number = 12
+
+        // Create the fragments
+        var storeFragment: Fragment = StoreFragment()
+        var profileFragment: Fragment = ProfileFragment()
+
+        makeCurrentFragment(storeFragment)
+
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+
+            val menuItem = bottomNavigation.menu.findItem(item.itemId)
+            menuItem.isChecked = true
+
+            when (item.itemId) {
+                R.id.storeAction -> makeCurrentFragment(storeFragment)
+                R.id.vouchersAction -> println("vouchersAction") //makeCurrentFragment(vouchersFragment)
+                R.id.cartAction -> println("cartAction") //makeCurrentFragment(cartFragment)
+                R.id.historyAction -> println("historyAction") //makeCurrentFragment(historyFragment)
+                R.id.profileAction -> makeCurrentFragment(profileFragment)
+            }
+            false
+        }
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        adapter = MenuItemAdapter()
-        binding.mainMenuFragmentItemsList.adapter = adapter
+    private fun makeCurrentFragment(fragment: Fragment) {
+        myContext.supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.content_frame, fragment)
+            .commit()
     }
-
 }

@@ -1,12 +1,15 @@
-package com.feup.cmov.acme_client.screens.main_menu
+package com.feup.cmov.acme_client.screens.main_menu.store
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.MenuItem
+import com.squareup.picasso.Picasso
 
 class MenuItemAdapter : RecyclerView.Adapter<MenuItemAdapter.ViewHolder>() {
 
@@ -31,13 +34,16 @@ class MenuItemAdapter : RecyclerView.Adapter<MenuItemAdapter.ViewHolder>() {
         private val name: TextView = itemView.findViewById(R.id.item_name)
         private val price: TextView = itemView.findViewById(R.id.item_price)
         private val category: TextView = itemView.findViewById(R.id.item_category)
-
+        private val imageView: ImageView =  itemView.findViewById(R.id.item_image)
+        private val assetPath : String = AcmeApplication.getAppContext().getString(R.string.serverURL) + "/assets/"
 
         fun bind(item: MenuItem) {
             name.text = item.name
-            price.text = item.price.toString() + " €" //dar fix a isto
+            price.text = item.price.toString() + "€"
             category.text = item.category
-            //picture.src = item.pictureSrc ou algo assim
+
+            val imagePath = assetPath + item.imageName
+            Picasso.get().load(imagePath).into(imageView);
         }
 
         companion object {
