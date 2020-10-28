@@ -60,7 +60,6 @@ object WebServiceModule {
                         toSign = request.url().url().path
                     else
                         toSign = request.url().url().path + "?" + request.url().url().query
-                    Log.e("toSign", toSign)
                     val buffer = okio.Buffer()
                     buffer.write(toSign.toByteArray())
                     signature = Security.makeSignature(key, buffer)
