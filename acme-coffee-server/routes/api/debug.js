@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const controller = require('../../controllers/menuController');
 const authentication = require('../../middleware/authentication');
 
 router.use('*', authentication);
-router.get('/', controller.getMenu);
+router.post('/', async (req, res) => res.send('is success'));
+router.get('/', async (req, res) => res.send('is success'));
 
 module.exports = router;

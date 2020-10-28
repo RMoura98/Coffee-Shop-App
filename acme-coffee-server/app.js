@@ -9,7 +9,11 @@ createDb(false);
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({
+  verify(req, res, buf, encoding) {
+    req.rawBody = buf;
+  },
+}));
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use('/', routes);
