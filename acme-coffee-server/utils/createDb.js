@@ -7,7 +7,7 @@ require('../models');
  * If enabled, every table is dropped before being recreated
  */
 async function run(reset) {
-  await db.sync({ alter: true, force: reset });
+  await db.sync({ force: reset });
 
   if (reset) await db.close();
 }

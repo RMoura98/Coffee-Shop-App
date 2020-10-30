@@ -3,9 +3,6 @@ const express = require('express');
 const cors = require('cors');
 
 const routes = require('./routes');
-const createDb = require('./utils/createDb');
-
-createDb(false);
 
 const app = express();
 
