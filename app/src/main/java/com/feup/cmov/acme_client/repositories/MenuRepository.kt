@@ -14,6 +14,9 @@ import javax.inject.Inject
 import java.util.concurrent.Executor
 
 
+/**
+ * Repository which houses methods related to the Menu of the coffee shop.
+ */
 class MenuRepository
 @Inject constructor(
     private val webService: WebService,

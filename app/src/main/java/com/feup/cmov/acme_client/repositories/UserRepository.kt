@@ -18,7 +18,9 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.lang.Exception
 
-
+/**
+ * Repository which houses methods related to Users.
+ */
 class UserRepository
 @Inject constructor(
     private val webService: WebService,

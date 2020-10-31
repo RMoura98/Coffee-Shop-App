@@ -4,6 +4,9 @@ import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 
 object PreferencesUtils {
+    /**
+     * Updates the local storage of the application to reflect the newly logged in user.
+     */
     fun updateLoggedInUser(userName: String, uuid: String) {
         val preferences = AcmeApplication.getPreferences()
         with(preferences.edit()) {
@@ -21,7 +24,7 @@ object PreferencesUtils {
 
     /**
      * Returns a Pair containing the <userName, uuid> of the current logged in user.
-     * If there is no logged in user: userName and uuid willb e null.
+     * If there is no logged in user: userName and uuid will be null.
      */
     fun getLoggedInUser(): Pair<String?,String?> {
         val preferences = AcmeApplication.getPreferences()
