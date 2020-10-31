@@ -15,6 +15,7 @@ import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentMainMenuBinding
 import com.feup.cmov.acme_client.screens.main_menu.store.StoreFragment
 import com.feup.cmov.acme_client.screens.profile.ProfileFragment
+import com.feup.cmov.acme_client.screens.vouchers.VouchersFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -49,6 +50,7 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         // Create the fragments
         var storeFragment: Fragment = StoreFragment()
         var profileFragment: Fragment = ProfileFragment()
+        var vouchersFragment: Fragment = VouchersFragment()
 
         makeCurrentFragment(storeFragment)
 
@@ -59,7 +61,7 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
 
             when (item.itemId) {
                 R.id.storeAction -> makeCurrentFragment(storeFragment)
-                R.id.vouchersAction -> println("vouchersAction") //makeCurrentFragment(vouchersFragment)
+                R.id.vouchersAction -> makeCurrentFragment(vouchersFragment) //makeCurrentFragment(vouchersFragment)
                 R.id.cartAction -> println("cartAction") //makeCurrentFragment(cartFragment)
                 R.id.historyAction -> println("historyAction") //makeCurrentFragment(historyFragment)
                 R.id.profileAction -> makeCurrentFragment(profileFragment)

@@ -11,6 +11,7 @@ import androidx.room.Room
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.database.models.User
+import com.feup.cmov.acme_client.database.models.Voucher
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 @Dao
@@ -31,4 +32,9 @@ interface AppDatabaseDao {
     @Insert(onConflict = REPLACE)
     fun createMenuItem(menuItems: List<MenuItem>): Void
 
+    @Query("SELECT * FROM voucher_table WHERE user_id = :userId AND used = 0")
+    fun getUnusedVouchers(userId: String): LiveData<List<Voucher>>
+
+    @Insert(onConflict = REPLACE)
+    fun createVoucher(vouchers: List<Voucher>): Void
 }
