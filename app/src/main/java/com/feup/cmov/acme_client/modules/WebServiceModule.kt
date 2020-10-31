@@ -1,7 +1,5 @@
 package com.feup.cmov.acme_client.modules
 
-import android.util.Base64
-import android.util.Log
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.Utils.PreferencesUtils
@@ -46,9 +44,18 @@ object WebServiceModule {
     }
 
 
+    /**
+     * Retrofit interceptor dedicated to authentication.
+     * It intercepts requests annotated with @AuthenticatedRequest and adds the
+     * 'Authorization' header to the request so the server can confirm the
+     * authenticity.
+     */
     class AuthenticatedRequestInterceptor : Interceptor {
 
-        fun getDateHeader(): String {
+        /**
+         * Returns the current date in the format expected in the 'Date' HTTP header.
+         */
+        private fun getDateHeader(): String {
             val calendar = Calendar.getInstance()
             val dateFormat = SimpleDateFormat(
                 "EEE, dd MMM yyyy HH:mm:ss z", Locale.US
@@ -76,9 +83,7 @@ object WebServiceModule {
 
                 val buffer = okio.Buffer()
                 request.body()?.writeTo(buffer)
-                buffer.write(",".toByteArray())
                 buffer.write(url.toByteArray())
-                buffer.write(",".toByteArray())
                 buffer.write(dateHeader.toByteArray())
 
                 val signature = Security.makeSignature(key, buffer)
