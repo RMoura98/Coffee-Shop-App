@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.Voucher
 import com.feup.cmov.acme_client.databinding.FragmentVouchersBinding
@@ -19,6 +20,7 @@ class VouchersFragment : Fragment(), VouchersHandler {
     private val viewModel : VouchersViewModel by viewModels()
     lateinit var binding: FragmentVouchersBinding
     private lateinit var adapter: VoucherAdapter
+    private lateinit var refreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +39,7 @@ class VouchersFragment : Fragment(), VouchersHandler {
         viewModel.getUnusedVouchers().observe(viewLifecycleOwner, Observer { vouchers ->
             println("Loaded vouchers: " + vouchers.size)
             adapter.data = vouchers
+            refreshLayout.isRefreshing = false
         })
 
         return binding.root
@@ -45,5 +48,11 @@ class VouchersFragment : Fragment(), VouchersHandler {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = VoucherAdapter()
         binding.vouchersFragmentVouchersList.adapter = adapter
+
+        refreshLayout = view.findViewById(R.id.vouchersFragment_swipeRefresh)
+
+        refreshLayout.setOnRefreshListener {
+            viewModel.refreshUnusedVouchers()
+        }
     }
 }
