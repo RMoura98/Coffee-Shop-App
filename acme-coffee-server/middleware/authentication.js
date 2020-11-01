@@ -17,7 +17,7 @@ const Authentication = async (req, res, next) => {
 
   if (requestAgeInMinutes > 1) return res.status(401).end();
 
-  const toVerify = `${rawBody},${req.originalUrl},${dateHeader}`;
+  const toVerify = `${rawBody}${req.originalUrl}${dateHeader}`;
 
   verifier.update(toVerify, 'utf8');
 
