@@ -1,5 +1,6 @@
 package com.feup.cmov.acme_client.screens.main_menu.store
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,13 +36,22 @@ class MenuItemAdapter : RecyclerView.Adapter<MenuItemAdapter.ViewHolder>() {
         private val price: TextView = itemView.findViewById(R.id.item_price)
         private val category: TextView = itemView.findViewById(R.id.item_category)
         private val imageView: ImageView =  itemView.findViewById(R.id.item_image)
-        private val assetPath : String = AcmeApplication.getAppContext().getString(R.string.serverURL) + "/assets/"
-        private val priceStringFormat : String = AcmeApplication.getAppContext().getString(R.string.item_price)
+        private val categoryIcon: ImageView = itemView.findViewById(R.id.item_category_icon)
+
+        private val assetPath: String = AcmeApplication.getAppContext().getString(R.string.serverURL) + "/assets/"
+        private val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.item_price)
+        private val foodIcon: Drawable? = AcmeApplication.getAppContext().getDrawable(R.drawable.ic_restaurant_black_18dp)
+        private val drinkIcon: Drawable? = AcmeApplication.getAppContext().getDrawable(R.drawable.ic_wine_bar_black_18dp)
 
         fun bind(item: MenuItem) {
             name.text = item.name
             price.text = String.format(priceStringFormat, item.price)
             category.text = item.category
+
+            when (item.category) {
+                "Food" -> categoryIcon.setImageDrawable(foodIcon)
+                "Drinks" -> categoryIcon.setImageDrawable(drinkIcon)
+            }
 
             val imagePath = assetPath + item.imageName
             Picasso.get().load(imagePath).into(imageView);
