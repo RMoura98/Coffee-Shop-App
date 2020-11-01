@@ -51,7 +51,7 @@ class MenuItemAdapter : RecyclerView.Adapter<MenuItemAdapter.ViewHolder>() {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.row, parent, false)
+                    .inflate(R.layout.store_row, parent, false)
 
                 return ViewHolder(view)
             }
