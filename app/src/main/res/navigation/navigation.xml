@@ -41,16 +41,26 @@
         <action
             android:id="@+id/action_mainMenuFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_paymentMethodFragment"
+            app:destination="@id/paymentMethodFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_vouchersFragment"
+            app:destination="@id/vouchersFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.feup.cmov.acme_client.screens.profile.ProfileFragment"
+        android:name="com.feup.cmov.acme_client.screens.settings.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
-        <action
-            android:id="@+id/action_profileFragment_to_mainMenuFragment"
-            app:destination="@id/mainMenuFragment"
-            app:popUpTo="@id/mainMenuFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/paymentMethodFragment"
+        android:name="com.feup.cmov.acme_client.screens.settings.payment_method.PaymentMethodFragment"
+        android:label="fragment_payment_method"
+        tools:layout="@layout/fragment_payment_method" />
+    <fragment
+        android:id="@+id/vouchersFragment"
+        android:name="com.feup.cmov.acme_client.screens.settings.vouchers.VouchersFragment"
+        android:label="fragment_vouchers"
+        tools:layout="@layout/fragment_vouchers" />
 </navigation>

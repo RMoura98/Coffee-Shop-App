@@ -11,11 +11,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentMainMenuBinding
-import com.feup.cmov.acme_client.screens.main_menu.store.StoreFragment
-import com.feup.cmov.acme_client.screens.profile.ProfileFragment
-import com.feup.cmov.acme_client.screens.settings.SettingsFragment
-import com.feup.cmov.acme_client.screens.settings.SettingsHandler
-import com.feup.cmov.acme_client.screens.vouchers.VouchersFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -48,20 +43,15 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         badge.number = 12
 
         // Create the fragments
-        val navFragments = mapOf(
-            R.id.storeAction to StoreFragment(),
-            R.id.vouchersAction to VouchersFragment(),
-            R.id.cartAction to StoreFragment(),
-            R.id.historyAction to StoreFragment(),
-            R.id.settingsAction to SettingsFragment()
-        )
-
-        makeCurrentFragment(navFragments.getValue(R.id.storeAction))
+        makeCurrentFragment(viewModel.getCurrentFragment())
 
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             val menuItem = bottomNavigation.menu.findItem(item.itemId)
-            menuItem.isChecked = true
-            makeCurrentFragment(navFragments.getValue(item.itemId))
+            if(menuItem.itemId != viewModel.getCurrentAction()) {
+                menuItem.isChecked = true
+                viewModel.setCurrentAction(menuItem.itemId)
+                makeCurrentFragment(viewModel.getCurrentFragment())
+            }
             false
         }
 

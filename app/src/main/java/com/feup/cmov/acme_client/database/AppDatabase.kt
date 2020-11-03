@@ -8,7 +8,7 @@ import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.database.models.Voucher
 
-@Database(entities = [User::class, MenuItem::class, Voucher::class], version = 6, exportSchema = false)
+@Database(entities = [User::class, MenuItem::class, Voucher::class], version = 8, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val appDatabaseDao: AppDatabaseDao

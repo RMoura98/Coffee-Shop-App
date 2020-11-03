@@ -38,6 +38,8 @@
     <!--Vouchers-->
     <string name="free_coffee">1 Free Coffee</string>
     <string name="discount_5">5% Off</string>
+    <string name="personal_data">Personal Information</string>
+    <string name="credentials">Credentials</string>
 
 
 </resources>

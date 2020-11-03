@@ -1,4 +1,4 @@
-package com.feup.cmov.acme_client.screens.vouchers
+package com.feup.cmov.acme_client.screens.settings.vouchers
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,11 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
-import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.database.models.Voucher
-import com.squareup.picasso.Picasso
 
 class VoucherAdapter: RecyclerView.Adapter<VoucherAdapter.ViewHolder>() {
 

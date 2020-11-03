@@ -47,6 +47,16 @@ class SettingsFragment : Fragment(), SettingsHandler {
             .navigate(R.id.action_mainMenuFragment_to_profileFragment)
     }
 
+    override fun onPaymentMethodButtonClick(v: View) {
+        v.findNavController()
+            .navigate(R.id.action_mainMenuFragment_to_paymentMethodFragment)
+    }
+
+    override fun onVouchersButtonClick(v: View) {
+        v.findNavController()
+            .navigate(R.id.action_mainMenuFragment_to_vouchersFragment)
+    }
+
     override fun onLogoutButtonClick(v: View) {
         PreferencesUtils.logoutUser()
         v.findNavController()

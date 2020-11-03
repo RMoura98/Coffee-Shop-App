@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".screens.profile.SettingsFragment">
+    tools:context=".screens.settings.profile.SettingsFragment">
 
     <data>
 
@@ -69,9 +69,9 @@
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
                     android:elevation="4dp"
+                    android:onClick="@{handler::onProfileButtonClick}"
                     android:orientation="horizontal"
-                    android:padding="12dp"
-                    android:onClick="@{handler::onProfileButtonClick}">
+                    android:padding="14dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -97,16 +97,17 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
                     android:elevation="4dp"
+                    android:onClick="@{handler::onPaymentMethodButtonClick}"
                     android:orientation="horizontal"
-                    android:padding="12dp"
-                    android:background="?android:attr/selectableItemBackground">
+                    android:padding="14dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:text="Past Orders"
+                        android:text="Payment Method"
                         android:textAppearance="?attr/textAppearanceBody1" />
 
                     <ImageView
@@ -127,10 +128,11 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
                     android:elevation="4dp"
+                    android:onClick="@{handler::onVouchersButtonClick}"
                     android:orientation="horizontal"
-                    android:padding="12dp"
-                    android:background="?android:attr/selectableItemBackground">
+                    android:padding="14dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -156,11 +158,11 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
                     android:elevation="4dp"
-                    android:orientation="horizontal"
-                    android:padding="12dp"
                     android:onClick="@{handler::onLogoutButtonClick}"
-                    android:background="?android:attr/selectableItemBackground">
+                    android:orientation="horizontal"
+                    android:padding="14dp">
 
                     <TextView
                         android:layout_width="wrap_content"

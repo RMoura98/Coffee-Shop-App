@@ -1,5 +1,6 @@
-package com.feup.cmov.acme_client.screens.profile
+package com.feup.cmov.acme_client.screens.settings.profile
 
+import android.text.TextUtils
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -13,4 +14,5 @@ class ProfileViewModel @ViewModelInject constructor(
     private var user = userRepository.getLoggedInUser()
 
     fun getUser(): LiveData<User> = user
+
 }

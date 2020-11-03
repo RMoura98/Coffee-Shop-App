@@ -21,17 +21,18 @@ class VoucherRepository
         val (_, uuid) = PreferencesUtils.getLoggedInUser()
 
         val cached = uuid?.let { appDatabaseDao.getUnusedVouchers(it) }
+        GlobalScope.launch {
+            refreshUnusedVouchers()
+        }
 
         return cached!!
     }
 
-    fun refreshUnusedVouchers() {
-        val (_, uuid) = PreferencesUtils.getLoggedInUser()
-        GlobalScope.launch {
-            withContext(Dispatchers.IO) {
-                val vouchers = uuid?.let { webService.fetchUnusedVouchers(it) };
-                vouchers?.let { appDatabaseDao.deleteCreateVouchers(it) }
-            }
+    suspend fun refreshUnusedVouchers() {
+        withContext(Dispatchers.IO) {
+            val (_, uuid) = PreferencesUtils.getLoggedInUser()
+            val vouchers = uuid?.let { webService.fetchUnusedVouchers(it) };
+            vouchers?.let { appDatabaseDao.deleteCreateVouchers(it) }
         }
     }
 }
