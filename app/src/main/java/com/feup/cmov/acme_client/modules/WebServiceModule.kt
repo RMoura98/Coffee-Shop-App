@@ -2,8 +2,8 @@ package com.feup.cmov.acme_client.modules
 
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
-import com.feup.cmov.acme_client.Utils.PreferencesUtils
-import com.feup.cmov.acme_client.Utils.Security
+import com.feup.cmov.acme_client.utils.PreferencesUtils
+import com.feup.cmov.acme_client.utils.Security
 import com.feup.cmov.acme_client.network.WebService
 import dagger.Module
 import dagger.Provides

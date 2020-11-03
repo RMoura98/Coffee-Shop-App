@@ -2,10 +2,8 @@ package com.feup.cmov.acme_client.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.feup.cmov.acme_client.AcmeApplication
-import com.feup.cmov.acme_client.R
-import com.feup.cmov.acme_client.Utils.PreferencesUtils
-import com.feup.cmov.acme_client.Utils.Security
+import com.feup.cmov.acme_client.utils.PreferencesUtils
+import com.feup.cmov.acme_client.utils.Security
 import com.feup.cmov.acme_client.database.AppDatabaseDao
 import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.network.WebService
