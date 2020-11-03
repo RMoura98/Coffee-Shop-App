@@ -14,7 +14,7 @@ import com.feup.cmov.acme_client.screens.main_menu.MainMenuFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class StoreFragment(private var mainMenu: MainMenuFragment) : Fragment(), StoreHandler {
+class StoreFragment() : Fragment(), StoreHandler {
 
     private val viewModel: StoreViewModel by viewModels()
     lateinit var binding: FragmentStoreBinding
@@ -37,11 +37,11 @@ class StoreFragment(private var mainMenu: MainMenuFragment) : Fragment(), StoreH
 //        Log.d("DEBUG: scrollY", savedInstanceState?.getInt("scrollY").toString())
 //        binding.nestedScrollView.scrollY = savedInstanceState?.getInt("scrollY") ?: 0
 
-        mainMenu.getMenuItemsLiveData().observe(viewLifecycleOwner, Observer observe@{ menuItems ->
-            System.out.println("Loaded menus")
-            System.out.println(menuItems.size)
-            adapter.data = menuItems
-        });
+//        mainMenu.getMenuItemsLiveData().observe(viewLifecycleOwner, Observer observe@{ menuItems ->
+//            System.out.println("Loaded menus")
+//            System.out.println(menuItems.size)
+//            adapter.data = menuItems
+//        });
 
         return binding.root
     }
@@ -53,7 +53,7 @@ class StoreFragment(private var mainMenu: MainMenuFragment) : Fragment(), StoreH
     }
 
     override fun addToCartOnClick(id: Long) {
-        mainMenu.addItemToCart(id)
+        //mainMenu.addItemToCart(id)
     }
 
 //    override fun onSaveInstanceState(outState: Bundle) {
@@ -63,8 +63,8 @@ class StoreFragment(private var mainMenu: MainMenuFragment) : Fragment(), StoreH
 //    }
 
     companion object {
-        fun newInstance(mainMenu: MainMenuFragment): StoreFragment {
-            return StoreFragment(mainMenu)
-        }
+        //fun newInstance(mainMenu: MainMenuFragment): StoreFragment {
+            //return StoreFragment(mainMenu)
+        //}
     }
 }
