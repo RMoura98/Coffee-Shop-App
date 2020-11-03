@@ -22,8 +22,8 @@
         android:icon="@drawable/ic_history_black_18dp"
         android:title="History"/>
     <item
-        android:id="@+id/profileAction"
+        android:id="@+id/settingsAction"
         android:enabled="true"
         android:icon="@drawable/ic_face_black_18dp"
-        android:title="Profile" />
+        android:title="User" />
 </menu>

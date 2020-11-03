@@ -18,88 +18,130 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/grey_100"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="36dp"
-            android:text="@string/your_profile"
-            android:textSize="40sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingBottom="4dp">
 
-        <TextView
-            android:id="@+id/aboutYouText"
-            android:layout_width="wrap_content"
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/profileTopAppBar"
+                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:title="Profile" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:text="@string/about_you"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.087"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginEnd="20dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/profileFragment_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginHorizontal="15dp"
-
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:startIconDrawable="@drawable/ic_face_black_18dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:maxLength="25"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                android:text="@{viewModel.user.name}"
-                android:enabled="false"
-                android:hint="@string/prompt_name"
-                app:errorEnabled="true" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/profileFragment_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginHorizontal="15dp"
-            app:errorEnabled="true"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:startIconDrawable="@drawable/ic_call_black_18dp">
+                <TextView
+                    android:id="@+id/aboutYouText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/about_you"
+                    android:textAppearance="?attr/textAppearanceHeadline5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.087"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/phone"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/profileFragment_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginHorizontal="15dp"
+
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:startIconDrawable="@drawable/ic_face_black_18dp"
+                    app:hintAnimationEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:maxLength="25"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                        android:text="@{viewModel::getFormatedCreditCard}"
+                        android:enabled="false"
+                        android:hint="@string/prompt_name"
+                        android:textColor="@color/grey_900"
+                        app:errorEnabled="true"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profileFragment_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:digits="0123456789+"
-                android:maxLength="14"
-                android:inputType="phone"
-                android:text="@{viewModel.user.phone_number}"
-                android:enabled="false"
-                android:hint="@string/prompt_phone"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="15dp"
+                android:layout_marginHorizontal="15dp"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:startIconDrawable="@drawable/ic_call_black_18dp"
+                app:hintAnimationEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:digits="0123456789+"
+                    android:maxLength="14"
+                    android:inputType="phone"
+                    android:text="@{viewModel.user.phone_number}"
+                    android:enabled="false"
+                    android:hint="@string/prompt_phone"
+                    android:textColor="@color/grey_900"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/cardInformationText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:text="@string/prompt_card_information"
-            android:textSize="30sp"
+            android:textAppearance="?attr/textAppearanceHeadline5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.184"
             app:layout_constraintStart_toStartOf="parent"
@@ -113,7 +155,8 @@
             android:layout_marginHorizontal="15dp"
             app:errorEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:startIconDrawable="@drawable/ic_payment_black_18dp">
+            app:startIconDrawable="@drawable/ic_payment_black_18dp"
+            app:hintAnimationEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/cardNumber"
@@ -125,7 +168,8 @@
                 android:maxLines="1"
                 android:text="@{viewModel.user.card_number}"
                 android:enabled="false"
-                android:hint="@string/prompt_card_number"/>
+                android:hint="@string/prompt_card_number"
+                android:textColor="@color/grey_900"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -142,7 +186,8 @@
                 android:layout_marginRight="10dp"
                 app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:startIconDrawable="@drawable/ic_event_black_18dp">
+                app:startIconDrawable="@drawable/ic_event_black_18dp"
+                app:hintAnimationEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/cardExpiration"
@@ -154,7 +199,8 @@
                     android:maxLines="1"
                     android:text="@{viewModel.user.card_expiration}"
                     android:enabled="false"
-                    android:hint="@string/prompt_card_expiration"/>
+                    android:hint="@string/prompt_card_expiration"
+                    android:textColor="@color/grey_900"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -166,7 +212,8 @@
                 android:layout_marginLeft="10dp"
                 app:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:startIconDrawable="@drawable/ic_lock_black_18dp">
+                app:startIconDrawable="@drawable/ic_lock_black_18dp"
+                app:hintAnimationEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/cardCVC"
@@ -178,7 +225,8 @@
                     android:inputType="phone"
                     android:text="@{viewModel.user.card_cvc}"
                     android:enabled="false"
-                    android:hint="@string/prompt_card_cvc"/>
+                    android:hint="@string/prompt_card_cvc"
+                    android:textColor="@color/grey_900"/>
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
@@ -190,7 +238,8 @@
             android:layout_marginHorizontal="15dp"
             app:errorEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:startIconDrawable="@drawable/ic_nif_black_18dp">
+            app:startIconDrawable="@drawable/ic_nif_black_18dp"
+            app:hintAnimationEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/nif"
@@ -202,7 +251,11 @@
                 android:inputType="phone"
                 android:text="@{viewModel.user.NIF}"
                 android:enabled="false"
-                android:hint="@string/prompt_nif"/>
+                android:hint="@string/prompt_nif"
+                android:textColor="@color/grey_900"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
     </LinearLayout>
 </layout>

@@ -91,7 +91,6 @@ class LoginFragment : Fragment(), LoginHandler {
     }
 
     private fun loginSuccessful(v: View) {
-        Snackbar.make(v, "Login is success :D.", Snackbar.LENGTH_LONG).show();
         v.findNavController()
             .navigate(R.id.action_loginFragment_to_mainMenuFragment)
     }

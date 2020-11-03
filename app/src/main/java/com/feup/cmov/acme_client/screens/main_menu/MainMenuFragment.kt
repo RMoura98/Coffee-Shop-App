@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
-import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentMainMenuBinding
 import com.feup.cmov.acme_client.screens.main_menu.store.StoreFragment
 import com.feup.cmov.acme_client.screens.profile.ProfileFragment
+import com.feup.cmov.acme_client.screens.settings.SettingsFragment
+import com.feup.cmov.acme_client.screens.settings.SettingsHandler
 import com.feup.cmov.acme_client.screens.vouchers.VouchersFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,24 +48,20 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         badge.number = 12
 
         // Create the fragments
-        var storeFragment: Fragment = StoreFragment()
-        var profileFragment: Fragment = ProfileFragment()
-        var vouchersFragment: Fragment = VouchersFragment()
+        val navFragments = mapOf(
+            R.id.storeAction to StoreFragment(),
+            R.id.vouchersAction to VouchersFragment(),
+            R.id.cartAction to StoreFragment(),
+            R.id.historyAction to StoreFragment(),
+            R.id.settingsAction to SettingsFragment()
+        )
 
-        makeCurrentFragment(storeFragment)
+        makeCurrentFragment(navFragments.getValue(R.id.storeAction))
 
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
-
             val menuItem = bottomNavigation.menu.findItem(item.itemId)
             menuItem.isChecked = true
-
-            when (item.itemId) {
-                R.id.storeAction -> makeCurrentFragment(storeFragment)
-                R.id.vouchersAction -> makeCurrentFragment(vouchersFragment) //makeCurrentFragment(vouchersFragment)
-                R.id.cartAction -> println("cartAction") //makeCurrentFragment(cartFragment)
-                R.id.historyAction -> println("historyAction") //makeCurrentFragment(historyFragment)
-                R.id.profileAction -> makeCurrentFragment(profileFragment)
-            }
+            makeCurrentFragment(navFragments.getValue(item.itemId))
             false
         }
 

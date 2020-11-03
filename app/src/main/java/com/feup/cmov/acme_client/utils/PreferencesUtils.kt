@@ -36,4 +36,16 @@ object PreferencesUtils {
         )
         return Pair(userName, uuid)
     }
+
+    /**
+     * Removes the logged in user from the local storage of the application.
+     */
+    fun logoutUser() {
+        val preferences = AcmeApplication.getPreferences()
+        with(preferences.edit()) {
+            remove(AcmeApplication.getAppContext().getString(R.string.preferences_userName))
+            remove(AcmeApplication.getAppContext().getString(R.string.preferences_userUUID))
+            apply()
+        }
+    }
 }
