@@ -19,6 +19,16 @@ module.exports = {
       card_expiration: '02/21',
       phone_number: '919218937',
       public_key: 'pubkey2',
+    },
+    {
+      uuid: '95850c47-bfa2-4254-84a8-36b587dfeb27',
+      name: 'Fabio Oliveira',
+      NIF: '249720955',
+      card_number: '450077003964930',
+      card_cvc: '748',
+      card_expiration: '12/24',
+      phone_number: '931798250',
+      public_key: 'doesnt_matter',
     }]);
   },
 
