@@ -2,6 +2,7 @@ package com.feup.cmov.acme_client.screens.main_menu
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import com.feup.cmov.acme_client.R
+import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.databinding.FragmentMainMenuBinding
+import com.google.android.material.badge.BadgeDrawable
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -21,7 +25,6 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
     private val viewModel: MainMenuViewModel by viewModels()
     lateinit var binding: FragmentMainMenuBinding
 
-    private lateinit var badge: BadgeDrawable
     private var cartList = mutableMapOf<Long, Int>() // (ID, QUANTITY)
     private var totalCartItems: Int = 0
 
@@ -44,10 +47,6 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         binding.cartButton.visibility = if (totalCartItems > 0) View.VISIBLE else View.GONE
 
         val bottomNavigation = binding.bottomNavigation
-
-        var badge = bottomNavigation.getOrCreateBadge(R.id.cartAction)
-        badge.isVisible = true
-        badge.number = 12
 
         // Create the fragments
         makeCurrentFragment(viewModel.getCurrentFragment())

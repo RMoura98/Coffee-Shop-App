@@ -20,8 +20,6 @@ class MainMenuViewModel @ViewModelInject constructor(
 
     private val navFragments = mapOf(
         R.id.storeAction to StoreFragment::class.java,
-        R.id.vouchersAction to VouchersFragment::class.java,
-        R.id.cartAction to StoreFragment::class.java,
         R.id.historyAction to StoreFragment::class.java,
         R.id.settingsAction to SettingsFragment::class.java
     )
