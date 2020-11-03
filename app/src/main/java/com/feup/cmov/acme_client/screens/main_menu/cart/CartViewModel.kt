@@ -1,4 +1,4 @@
-package com.feup.cmov.acme_client.screens.main_menu.store
+package com.feup.cmov.acme_client.screens.main_menu.cart
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -9,10 +9,9 @@ import com.feup.cmov.acme_client.repositories.MenuRepository
 import com.feup.cmov.acme_client.screens.login.LoginViewModel
 import kotlinx.coroutines.launch
 
-class StoreViewModel @ViewModelInject constructor(
+class CartViewModel @ViewModelInject constructor(
     menuRepository: MenuRepository,
     userRepository: UserRepository
 ) : ViewModel() {
-
 
 }

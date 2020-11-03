@@ -21,6 +21,11 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
     private val viewModel: MainMenuViewModel by viewModels()
     lateinit var binding: FragmentMainMenuBinding
 
+    private lateinit var badge: BadgeDrawable
+    private var cartList = mutableMapOf<Long, Int>() // (ID, QUANTITY)
+    private var totalCartItems: Int = 0
+
+
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
         myContext = activity as FragmentActivity
@@ -35,6 +40,8 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
             inflater,
             R.layout.fragment_main_menu, container, false
         )
+
+        binding.cartButton.visibility = if (totalCartItems > 0) View.VISIBLE else View.GONE
 
         val bottomNavigation = binding.bottomNavigation
 
@@ -64,4 +71,34 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
             .replace(R.id.content_frame, fragment)
             .commit()
     }
+
+    fun addItemToCart(itemId: Long){
+        // Add to map
+        cartList[itemId] = cartList.getOrElse<Long, Int>(itemId, { 0 }) + 1
+        Log.d("Added to cart ID: ", itemId.toString())
+
+        // Total number of items
+        totalCartItems++
+        binding.cartButtonNumberItems.text = totalCartItems.toString()
+        binding.cartButton.visibility = if (totalCartItems > 0) View.VISIBLE else View.GONE
+
+        // Update cart on cartfragment
+
+        Log.d("Cart List: ", cartList.toString())
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d("DEBGUG: onSIS", "mainMenu")
+    }
+
+    fun getMenuItemsLiveData(): LiveData<List<MenuItem>> {
+        return viewModel.getMenuItems()
+    }
+
+    fun getCartItems(): List<MenuItem> {
+        var menuItemList = viewModel.getMenuItems().value
+        return menuItemList?.filter { it.id in cartList.keys }!!
+    }
+
 }

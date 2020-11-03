@@ -24,7 +24,51 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/content_frame"
-            android:layout_above="@id/bottom_navigation"/>
+            android:layout_above="@id/cart_button"/>
+
+        <RelativeLayout
+            android:id="@+id/cart_button"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_above="@id/bottom_navigation"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:background="@color/black">
+            <TextView
+                android:id="@+id/cart_button_total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="25dp"
+                android:textColor="@color/white"
+                android:text="€0"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:text="View Cart"/>
+
+
+            <TextView
+                android:id="@+id/cart_button_number_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/rectangle_with_circular_border"
+                android:textColor="@color/white"
+                android:paddingVertical="3dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="6dp"
+                android:layout_marginRight="30dp"
+                android:text="0"/>
+
+        </RelativeLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"

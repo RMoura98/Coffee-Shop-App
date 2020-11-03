@@ -1,37 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".screens.main_menu.store.StoreFragment">
+    tools:context=".screens.main_menu.cart.CartFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.feup.cmov.acme_client.screens.main_menu.store.StoreViewModel" />
+            type="com.feup.cmov.acme_client.screens.main_menu.cart.CartViewModel" />
 
         <variable
             name="handler"
-            type="com.feup.cmov.acme_client.screens.main_menu.store.StoreHandler" />
+            type="com.feup.cmov.acme_client.screens.main_menu.cart.CartHandler" />
 
     </data>
+
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="vertical">
 
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="170dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/store_cover" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:text="@string/your_cart"
+                android:layout_gravity="center"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/mainMenuFragment_itemsList"
@@ -42,6 +49,6 @@
                 android:layout_marginBottom="0dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView >
+    </androidx.core.widget.NestedScrollView>
 
 </layout>
