@@ -20,6 +20,7 @@ interface WebService {
     @GET("menu")
     suspend fun fetchMenu(): List<MenuItem>
 
+    @AuthenticatedRequest
     @GET("voucher/{userId}/unused")
     suspend fun fetchUnusedVouchers(@Path("userId") userId: String): List<Voucher>
 
