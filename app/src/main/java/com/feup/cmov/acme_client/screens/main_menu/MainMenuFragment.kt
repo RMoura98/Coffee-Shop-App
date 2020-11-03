@@ -1,7 +1,10 @@
 package com.feup.cmov.acme_client.screens.main_menu
 
+import android.R.attr.data
 import android.app.Activity
+import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +12,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import com.feup.cmov.acme_client.R
+import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.databinding.FragmentMainMenuBinding
+import com.feup.cmov.acme_client.screens.main_menu.cart.CartFragment
 import com.feup.cmov.acme_client.screens.main_menu.store.StoreFragment
 import com.feup.cmov.acme_client.screens.profile.ProfileFragment
 import com.feup.cmov.acme_client.screens.settings.SettingsFragment
 import com.feup.cmov.acme_client.screens.settings.SettingsHandler
 import com.feup.cmov.acme_client.screens.vouchers.VouchersFragment
+import com.google.android.material.badge.BadgeDrawable
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -25,6 +32,11 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
     private lateinit var myContext: FragmentActivity
     private val viewModel: MainMenuViewModel by viewModels()
     lateinit var binding: FragmentMainMenuBinding
+
+    private lateinit var badge: BadgeDrawable
+    private var cartList = mutableMapOf<Long, Int>() // (ID, QUANTITY)
+    private var totalCartItems: Int = 0
+
 
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
@@ -41,18 +53,16 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
             R.layout.fragment_main_menu, container, false
         )
 
-        val bottomNavigation = binding.bottomNavigation
+        binding.cartButton.visibility = if (totalCartItems > 0) View.VISIBLE else View.GONE
 
-        var badge = bottomNavigation.getOrCreateBadge(R.id.cartAction)
-        badge.isVisible = true
-        badge.number = 12
+        val bottomNavigation = binding.bottomNavigation
 
         // Create the fragments
         val navFragments = mapOf(
-            R.id.storeAction to StoreFragment(),
-            R.id.vouchersAction to VouchersFragment(),
-            R.id.cartAction to StoreFragment(),
-            R.id.historyAction to StoreFragment(),
+            R.id.storeAction to StoreFragment(this),
+//            R.id.vouchersAction to VouchersFragment(),
+//            R.id.cartAction to StoreFragment(),
+            R.id.historyAction to StoreFragment(this),
             R.id.settingsAction to SettingsFragment()
         )
 
@@ -74,4 +84,34 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
             .replace(R.id.content_frame, fragment)
             .commit()
     }
+
+    fun addItemToCart(itemId: Long){
+        // Add to map
+        cartList[itemId] = cartList.getOrElse<Long, Int>(itemId, { 0 }) + 1
+        Log.d("Added to cart ID: ", itemId.toString())
+
+        // Total number of items
+        totalCartItems++
+        binding.cartButtonNumberItems.text = totalCartItems.toString()
+        binding.cartButton.visibility = if (totalCartItems > 0) View.VISIBLE else View.GONE
+
+        // Update cart on cartfragment
+
+        Log.d("Cart List: ", cartList.toString())
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d("DEBGUG: onSIS", "mainMenu")
+    }
+
+    fun getMenuItemsLiveData(): LiveData<List<MenuItem>> {
+        return viewModel.getMenuItems()
+    }
+
+    fun getCartItems(): List<MenuItem> {
+        var menuItemList = viewModel.getMenuItems().value
+        return menuItemList?.filter { it.id in cartList.keys }!!
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.feup.cmov.acme_client.screens.main_menu.store
+package com.feup.cmov.acme_client.screens.main_menu.cart
 
 import android.graphics.drawable.Drawable
 import android.os.Parcel
@@ -15,7 +15,7 @@ import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.MenuItem
 import com.squareup.picasso.Picasso
 
-class MenuItemAdapter(private val storeHandler: StoreHandler) : RecyclerView.Adapter<MenuItemAdapter.ViewHolder>() {
+class CartItemAdapter() : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
 
     var data = listOf<MenuItem>()
         set(value) {
@@ -28,7 +28,7 @@ class MenuItemAdapter(private val storeHandler: StoreHandler) : RecyclerView.Ada
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.bind(item, storeHandler)
+        holder.bind(item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -50,7 +50,7 @@ class MenuItemAdapter(private val storeHandler: StoreHandler) : RecyclerView.Ada
 
 
 
-        fun bind(item: MenuItem, storeHandler: StoreHandler) {
+        fun bind(item: MenuItem) {
             name.text = item.name
             price.text = String.format(priceStringFormat, item.price)
             category.text = item.category
@@ -62,15 +62,13 @@ class MenuItemAdapter(private val storeHandler: StoreHandler) : RecyclerView.Ada
 
             val imagePath = assetPath + item.imageName
             Picasso.get().load(imagePath).into(imageView);
-
-            linearLayout.setOnClickListener { storeHandler.addToCartOnClick(item.id) }
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.store_row, parent, false)
+                    .inflate(R.layout.cart_row, parent, false)
 
                 return ViewHolder(view)
             }

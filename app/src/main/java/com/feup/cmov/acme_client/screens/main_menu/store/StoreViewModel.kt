@@ -15,7 +15,4 @@ class StoreViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
 
-    private var menuItems = menuRepository.getMenu()
-    fun getMenuItems(): LiveData<List<MenuItem>> = menuItems
-
 }

@@ -7,16 +7,6 @@
         android:icon="@drawable/ic_store_black_18dp"
         android:title="Store" />
     <item
-        android:id="@+id/vouchersAction"
-        android:enabled="true"
-        android:icon="@drawable/ic_new_releases_black_18dp"
-        android:title="Vouchers" />
-    <item
-        android:id="@+id/cartAction"
-        android:enabled="true"
-        android:icon="@drawable/ic_shopping_cart_black_18dp"
-        android:title="Cart" />
-    <item
         android:id="@+id/historyAction"
         android:enabled="true"
         android:icon="@drawable/ic_history_black_18dp"
