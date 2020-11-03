@@ -1,4 +1,4 @@
-package com.feup.cmov.acme_client.Utils
+package com.feup.cmov.acme_client.utils
 
 import android.security.KeyPairGeneratorSpec
 import android.util.Base64.*

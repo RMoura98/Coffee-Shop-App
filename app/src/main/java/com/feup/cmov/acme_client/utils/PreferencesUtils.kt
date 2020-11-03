@@ -1,4 +1,4 @@
-package com.feup.cmov.acme_client.Utils
+package com.feup.cmov.acme_client.utils
 
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
