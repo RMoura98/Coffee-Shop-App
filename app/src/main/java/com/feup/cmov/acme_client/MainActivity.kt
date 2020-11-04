@@ -1,5 +1,8 @@
 package com.feup.cmov.acme_client
 
+import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.databinding.DataBindingUtil
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,5 +24,14 @@ class MainActivity : AppCompatActivity() {
         debug.startDebugMode()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        activity = this
+    }
+
+    companion object {
+        private lateinit var activity: Activity
+
+        fun getActivity(): Activity {
+            return activity
+        }
     }
 }
