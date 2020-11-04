@@ -24,17 +24,24 @@ class MainMenuViewModel @ViewModelInject constructor(
         R.id.settingsAction to SettingsFragment::class.java
     )
 
+    private var needsToRecreateFragment = false
     private var currentAction = R.id.storeAction
+    private var currentFragment: Fragment = StoreFragment()
 
     fun getCurrentAction(): Int {
         return currentAction
     }
 
     fun getCurrentFragment(): Fragment {
-        return navFragments.getValue(currentAction).newInstance()
+        if(needsToRecreateFragment) {
+            currentFragment = navFragments.getValue(currentAction).newInstance()
+            needsToRecreateFragment = false
+        }
+        return currentFragment
     }
 
     fun setCurrentAction(action: Int) {
         currentAction = action
+        needsToRecreateFragment = true
     }
 }
