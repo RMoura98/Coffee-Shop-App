@@ -12,12 +12,12 @@ class VouchersViewModel @ViewModelInject constructor(
     private val vouchersRepository: VoucherRepository
 ) : ViewModel() {
 
-    private var unusedVouchers = vouchersRepository.getUnusedVouchers()
-    fun getUnusedVouchers(): LiveData<List<Voucher>> = unusedVouchers
+    private var vouchers = vouchersRepository.getAllVouchers()
+    fun getVouchers(): LiveData<List<Voucher>> = vouchers
 
-    fun refreshUnusedVouchers() {
+    fun refreshVouchers() {
         viewModelScope.launch{
-            vouchersRepository.refreshUnusedVouchers()
+            vouchersRepository.refreshVouchers()
         }
     }
 }

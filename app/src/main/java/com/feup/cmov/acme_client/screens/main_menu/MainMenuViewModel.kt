@@ -19,29 +19,22 @@ class MainMenuViewModel @ViewModelInject constructor(
     fun getMenuItems(): LiveData<List<MenuItem>> = menuItems
 
     private val navFragments = mapOf(
-        R.id.storeAction to StoreFragment::class.java,
-        R.id.historyAction to StoreFragment::class.java,
-        R.id.settingsAction to SettingsFragment::class.java
+        R.id.storeAction to StoreFragment(),
+        R.id.historyAction to StoreFragment(),
+        R.id.settingsAction to SettingsFragment()
     )
 
-    private var needsToRecreateFragment = false
     private var currentAction = R.id.storeAction
-    private var currentFragment: Fragment = StoreFragment()
 
     fun getCurrentAction(): Int {
         return currentAction
     }
 
     fun getCurrentFragment(): Fragment {
-        if(needsToRecreateFragment) {
-            currentFragment = navFragments.getValue(currentAction).newInstance()
-            needsToRecreateFragment = false
-        }
-        return currentFragment
+        return navFragments.getValue(currentAction)
     }
 
     fun setCurrentAction(action: Int) {
         currentAction = action
-        needsToRecreateFragment = true
     }
 }

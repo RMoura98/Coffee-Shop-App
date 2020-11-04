@@ -32,15 +32,9 @@ interface AppDatabaseDao {
     @Query("SELECT * FROM voucher_table WHERE user_id = :userId AND used = 0")
     fun getUnusedVouchers(userId: String): LiveData<List<Voucher>>
 
+    @Query("SELECT * FROM voucher_table WHERE user_id = :userId")
+    fun getAllVouchers(userId: String): LiveData<List<Voucher>>
+
     @Insert(onConflict = REPLACE)
     fun createVouchers(vouchers: List<Voucher>): Void
-
-    @Query("DELETE FROM voucher_table")
-    fun deleteAllVouchers()
-
-    @Transaction
-    fun deleteCreateVouchers(vouchers: List<Voucher>) {
-        deleteAllVouchers()
-        createVouchers(vouchers)
-    }
 }

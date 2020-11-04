@@ -42,8 +42,7 @@ class VouchersFragment : Fragment(), VouchersHandler {
             activity?.onBackPressed();
         }
 
-        viewModel.getUnusedVouchers().observe(viewLifecycleOwner, Observer { vouchers ->
-            println("Loaded vouchers: " + vouchers.size)
+        viewModel.getVouchers().observe(viewLifecycleOwner, Observer { vouchers ->
             adapter.data = vouchers
             refreshLayout.isRefreshing = false
         })
@@ -58,7 +57,7 @@ class VouchersFragment : Fragment(), VouchersHandler {
         refreshLayout = view.findViewById(R.id.vouchersFragment_swipeRefresh)
 
         refreshLayout.setOnRefreshListener {
-            viewModel.refreshUnusedVouchers()
+            viewModel.refreshVouchers()
         }
     }
 }

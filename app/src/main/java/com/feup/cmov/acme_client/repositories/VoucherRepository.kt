@@ -17,22 +17,28 @@ class VoucherRepository
     private val appDatabaseDao: AppDatabaseDao
 ) {
 
-    fun getUnusedVouchers(): LiveData<List<Voucher>> {
+    fun getAllVouchers(): LiveData<List<Voucher>> {
         val (_, uuid) = PreferencesUtils.getLoggedInUser()
 
-        val cached = uuid?.let { appDatabaseDao.getUnusedVouchers(it) }
+        val cached = appDatabaseDao.getAllVouchers(uuid!!)
         GlobalScope.launch {
-            refreshUnusedVouchers()
+            refreshVouchers()
         }
 
-        return cached!!
+        return cached
     }
 
-    suspend fun refreshUnusedVouchers() {
+    fun getUnusedVouchers(): LiveData<List<Voucher>> {
+        val (_, uuid) = PreferencesUtils.getLoggedInUser()
+        val cached = appDatabaseDao.getUnusedVouchers(uuid!!)
+
+        return cached
+    }
+
+    suspend fun refreshVouchers() {
         withContext(Dispatchers.IO) {
-            val (_, uuid) = PreferencesUtils.getLoggedInUser()
-            val vouchers = uuid?.let { webService.fetchUnusedVouchers(it) };
-            vouchers?.let { appDatabaseDao.deleteCreateVouchers(it) }
+            val vouchers = webService.fetchUnusedVouchers()
+            appDatabaseDao.createVouchers(vouchers)
         }
     }
 }

@@ -10,10 +10,10 @@ import retrofit2.http.*
 
 interface WebService {
 
-    @POST("user/new")
+    @POST("users/new")
     suspend fun createUser(@Body req: SignupRequest): SignupResponse
 
-    @GET("user/{uuid}")
+    @GET("users/{uuid}")
     suspend fun fetchUser(@Path("uuid") uuid: String): LoginResponse
 
     @AuthenticatedRequest
@@ -21,8 +21,8 @@ interface WebService {
     suspend fun fetchMenu(): List<MenuItem>
 
     @AuthenticatedRequest
-    @GET("voucher/{userId}/unused")
-    suspend fun fetchUnusedVouchers(@Path("userId") userId: String): List<Voucher>
+    @GET("vouchers")
+    suspend fun fetchUnusedVouchers(): List<Voucher>
 
     companion object {
         @Target(AnnotationTarget.FUNCTION)

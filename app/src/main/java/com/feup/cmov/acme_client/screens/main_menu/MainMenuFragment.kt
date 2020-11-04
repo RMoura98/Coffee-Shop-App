@@ -49,14 +49,14 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         val bottomNavigation = binding.bottomNavigation
 
         // Create the fragments
-        makeCurrentFragment(viewModel.getCurrentFragment())
+        makeCurrentFragment(viewModel.getCurrentFragment(), true)
 
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             val menuItem = bottomNavigation.menu.findItem(item.itemId)
             if(menuItem.itemId != viewModel.getCurrentAction()) {
                 menuItem.isChecked = true
                 viewModel.setCurrentAction(menuItem.itemId)
-                makeCurrentFragment(viewModel.getCurrentFragment())
+                makeCurrentFragment(viewModel.getCurrentFragment(), false)
             }
             false
         }
@@ -64,10 +64,12 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         return binding.root
     }
 
-    private fun makeCurrentFragment(fragment: Fragment) {
+    private fun makeCurrentFragment(fragment: Fragment, refresh: Boolean) {
         with(myContext.supportFragmentManager.beginTransaction()) {
-            detach(fragment);
-            attach(fragment);
+            if(refresh) {
+                detach(fragment);
+                attach(fragment);
+            }
             replace(R.id.content_frame, fragment)
             commit()
         }
