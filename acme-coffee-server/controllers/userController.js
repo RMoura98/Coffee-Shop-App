@@ -28,7 +28,6 @@ async function getUser(req, res) {
     const user = await userService.getUser({ uuid });
     return res.status(200).json(user);
   } catch (err) {
-    console.log(err);
     return res.status(500).json(new ErrorMessage(err.toString()));
   }
 }

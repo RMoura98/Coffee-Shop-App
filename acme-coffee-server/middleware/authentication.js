@@ -4,6 +4,7 @@ const { getUser } = require('../services/userService.js');
 const Authentication = async (req, res, next) => {
   const authHeader = req.get('Authorization').toString('utf-8');
   const [uuid, signature] = authHeader.split(',');
+  res.locals.uuid = uuid;
   // DEBUG!!
   if (uuid === '95850c47-bfa2-4254-84a8-36b587dfeb27') return next();
   //

@@ -5,9 +5,9 @@ const menu = require('./menu');
 const debug = require('./debug');
 const voucher = require('./voucher');
 
-router.use('/user', user);
+router.use('/users', user);
 router.use('/menu', menu);
 router.use('/debug', debug);
-router.use('/voucher', voucher);
+router.use('/vouchers', voucher);
 
 module.exports = router;
