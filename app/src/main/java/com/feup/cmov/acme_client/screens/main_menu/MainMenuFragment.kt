@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.MenuItem
@@ -54,6 +55,10 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         // Create the fragments
         makeCurrentFragment(viewModel.getCurrentFragment(), true)
 
+        cartViewModel.getTotalCartItems().observe(viewLifecycleOwner, Observer observe@{ totalCartItems ->
+            binding.cartButtonNumberItems.text = totalCartItems.toString()
+        })
+
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             val menuItem = bottomNavigation.menu.findItem(item.itemId)
             if(menuItem.itemId != viewModel.getCurrentAction()) {
@@ -63,6 +68,7 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
             }
             false
         }
+
 
         return binding.root
     }
@@ -82,8 +88,6 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         super.onSaveInstanceState(outState)
         Log.d("DEBGUG: onSIS", "mainMenu")
     }
-
-
 
     override fun onShowCartButtonClick(v: View) {
         Log.d("onCartButtonClick","yes")

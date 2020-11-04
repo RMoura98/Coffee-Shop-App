@@ -10,10 +10,10 @@
         android:id="@+id/historyAction"
         android:enabled="true"
         android:icon="@drawable/ic_history_black_18dp"
-        android:title="History"/>
+        android:title="Orders"/>
     <item
         android:id="@+id/settingsAction"
         android:enabled="true"
         android:icon="@drawable/ic_face_black_18dp"
-        android:title="User" />
+        android:title="Account" />
 </menu>
