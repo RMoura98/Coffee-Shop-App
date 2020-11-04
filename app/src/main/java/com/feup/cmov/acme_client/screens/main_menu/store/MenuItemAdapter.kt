@@ -63,7 +63,7 @@ class MenuItemAdapter(private val storeHandler: StoreHandler) : RecyclerView.Ada
             val imagePath = assetPath + item.imageName
             Picasso.get().load(imagePath).into(imageView);
 
-            linearLayout.setOnClickListener { storeHandler.addToCartOnClick(item.id) }
+            linearLayout.setOnClickListener { storeHandler.addToCartOnClick(item) }
         }
 
         companion object {

@@ -1,7 +1,6 @@
 package com.feup.cmov.acme_client.screens.main_menu.store
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.feup.cmov.acme_client.R
+import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.databinding.FragmentStoreBinding
 import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,8 +46,8 @@ class StoreFragment() : Fragment(), StoreHandler {
         binding.mainMenuFragmentItemsList.adapter = adapter
     }
 
-    override fun addToCartOnClick(itemId: Long) {
-        cartViewModel.addItemToCart(itemId)
+    override fun addToCartOnClick(item: MenuItem) {
+        cartViewModel.addItemToCart(item)
     }
 
 }

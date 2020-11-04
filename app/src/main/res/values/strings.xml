@@ -46,6 +46,6 @@
     <!--Settings-->
     <string name="personal_data">Personal Information</string>
     <string name="credentials">Credentials</string>
-
+    <string name="total_cart_price">€%.2f</string>
 
 </resources>

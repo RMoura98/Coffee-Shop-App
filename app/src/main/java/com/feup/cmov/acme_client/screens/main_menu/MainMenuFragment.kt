@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.databinding.FragmentMainMenuBinding
@@ -56,7 +57,13 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         makeCurrentFragment(viewModel.getCurrentFragment(), true)
 
         cartViewModel.getTotalCartItems().observe(viewLifecycleOwner, Observer observe@{ totalCartItems ->
+            binding.cartButton.visibility = if (totalCartItems > 0) View.VISIBLE else View.GONE
             binding.cartButtonNumberItems.text = totalCartItems.toString()
+        })
+
+        val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.total_cart_price)
+        cartViewModel.getTotalCartPrice().observe(viewLifecycleOwner, Observer observe@{ totalCartPrice ->
+            binding.cartButtonTotalPrice.text = String.format(priceStringFormat, totalCartPrice)
         })
 
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
