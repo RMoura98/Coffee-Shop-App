@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentCartBinding
 import com.feup.cmov.acme_client.databinding.FragmentStoreBinding
+import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
 import com.feup.cmov.acme_client.screens.main_menu.MainMenuFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,11 +21,10 @@ class CartFragment() : Fragment(), CartHandler {
 
     private val viewModel: CartViewModel by viewModels()
     lateinit var binding: FragmentCartBinding
-    private lateinit var adapter: CartItemAdapter
+    private var adapter: CartItemAdapter = CartItemAdapter()
     private lateinit var mainMenu: MainMenuFragment
 
     constructor(mainMenu: MainMenuFragment): this() {
-        adapter = CartItemAdapter()
         this.mainMenu = mainMenu
     }
 
@@ -37,11 +37,17 @@ class CartFragment() : Fragment(), CartHandler {
             inflater,
             R.layout.fragment_cart, container, false
         )
-//        Log.d("DEBUG: SIS", (savedInstanceState == null).toString())
-//        Log.d("DEBUG: scrollY", savedInstanceState?.getInt("scrollY").toString())
-//        binding.nestedScrollView.scrollY = savedInstanceState?.getInt("scrollY") ?: 0
 
+        // Setting binding params
+        binding.viewModel = viewModel
+        binding.handler = this
 
+        val toolbar = binding.checkoutTopAppBar
+
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+        toolbar.setNavigationOnClickListener{
+            activity?.onBackPressed();
+        }
 
         return binding.root
     }

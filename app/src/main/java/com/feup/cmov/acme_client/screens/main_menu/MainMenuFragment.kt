@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.databinding.FragmentMainMenuBinding
@@ -23,10 +24,8 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
 
     private lateinit var myContext: FragmentActivity
     private val viewModel: MainMenuViewModel by viewModels()
+    private val cartViewModel: CartViewModel by viewModels()
     lateinit var binding: FragmentMainMenuBinding
-
-    private var cartList = mutableMapOf<Long, Int>() // (ID, QUANTITY)
-    private var totalCartItems: Int = 0
 
 
     override fun onAttach(activity: Activity) {
@@ -44,7 +43,11 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
             R.layout.fragment_main_menu, container, false
         )
 
-        binding.cartButton.visibility = if (totalCartItems > 0) View.VISIBLE else View.GONE
+        binding.viewModel = viewModel
+        binding.cartViewModel = cartViewModel
+        binding.handler = this
+
+        //binding.cartButton.visibility = if (totalCartItems > 0) View.VISIBLE else View.GONE
 
         val bottomNavigation = binding.bottomNavigation
 
@@ -75,33 +78,18 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         }
     }
 
-    fun addItemToCart(itemId: Long){
-        // Add to map
-        cartList[itemId] = cartList.getOrElse<Long, Int>(itemId, { 0 }) + 1
-        Log.d("Added to cart ID: ", itemId.toString())
-
-        // Total number of items
-        totalCartItems++
-        binding.cartButtonNumberItems.text = totalCartItems.toString()
-        binding.cartButton.visibility = if (totalCartItems > 0) View.VISIBLE else View.GONE
-
-        // Update cart on cartfragment
-
-        Log.d("Cart List: ", cartList.toString())
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         Log.d("DEBGUG: onSIS", "mainMenu")
     }
 
-    fun getMenuItemsLiveData(): LiveData<List<MenuItem>> {
-        return viewModel.getMenuItems()
-    }
 
-    fun getCartItems(): List<MenuItem> {
-        var menuItemList = viewModel.getMenuItems().value
-        return menuItemList?.filter { it.id in cartList.keys }!!
+
+    override fun onShowCartButtonClick(v: View) {
+        Log.d("onCartButtonClick","yes")
+        println("plsssssssss")
+        v.findNavController()
+            .navigate(R.id.action_mainMenuFragment_to_cartFragment)
     }
 
 }

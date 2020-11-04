@@ -47,6 +47,9 @@
         <action
             android:id="@+id/action_mainMenuFragment_to_vouchersFragment"
             app:destination="@id/vouchersFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -63,4 +66,9 @@
         android:name="com.feup.cmov.acme_client.screens.settings.vouchers.VouchersFragment"
         android:label="fragment_vouchers"
         tools:layout="@layout/fragment_vouchers" />
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.feup.cmov.acme_client.screens.main_menu.cart.CartFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_cart" />
 </navigation>
