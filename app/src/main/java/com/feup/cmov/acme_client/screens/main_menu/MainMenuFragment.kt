@@ -93,12 +93,9 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.d("DEBGUG: onSIS", "mainMenu")
     }
 
     override fun onShowCartButtonClick(v: View) {
-        Log.d("onCartButtonClick","yes")
-        println("plsssssssss")
         v.findNavController()
             .navigate(R.id.action_mainMenuFragment_to_cartFragment)
     }

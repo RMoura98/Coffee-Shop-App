@@ -1,9 +1,9 @@
 package com.feup.cmov.acme_client.screens.main_menu.cart
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import com.feup.cmov.acme_client.database.models.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentCartBinding
-import com.feup.cmov.acme_client.databinding.FragmentStoreBinding
 import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
 import com.feup.cmov.acme_client.screens.main_menu.MainMenuFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,16 +48,17 @@ class CartFragment() : Fragment(), CartHandler {
             activity?.onBackPressed();
         }
 
+        viewModel.getCartListLiveData().observe(viewLifecycleOwner, Observer observe@{ cartList ->
+            Log.e("AAAAAAAAAAAAAAAA","AAAAAAAAAAAAAAAA")
+            adapter.data = cartList.values.toList()
+        });
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.mainMenuFragmentItemsList.adapter = adapter
-    }
-
-    fun setAdapterData(cartItems: List<MenuItem>) {
-        adapter.data = cartItems
     }
 
 }

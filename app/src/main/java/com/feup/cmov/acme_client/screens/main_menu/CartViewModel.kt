@@ -20,18 +20,23 @@ class CartViewModel @ViewModelInject constructor(
     fun getTotalCartItems() : LiveData<Int> = totalCartItems
     fun getTotalCartPrice() : LiveData<Float> = totalCartPrice
 
-    data class CartList(val item: MenuItem, var quantity: Int = 1) {
+    data class CartItem(val item: MenuItem, var quantity: Int = 1) {
         fun plus(other: Int) {
             quantity += other
         }
     }
-    private var cartList = mutableMapOf<Long, CartList>()   // itemId -> (item, quantity)
+    private val cartList = mutableMapOf<Long, CartItem>()
+    private val cartListLiveData = MutableLiveData<MutableMap<Long, CartItem>>( cartList )
+    fun getCartListLiveData(): LiveData<MutableMap<Long, CartItem>> = cartListLiveData
 
     fun addItemToCart(item: MenuItem) {
-        if (cartList.containsKey(item.id))
-            cartList[item.id] = CartList(item)
+
+        if (!cartList.containsKey(item.id))
+            cartList[item.id] = CartItem(item)
         else
-            cartList[item.id]?.plus(1)
+            cartList[item.id]!!.plus(1)
+
+        cartListLiveData.postValue(cartList)
 
         Log.d("Added to cart ID: ", item.id.toString())
 
@@ -42,10 +47,6 @@ class CartViewModel @ViewModelInject constructor(
         Log.d("totalCartItems: ", totalCartItems.toString())
         Log.d("totalCartPrice: ", totalCartPrice.toString())
 
-    }
-
-    fun getCartList(): MutableMap<Long,CartList> {
-        return cartList
     }
 
     companion object {

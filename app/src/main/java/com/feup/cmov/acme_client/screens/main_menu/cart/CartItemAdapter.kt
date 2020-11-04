@@ -13,18 +13,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.MenuItem
+import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
 import com.squareup.picasso.Picasso
 
 class CartItemAdapter() : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
 
-    var data = listOf<MenuItem>()
+    var data = listOf<CartViewModel.CartItem>()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
     override fun getItemCount() = data.size
-
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
@@ -50,7 +50,9 @@ class CartItemAdapter() : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
 
 
 
-        fun bind(item: MenuItem) {
+        fun bind(cartItem: CartViewModel.CartItem) {
+            var item = cartItem.item
+
             name.text = item.name
             price.text = String.format(priceStringFormat, item.price)
             category.text = item.category
