@@ -54,8 +54,6 @@ class VoucherAdapter: RecyclerView.Adapter<VoucherAdapter.ViewHolder>() {
                 }
             }
 
-            Log.e("ID", voucher.voucherId.toString())
-            Log.e("isItused", voucher.used.toString())
             when (voucher.used) {
                 true -> {
                     usedBar.setBackgroundColor(getColor(AcmeApplication.getAppContext(), R.color.red_500))
