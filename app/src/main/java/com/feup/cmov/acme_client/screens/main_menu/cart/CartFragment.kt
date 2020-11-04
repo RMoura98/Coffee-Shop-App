@@ -49,7 +49,7 @@ class CartFragment() : Fragment(), CartHandler {
         }
 
         viewModel.getCartListLiveData().observe(viewLifecycleOwner, Observer observe@{ cartList ->
-            Log.e("AAAAAAAAAAAAAAAA","AAAAAAAAAAAAAAAA")
+            Log.e("CartFragment","Observer Called")
             adapter.data = cartList.values.toList()
         });
 

@@ -26,7 +26,6 @@ class CartViewModel @ViewModelInject constructor(
         }
     }
     private val cartList = mutableMapOf<Long, CartItem>()
-    private val cartListLiveData = MutableLiveData<MutableMap<Long, CartItem>>( cartList )
     fun getCartListLiveData(): LiveData<MutableMap<Long, CartItem>> = cartListLiveData
 
     fun addItemToCart(item: MenuItem) {
@@ -36,6 +35,7 @@ class CartViewModel @ViewModelInject constructor(
         else
             cartList[item.id]!!.plus(1)
 
+        Log.e("CartViewModel", "Posted value")
         cartListLiveData.postValue(cartList)
 
         Log.d("Added to cart ID: ", item.id.toString())
@@ -52,5 +52,6 @@ class CartViewModel @ViewModelInject constructor(
     companion object {
         private var totalCartItems = MutableLiveData(0)
         private var totalCartPrice = MutableLiveData(0f)
+        private val cartListLiveData = MutableLiveData<MutableMap<Long, CartItem>>()
     }
 }
