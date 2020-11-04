@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.feup.cmov.acme_client.screens.main_menu.cart.CartViewModel" />
+            type="com.feup.cmov.acme_client.screens.main_menu.CartViewModel" />
 
         <variable
             name="handler"
@@ -27,16 +27,38 @@
             android:clipToPadding="false"
             android:orientation="vertical">
 
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingBottom="4dp">
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:id="@+id/checkoutTopAppBar"
+                        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:title="Checkout" />
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
             <TextView
+                android:id="@+id/aboutYouText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:text="@string/your_cart"
-                android:layout_gravity="center"
-                android:textSize="40sp"
-                android:textStyle="bold"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/your_order"
+                android:textAppearance="?attr/textAppearanceHeadline5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.087"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,6 +70,20 @@
                 android:nestedScrollingEnabled="false"
                 android:layout_marginBottom="0dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginVertical="15dp"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal">
+
+
+
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

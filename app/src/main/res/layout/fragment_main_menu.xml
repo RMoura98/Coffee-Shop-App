@@ -13,6 +13,10 @@
             name="handler"
             type="com.feup.cmov.acme_client.screens.main_menu.MainMenuHandler" />
 
+        <variable
+            name="cartViewModel"
+            type="com.feup.cmov.acme_client.screens.main_menu.CartViewModel" />
+
     </data>
 
 
@@ -31,6 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_above="@id/bottom_navigation"
+            android:onClick="@{handler::onShowCartButtonClick}"
+            android:clickable="true"
             android:orientation="horizontal"
             android:visibility="visible"
             android:background="@color/black">
@@ -62,11 +68,12 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/rectangle_with_circular_border"
                 android:textColor="@color/white"
-                android:paddingVertical="3dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="6dp"
-                android:layout_marginRight="30dp"
-                android:text="0"/>
+                android:paddingTop="3dp"
+                android:paddingBottom="4dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="6dp"
+                android:layout_marginEnd="30dp"
+                android:text="@{String.valueOf(cartViewModel.totalCartItems)}" />
 
         </RelativeLayout>
 

@@ -11,12 +11,7 @@ import com.feup.cmov.acme_client.screens.main_menu.store.StoreFragment
 import com.feup.cmov.acme_client.screens.settings.SettingsFragment
 import com.feup.cmov.acme_client.screens.settings.vouchers.VouchersFragment
 
-class MainMenuViewModel @ViewModelInject constructor(
-    menuRepository: MenuRepository
-): ViewModel() {
-
-    private var menuItems = menuRepository.getMenu()
-    fun getMenuItems(): LiveData<List<MenuItem>> = menuItems
+class MainMenuViewModel: ViewModel() {
 
     private val navFragments = mapOf(
         R.id.storeAction to StoreFragment::class.java,

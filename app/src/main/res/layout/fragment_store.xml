@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.feup.cmov.acme_client.screens.main_menu.store.StoreViewModel" />
+            type="com.feup.cmov.acme_client.screens.main_menu.CartViewModel" />
 
         <variable
             name="handler"
