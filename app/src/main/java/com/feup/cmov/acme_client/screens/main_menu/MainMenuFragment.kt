@@ -68,10 +68,12 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
     }
 
     private fun makeCurrentFragment(fragment: Fragment) {
-        myContext.supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.content_frame, fragment)
-            .commit()
+        with(myContext.supportFragmentManager.beginTransaction()) {
+            detach(fragment);
+            attach(fragment);
+            replace(R.id.content_frame, fragment)
+            commit()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

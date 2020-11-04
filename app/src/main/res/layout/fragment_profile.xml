@@ -60,7 +60,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="14dp"
                     android:text="@string/credentials"
                     android:textAppearance="?attr/textAppearanceHeadline5"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +74,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="15dp"
-                    android:layout_marginTop="10dp"
                     android:hint="@string/prompt_username"
                     app:errorEnabled="true"
                     app:hintAnimationEnabled="false"
@@ -129,7 +129,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="14dp"
                     android:text="@string/personal_data"
                     android:textAppearance="?attr/textAppearanceHeadline5"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -142,8 +143,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="15dp"
-
-                    android:layout_marginTop="10dp"
                     app:hintAnimationEnabled="false"
                     app:startIconDrawable="@drawable/ic_face_black_18dp">
 
