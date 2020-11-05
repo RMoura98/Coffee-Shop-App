@@ -51,7 +51,7 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         makeCurrentFragment(viewModel.getCurrentFragment(), true)
 
         cartViewModel.getTotalCartItems().observe(viewLifecycleOwner, Observer observe@{ totalCartItems ->
-            if(totalCartItems == 1) {
+            if(totalCartItems >= 1) {
                 with(binding.cartButton.animate()){
                     translationY(0f)
                     setDuration(if(!hasClickedTheCart) 300 else 0)
