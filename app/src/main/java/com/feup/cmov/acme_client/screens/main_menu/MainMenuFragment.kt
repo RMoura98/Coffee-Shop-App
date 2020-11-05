@@ -2,7 +2,6 @@ package com.feup.cmov.acme_client.screens.main_menu
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +9,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
-import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.databinding.FragmentMainMenuBinding
-import com.google.android.material.badge.BadgeDrawable
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -61,7 +57,7 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
             binding.cartButtonNumberItems.text = totalCartItems.toString()
         })
 
-        val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.total_cart_price)
+        val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.cart_price)
         cartViewModel.getTotalCartPrice().observe(viewLifecycleOwner, Observer observe@{ totalCartPrice ->
             binding.cartButtonTotalPrice.text = String.format(priceStringFormat, totalCartPrice)
         })
