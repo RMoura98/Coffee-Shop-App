@@ -17,9 +17,25 @@ import java.text.SimpleDateFormat
 
 class OrderItemAdapter(private val ordersHistoryHandler: OrdersHistoryHandler) : RecyclerView.Adapter<OrderItemAdapter.ViewHolder>() {
 
+    enum class SHOWING {
+        COMPLETED_ORDERS, ONGOING_ORDERS
+    }
+
+    var showing = SHOWING.COMPLETED_ORDERS
+        set(value) {
+            if(field != value)
+                notifyDataSetChanged()
+            field = value
+        }
+
+    var completed_orders = listOf<OrderWithItems>()
+    var ongoing_orders = listOf<OrderWithItems>()
+
     var data = listOf<OrderWithItems>()
         set(value) {
             field = value
+            completed_orders = data.filter { item -> item.order.completed }
+            ongoing_orders = data.filter { item -> !item.order.completed }
             notifyDataSetChanged()
         }
 
@@ -28,11 +44,18 @@ class OrderItemAdapter(private val ordersHistoryHandler: OrdersHistoryHandler) :
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        if(showing == SHOWING.COMPLETED_ORDERS)
+            return completed_orders.size
+        else
+            return ongoing_orders.size
     }
 
     override fun onBindViewHolder(holder: OrderItemAdapter.ViewHolder, position: Int) {
-        val item = data[position]
+        val item: OrderWithItems
+        if(showing == SHOWING.COMPLETED_ORDERS)
+            item = completed_orders[position]
+        else
+            item = ongoing_orders[position]
         holder.bind(item, ordersHistoryHandler)
     }
 
@@ -54,8 +77,8 @@ class OrderItemAdapter(private val ordersHistoryHandler: OrdersHistoryHandler) :
                 orderCompletedIcon.setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
                 orderCompletedIcon.setColorFilter(ContextCompat.getColor(AcmeApplication.getAppContext(), R.color.green_800), android.graphics.PorterDuff.Mode.SRC_IN);
             } else {
-                orderCompletedIcon.setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
-                orderCompletedIcon.setColorFilter(ContextCompat.getColor(AcmeApplication.getAppContext(), R.color.red_800), android.graphics.PorterDuff.Mode.SRC_IN);
+                orderCompletedIcon.setImageResource(R.drawable.ic_outline_play_circle_outline_24)
+                orderCompletedIcon.setColorFilter(ContextCompat.getColor(AcmeApplication.getAppContext(), R.color.orange_800), android.graphics.PorterDuff.Mode.SRC_IN);
             }
         }
         companion object {
