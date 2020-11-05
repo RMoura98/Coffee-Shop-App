@@ -9,6 +9,10 @@ const Order = db.define('Order', {
   },
   createdAt: Sequelize.DATE,
   updatedAt: Sequelize.DATE,
+  completed: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
 }, {
   timestamps: true,
 });
