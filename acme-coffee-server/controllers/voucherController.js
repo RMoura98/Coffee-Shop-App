@@ -1,11 +1,10 @@
 const voucherService = require('../services/voucherService');
 const ErrorMessage = require('../utils/ErrorMessage');
 
-async function getUnusedVouchers(req, res) {
-  const userId = req.params.user;
-
+async function getVouchers(req, res) {
   try {
-    const vouchers = await voucherService.getUnusedVouchers(userId);
+    const { uuid } = res.locals;
+    const vouchers = await voucherService.getVouchers(uuid);
 
     return res.status(200).json(vouchers);
   } catch (err) {
@@ -14,5 +13,5 @@ async function getUnusedVouchers(req, res) {
 }
 
 module.exports = {
-  getUnusedVouchers,
+  getVouchers,
 };

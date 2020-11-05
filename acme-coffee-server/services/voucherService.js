@@ -2,15 +2,14 @@ const { Op } = require('sequelize');
 const { Voucher } = require('../models');
 
 /**
- * Returns all unused vouchers of a given user
+ * Returns all vouchers of a given user.
  * @param {uuid} userId the user's UUID
  */
-async function getUnusedVouchers(userId) {
+async function getVouchers(userId) {
   const vouchers = await Voucher.findAll({
     where: {
       [Op.and]: [
         { userId },
-        { used: false },
       ],
     },
   });
@@ -19,5 +18,5 @@ async function getUnusedVouchers(userId) {
 }
 
 module.exports = {
-  getUnusedVouchers,
+  getVouchers,
 };
