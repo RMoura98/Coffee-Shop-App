@@ -67,15 +67,16 @@ class StoreFragment() : Fragment(), StoreHandler {
         imageView.setImageDrawable(drawable)
         binding.newImageLayout.addView(imageView)
 
-        val howFarAway = (binding.wrapperLayout.height.toFloat() - y) / binding.wrapperLayout.height.toFloat()
+        val howFarAway = (binding.wrapperLayout.height.toFloat() - y * 0.69) / (binding.wrapperLayout.height.toFloat())
         with(imageView.animate()){
-            translationY(binding.wrapperLayout.height.toFloat() * howFarAway)
-            setDuration((1000 * howFarAway).toLong())
+            translationY(binding.wrapperLayout.height.toFloat() * 2)
+            setDuration(1000)
         }
 
         GlobalScope.launch(Dispatchers.Main) {
             delay((1000 * howFarAway).toLong() - 150)
             cartViewModel.addItemToCart(item)
+            delay(1000)
             binding.newImageLayout.removeView(imageView)
         }
     }
