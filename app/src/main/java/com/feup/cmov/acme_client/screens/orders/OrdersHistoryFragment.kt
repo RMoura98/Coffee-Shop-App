@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentOrdersHistoryBinding
+import com.feup.cmov.acme_client.screens.main_menu.store.MenuItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -19,6 +20,7 @@ class OrdersHistoryFragment : Fragment(), OrdersHistoryHandler {
 
     private val viewModel: OrdersHistoryViewModel by viewModels()
     lateinit var binding: FragmentOrdersHistoryBinding
+    var adapter: OrderItemAdapter =  OrderItemAdapter(this)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,9 +39,15 @@ class OrdersHistoryFragment : Fragment(), OrdersHistoryHandler {
 
         viewModel.getOrders().observe(viewLifecycleOwner) { orders ->
             Log.e("ABC", orders.size.toString())
+            adapter.data = orders
         };
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.orderHistoryOrdersItems.adapter = adapter
     }
 
 }

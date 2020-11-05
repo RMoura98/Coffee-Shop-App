@@ -4,7 +4,10 @@
     android:layout_width="wrap_content"
     android:layout_height="64dp"
     android:orientation="vertical"
-    android:layout_marginVertical="3dp">
+    android:layout_marginVertical="2dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingBottom="2dp">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/voucher_row_template"
@@ -12,7 +15,9 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="8dp"
         android:orientation="horizontal"
-        android:padding="15dp">
+        android:padding="15dp"
+        app:cardElevation="2dp"
+        app:cardMaxElevation="2dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"

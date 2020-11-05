@@ -2,9 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="92dp"
+    android:layout_height="94dp"
     android:orientation="vertical"
-    android:layout_marginVertical="3dp">
+    android:layout_marginVertical="3dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingBottom="2dp">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/order_row_template"
@@ -13,7 +16,8 @@
         android:layout_marginHorizontal="8dp"
         android:orientation="horizontal"
         android:padding="20dp"
-        android:elevation="8dp">
+        app:cardElevation="2dp"
+        app:cardMaxElevation="2dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -44,20 +48,22 @@
                         android:layout_marginBottom="2dp">
 
                         <ImageView
+
+                            android:id="@+id/orderCompletedIcon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
+                            android:layout_gravity="bottom"
                             app:srcCompat="@drawable/ic_baseline_check_circle_outline_24"
-                            app:tint="@color/green_800"
-                            android:layout_gravity="bottom"/>
+                            app:tint="@color/green_800" />
 
                         <TextView
-                            android:id="@+id/order_completed"
+                            android:id="@+id/order_main_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="5dp"
                             android:text="Order #B4Y1"
                             android:textAppearance="?attr/textAppearanceHeadline6"
-                            android:textColor="@color/grey_900"/>
+                            android:textColor="@color/grey_900" />
                     </LinearLayout>
 
                     <TextView
@@ -65,8 +71,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="5dp"
+                        android:paddingTop="2dp"
                         android:text="20/10/2020 17:56"
                         android:textAppearance="?attr/textAppearanceCaption" />
+
                     <TextView
                         android:id="@+id/order_info"
                         android:layout_width="wrap_content"

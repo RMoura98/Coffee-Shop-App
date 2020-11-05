@@ -18,6 +18,9 @@ data class Order (
     @ColumnInfo(name = "updatedAt")
     val updatedAt: Date,
 
+    @ColumnInfo(name = "completed")
+    val completed: Boolean,
+
     @ColumnInfo(name = "userId")
     val userId: String
 )
