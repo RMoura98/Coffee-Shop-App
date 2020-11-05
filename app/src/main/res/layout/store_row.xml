@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/store_row_layout"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -50,7 +51,7 @@
                     android:layout_marginTop="1dp"
                     android:layout_marginLeft="4dp"
                     android:src="@drawable/ic_restaurant_black_18dp"
-                    android:tint="@color/material_on_primary_disabled"/>
+                    app:tint="@color/material_on_primary_disabled"/>
 
                 <TextView
                     android:id="@+id/item_category"

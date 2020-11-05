@@ -1,14 +1,10 @@
 package com.feup.cmov.acme_client.database
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.feup.cmov.acme_client.database.models.MenuItem
-import com.feup.cmov.acme_client.database.models.User
-import com.feup.cmov.acme_client.database.models.Voucher
+import com.feup.cmov.acme_client.database.models.*
 
-@Database(entities = [User::class, MenuItem::class, Voucher::class], version = 8, exportSchema = false)
+@Database(entities = [User::class, MenuItem::class, Voucher::class, Order::class, OrderItem::class], version = 11, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val appDatabaseDao: AppDatabaseDao

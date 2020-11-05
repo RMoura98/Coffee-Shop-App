@@ -42,8 +42,6 @@ class StoreFragment() : Fragment(), StoreHandler {
         )
 
         cartViewModel.getMenuItems().observe(viewLifecycleOwner, Observer observe@{ menuItems ->
-            System.out.println("Loaded menus")
-            System.out.println(menuItems.size)
             adapter.data = menuItems
         });
 
@@ -66,6 +64,10 @@ class StoreFragment() : Fragment(), StoreHandler {
 
         imageView.setImageDrawable(drawable)
         binding.newImageLayout.addView(imageView)
+
+//        Log.e("height", binding.wrapperLayout.height.toString())
+//        Log.e("y", y.toString())
+//        Log.e("minus", (binding.wrapperLayout.height.toFloat() - y).toString())
 
         val howFarAway = (binding.wrapperLayout.height.toFloat() - y * 0.69) / (binding.wrapperLayout.height.toFloat())
         with(imageView.animate()){

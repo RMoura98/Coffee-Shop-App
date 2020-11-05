@@ -54,7 +54,8 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
             if(totalCartItems >= 1) {
                 with(binding.cartButton.animate()){
                     translationY(0f)
-                    setDuration(if(!hasClickedTheCart) 300 else 0)
+                    setDuration(if(!hasShownCartAnimation) 300 else 0)
+                    hasShownCartAnimation = true
                 }
             }
             binding.cartButtonNumberItems.text = totalCartItems.toString()
@@ -95,12 +96,11 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
     }
 
     override fun onShowCartButtonClick(v: View) {
-        hasClickedTheCart = true
         v.findNavController()
             .navigate(R.id.action_mainMenuFragment_to_cartFragment)
     }
 
     companion object {
-        var hasClickedTheCart = false
+        var hasShownCartAnimation = false
     }
 }

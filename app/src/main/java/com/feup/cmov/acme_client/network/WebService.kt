@@ -1,8 +1,10 @@
 package com.feup.cmov.acme_client.network
 
 import com.feup.cmov.acme_client.database.models.MenuItem
+import com.feup.cmov.acme_client.database.models.Order
 import com.feup.cmov.acme_client.database.models.Voucher
 import com.feup.cmov.acme_client.network.requests.SignupRequest
+import com.feup.cmov.acme_client.network.responses.FetchOrdersResponse
 import com.feup.cmov.acme_client.network.responses.LoginResponse
 import com.feup.cmov.acme_client.network.responses.SignupResponse
 import retrofit2.http.*
@@ -22,7 +24,11 @@ interface WebService {
 
     @AuthenticatedRequest
     @GET("vouchers")
-    suspend fun fetchUnusedVouchers(): List<Voucher>
+    suspend fun fetchVouchers(): List<Voucher>
+
+    @AuthenticatedRequest
+    @GET("orders")
+    suspend fun fetchOrders(): FetchOrdersResponse
 
     companion object {
         @Target(AnnotationTarget.FUNCTION)
