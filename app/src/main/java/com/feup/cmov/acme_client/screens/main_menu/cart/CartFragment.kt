@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentCartBinding
 import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
@@ -48,10 +49,17 @@ class CartFragment() : Fragment(), CartHandler {
             activity?.onBackPressed();
         }
 
+        binding.seeMenu.setOnClickListener { activity?.onBackPressed() }
+
         viewModel.getCartListLiveData().observe(viewLifecycleOwner, Observer observe@{ cartList ->
-            Log.e("CartFragment","Observer Called")
             adapter.data = cartList.values.toList()
         });
+
+        val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.cart_price)
+        viewModel.getTotalCartPrice().observe(viewLifecycleOwner, Observer observe@{ totalCartPrice ->
+            binding.totalPrice.text = String.format(priceStringFormat, totalCartPrice)
+            binding.totalPriceNextButton.text = String.format(priceStringFormat, totalCartPrice)
+        })
 
         return binding.root
     }

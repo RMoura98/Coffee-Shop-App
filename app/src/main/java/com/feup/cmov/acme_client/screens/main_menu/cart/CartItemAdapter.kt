@@ -1,18 +1,12 @@
 package com.feup.cmov.acme_client.screens.main_menu.cart
 
-import android.graphics.drawable.Drawable
-import android.os.Parcel
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
-import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
 import com.squareup.picasso.Picasso
 
@@ -36,34 +30,16 @@ class CartItemAdapter() : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
     }
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val name: TextView = itemView.findViewById(R.id.item_name)
-        private val price: TextView = itemView.findViewById(R.id.item_price)
-        private val category: TextView = itemView.findViewById(R.id.item_category)
-        private val imageView: ImageView =  itemView.findViewById(R.id.item_image)
-        private val categoryIcon: ImageView = itemView.findViewById(R.id.item_category_icon)
-        private val linearLayout: LinearLayout = itemView.findViewById(R.id.store_row_layout)
+        private val name: TextView = itemView.findViewById(R.id.cart_item_name)
+        private val price: TextView = itemView.findViewById(R.id.cart_item_price)
+        private val quantity: TextView = itemView.findViewById(R.id.cart_item_quantity)
 
-        private val assetPath: String = AcmeApplication.getAppContext().getString(R.string.serverURL) + "/assets/"
-        private val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.item_price)
-        private val foodIcon: Drawable? = AcmeApplication.getAppContext().getDrawable(R.drawable.ic_restaurant_black_18dp)
-        private val drinkIcon: Drawable? = AcmeApplication.getAppContext().getDrawable(R.drawable.ic_wine_bar_black_18dp)
-
-
+        private val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.cart_price)
 
         fun bind(cartItem: CartViewModel.CartItem) {
-            var item = cartItem.item
-
-            name.text = item.name
-            price.text = String.format(priceStringFormat, item.price)
-            category.text = item.category
-
-            when (item.category) {
-                "Food" -> categoryIcon.setImageDrawable(foodIcon)
-                "Drinks" -> categoryIcon.setImageDrawable(drinkIcon)
-            }
-
-            val imagePath = assetPath + item.imageName
-            Picasso.get().load(imagePath).into(imageView);
+            name.text = cartItem.item.name
+            price.text = String.format(priceStringFormat, cartItem.item.price)
+            quantity.text = cartItem.quantity.toString()
         }
 
         companion object {
