@@ -49,15 +49,18 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         binding.cartViewModel = cartViewModel
         binding.handler = this
 
-        //binding.cartButton.visibility = if (totalCartItems > 0) View.VISIBLE else View.GONE
-
         val bottomNavigation = binding.bottomNavigation
 
         // Create the fragments
         makeCurrentFragment(viewModel.getCurrentFragment(), true)
 
         cartViewModel.getTotalCartItems().observe(viewLifecycleOwner, Observer observe@{ totalCartItems ->
-            binding.cartButton.visibility = if (totalCartItems > 0) View.VISIBLE else View.GONE
+            if(totalCartItems == 1) {
+                with(binding.cartButton.animate()){
+                    translationY(0f)
+                    setDuration(if(!hasClickedTheCart) 300 else 0)
+                }
+            }
             binding.cartButtonNumberItems.text = totalCartItems.toString()
         })
 
@@ -96,8 +99,12 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
     }
 
     override fun onShowCartButtonClick(v: View) {
+        hasClickedTheCart = true
         v.findNavController()
             .navigate(R.id.action_mainMenuFragment_to_cartFragment)
     }
 
+    companion object {
+        var hasClickedTheCart = false
+    }
 }

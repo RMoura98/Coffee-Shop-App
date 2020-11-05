@@ -29,21 +29,27 @@
             android:clipToPadding="false"
             android:paddingBottom="4dp">
 
-            <com.google.android.material.appbar.AppBarLayout
+            <com.google.android.material.tabs.TabLayout
+                style="@style/Widget.MaterialComponents.TabLayout.Colored"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="4dp"
+                app:tabIndicatorColor="@color/brown_800"
+                app:tabIndicatorHeight="5dp">
 
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/settingsTopAppBar"
-                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:title="Orders History" />
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Archived" />
 
-            </com.google.android.material.appbar.AppBarLayout>
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ongoing" />
 
+
+            </com.google.android.material.tabs.TabLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
     </LinearLayout>
 </layout>

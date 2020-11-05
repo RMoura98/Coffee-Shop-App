@@ -16,6 +16,7 @@ import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.databinding.FragmentLoginBinding
 import com.feup.cmov.acme_client.screens.signup.SignupFragment_GeneratedInjector
+import com.feup.cmov.acme_client.utils.ShowFeedback
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint

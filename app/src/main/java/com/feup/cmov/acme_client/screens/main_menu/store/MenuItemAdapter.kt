@@ -1,9 +1,9 @@
 package com.feup.cmov.acme_client.screens.main_menu.store
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
-import android.os.Parcel
-import android.os.Parcelable
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -50,6 +50,7 @@ class MenuItemAdapter(private val storeHandler: StoreHandler) : RecyclerView.Ada
 
 
 
+        @SuppressLint("ClickableViewAccessibility")
         fun bind(item: MenuItem, storeHandler: StoreHandler) {
             name.text = item.name
             price.text = String.format(priceStringFormat, item.price)
@@ -63,7 +64,19 @@ class MenuItemAdapter(private val storeHandler: StoreHandler) : RecyclerView.Ada
             val imagePath = assetPath + item.imageName
             Picasso.get().load(imagePath).into(imageView);
 
-            linearLayout.setOnClickListener { storeHandler.addToCartOnClick(item) }
+            var lastX = 0f
+            var lastY = 0f
+            linearLayout.setOnClickListener { storeHandler.addToCartOnClick(item, lastX, lastY, imageView.drawable) }
+            linearLayout.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+                if (motionEvent.actionMasked == MotionEvent.ACTION_DOWN) {
+                    val viewCoords = IntArray(2)
+                    view.getLocationOnScreen(viewCoords)
+                    lastX = viewCoords[0].toFloat() + motionEvent.getX()
+                    lastY = viewCoords[1].toFloat() + motionEvent.getY()
+                }
+                false
+            }
+
         }
 
         companion object {

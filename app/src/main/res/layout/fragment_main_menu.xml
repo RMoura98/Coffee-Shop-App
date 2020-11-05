@@ -5,6 +5,7 @@
     tools:context=".screens.main_menu.MainMenuFragment">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.feup.cmov.acme_client.screens.main_menu.MainMenuViewModel" />
@@ -25,21 +26,25 @@
         android:layout_height="match_parent">
 
         <FrameLayout
+            android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/content_frame"
-            android:layout_above="@id/cart_button"/>
+            android:layout_above="@id/cart_button"
+            android:layout_alignParentBottom="true"/>
 
         <RelativeLayout
             android:id="@+id/cart_button"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_above="@id/bottom_navigation"
-            android:onClick="@{handler::onShowCartButtonClick}"
+            android:background="@color/black"
             android:clickable="true"
+            android:onClick="@{handler::onShowCartButtonClick}"
             android:orientation="horizontal"
-            android:visibility="visible"
-            android:background="@color/black">
+            android:paddingTop="10dp"
+            android:translationY="55dp"
+            android:visibility="visible">
+
             <TextView
                 android:id="@+id/cart_button_total_price"
                 android:layout_width="wrap_content"
@@ -47,17 +52,17 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="25dp"
-                android:textColor="@color/white"
-                android:text="€0"/>
+                android:text="€0"
+                android:textColor="@color/white" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textStyle="bold"
+                android:text="View Cart"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:text="View Cart"/>
+                android:textStyle="bold" />
 
 
             <TextView
@@ -66,13 +71,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="30dp"
                 android:background="@drawable/rectangle_with_circular_border"
-                android:textColor="@color/white"
-                android:paddingTop="3dp"
-                android:paddingBottom="4dp"
                 android:paddingStart="5dp"
+                android:paddingTop="3dp"
                 android:paddingEnd="6dp"
-                android:layout_marginEnd="30dp" />
+                android:paddingBottom="4dp"
+                android:textColor="@color/white" />
 
         </RelativeLayout>
 
