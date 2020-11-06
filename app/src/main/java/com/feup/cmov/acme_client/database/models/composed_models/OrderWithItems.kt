@@ -43,11 +43,4 @@ data class OrderWithItems(
         }
         return price
     }
-
-    fun getOrderNumber(): String {
-//        val hash = MessageDigest.getInstance("MD5").digest(BigInteger.valueOf(order.order_id).toByteArray())
-//        val hashAsString = BigInteger(1, hash).toString(24)
-//        return hashAsString.substring(0, 4).toUpperCase()
-        return order.order_id.substring(0, 4).toUpperCase()
-    }
 }

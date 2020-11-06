@@ -12,6 +12,9 @@ data class Order (
     @PrimaryKey
     val order_id: String,
 
+    @ColumnInfo(name = "order_sequential_id")
+    val order_sequential_id: Long,
+
     @ColumnInfo(name = "createdAt")
     val createdAt: Date,
 

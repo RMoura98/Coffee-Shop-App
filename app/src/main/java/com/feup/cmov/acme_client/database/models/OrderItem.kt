@@ -16,7 +16,7 @@ data class OrderItem(
     val price: Float,
 
     @ColumnInfo(name = "order_id")
-    val order_id: Long,
+    val order_id: String,
 
     @ColumnInfo(name = "item_id")
     val item_id: Long

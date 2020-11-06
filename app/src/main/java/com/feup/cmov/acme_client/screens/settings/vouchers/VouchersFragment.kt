@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -44,7 +45,12 @@ class VouchersFragment : Fragment(), VouchersHandler {
 
         viewModel.getVouchers().observe(viewLifecycleOwner, Observer { vouchers ->
             adapter.data = vouchers
-            refreshLayout.isRefreshing = false
+        })
+
+        viewModel.is_refreshing.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(p0: Observable?, p1: Int) {
+                refreshLayout.isRefreshing = viewModel.is_refreshing.get()!!
+            }
         })
 
         return binding.root

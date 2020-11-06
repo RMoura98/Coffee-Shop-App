@@ -66,7 +66,10 @@ class OrderItemAdapter(private val ordersHistoryHandler: OrdersHistoryHandler) :
         private val orderCompletedIcon: ImageView = itemView.findViewById(R.id.orderCompletedIcon)
 
         fun bind(item: OrderWithItems, ordersHistoryHandler: OrdersHistoryHandler) {
-            mainText.text = "Order #${item.getOrderNumber()}"
+            if(item.order.completed)
+                mainText.text = "Order #${item.order.order_sequential_id}"
+            else
+                mainText.text = "Order Pending"
             orderDateText.text = item.formatCompletedDate()
 
             val numberOfItems = item.getNumberOfItemsBought()

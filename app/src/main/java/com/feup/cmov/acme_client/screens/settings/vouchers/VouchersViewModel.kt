@@ -1,5 +1,6 @@
 package com.feup.cmov.acme_client.screens.settings.vouchers
 
+import androidx.databinding.ObservableField
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -12,12 +13,16 @@ class VouchersViewModel @ViewModelInject constructor(
     private val vouchersRepository: VoucherRepository
 ) : ViewModel() {
 
+    public var is_refreshing = ObservableField(false)
+
     private var vouchers = vouchersRepository.getAllVouchers()
     fun getVouchers(): LiveData<List<Voucher>> = vouchers
 
     fun refreshVouchers() {
         viewModelScope.launch{
+            is_refreshing.set(true)
             vouchersRepository.refreshVouchers()
+            is_refreshing.set(false)
         }
     }
 }
