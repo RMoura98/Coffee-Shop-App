@@ -82,7 +82,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="15dp"
                         android:text="@string/see_menu"
-                        android:textColor="@color/green_800" />
+                        android:textColor="@color/green_800"/>
 
                 </RelativeLayout>
 
@@ -230,7 +230,6 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="15dp"
-                        android:text="- €1.00"
                         android:textColor="@color/black" />
 
                 </RelativeLayout>
@@ -258,7 +257,6 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="15dp"
-                        android:text="€10.25"
                         android:textColor="@color/black" />
 
                 </RelativeLayout>

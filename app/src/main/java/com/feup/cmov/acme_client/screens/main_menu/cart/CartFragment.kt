@@ -1,5 +1,6 @@
 package com.feup.cmov.acme_client.screens.main_menu.cart
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -31,6 +32,7 @@ class CartFragment() : Fragment(), CartHandler {
         this.mainMenu = mainMenu
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,8 +66,6 @@ class CartFragment() : Fragment(), CartHandler {
             binding.totalPriceNextButton.text = String.format(priceStringFormat, totalCartPrice) // isto tem de estar noutro sitio
         })
 
-
-
         viewModel.getSelectedVouchers().observe(viewLifecycleOwner, Observer observe@{ vouchersList ->
             if (vouchersList.isEmpty()) {
                 binding.noVoucherText.visibility = View.VISIBLE
@@ -77,6 +77,13 @@ class CartFragment() : Fragment(), CartHandler {
 
             voucherUsedAdapter.data = vouchersList
         })
+
+        val totalSavings = viewModel.getTotalSavings()
+        binding.voucherPrice.text = (if(totalSavings > 0) "- " else "") +
+                String.format(priceStringFormat, totalSavings)
+
+        val totalPrice = viewModel.getTotalCartPrice().value!! - totalSavings
+        binding.totalPrice.text = String.format(priceStringFormat, totalPrice)
 
         return binding.root
     }

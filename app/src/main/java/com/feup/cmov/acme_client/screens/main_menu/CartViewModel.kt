@@ -49,7 +49,7 @@ class CartViewModel @ViewModelInject constructor(
     fun getCartListLiveData(): LiveData<MutableMap<Long, CartItem>> = cartListLiveData
 
     fun addItemToCart(item: MenuItem) {
-
+        
         if (!cartList.containsKey(item.id))
             cartList[item.id] = CartItem(item)
         else
@@ -102,7 +102,7 @@ class CartViewModel @ViewModelInject constructor(
         selectedVouchers.postValue(selectedVouchers.value)
     }
 
-    fun calculateSavings(): Float {
+    fun getTotalSavings(): Float {
         var savings = 0f
 
         val free_coffee_vouchers = selectedVouchers.value!!.filter { it.voucherType == "free_coffee" }
