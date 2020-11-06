@@ -31,7 +31,10 @@ class VoucherSelectionAdapter(private val cartViewModel: CartViewModel, private 
         if(voucher.voucherType == "free_coffee" && !cartViewModel.isCoffeeInTheCart()){
             holder.bind(voucher, selectionHandler, cartViewModel.isVoucherSelected(voucher), "Not applicable.")
         }
-        else if(voucher.voucherType == "free_coffee" && cartViewModel.isAnyCoffeVoucherSelected() && !cartViewModel.isVoucherSelected(voucher)){
+        else if(voucher.voucherType == "free_coffee" && cartViewModel.countCoffeVouchersSelected() == cartViewModel.countCoffesInCart() && !cartViewModel.isVoucherSelected(voucher)){
+            holder.bind(voucher, selectionHandler, cartViewModel.isVoucherSelected(voucher), "Not enough coffes.")
+        }
+        else if(voucher.voucherType == "discount" && cartViewModel.isAnyDiscountVoucherSelected() && !cartViewModel.isVoucherSelected(voucher)){
             holder.bind(voucher, selectionHandler, cartViewModel.isVoucherSelected(voucher), "Maximum of 1.")
         }
         else {

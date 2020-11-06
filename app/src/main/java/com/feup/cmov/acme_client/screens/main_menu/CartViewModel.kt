@@ -49,7 +49,7 @@ class CartViewModel @ViewModelInject constructor(
     fun getCartListLiveData(): LiveData<MutableMap<Long, CartItem>> = cartListLiveData
 
     fun addItemToCart(item: MenuItem) {
-        
+
         if (!cartList.containsKey(item.id))
             cartList[item.id] = CartItem(item)
         else
@@ -94,8 +94,21 @@ class CartViewModel @ViewModelInject constructor(
         return cartItems.filter { it.item.name == "Coffee" }[0].item.price
     }
 
-    fun isAnyCoffeVoucherSelected(): Boolean {
-        return selectedVouchers.value!!.any { it.voucherType == "free_coffee" }
+    fun countCoffeVouchersSelected(): Long {
+        return selectedVouchers.value!!.count { it.voucherType == "free_coffee" }.toLong()
+    }
+
+    fun countCoffesInCart(): Long {
+        val cartItems = cartListLiveData.value!!.values
+        val coffeInCart = cartItems.filter { it.item.name == "Coffee" }
+        if(coffeInCart.size > 0)
+            return coffeInCart.get(0).quantity.toLong()
+        else
+            return 0L
+    }
+
+    fun isAnyDiscountVoucherSelected(): Boolean {
+        return selectedVouchers.value!!.any { it.voucherType == "discount" }
     }
 
     private fun notifyVoucherChanges() {
@@ -105,16 +118,15 @@ class CartViewModel @ViewModelInject constructor(
     fun getTotalSavings(): Float {
         var savings = 0f
 
-        val free_coffee_vouchers = selectedVouchers.value!!.filter { it.voucherType == "free_coffee" }
-        val free_item_vouchers = selectedVouchers.value!!.filter { it.voucherType == "discount" }
+        val free_coffee_vouchers = countCoffeVouchersSelected()
+        val free_item_vouchers = if(isAnyDiscountVoucherSelected()) 1 else 0
         val coffee_price = getCoffePrice()
 
         // Apply free coffe voucher
-        if(free_coffee_vouchers.isNotEmpty())
-            savings += coffee_price!!
+        savings += coffee_price!! * free_coffee_vouchers
+
         // Apply discount vouchers.
-        if(free_item_vouchers.isNotEmpty())
-            savings += (getTotalCartPrice().value!! - savings) - (0.95f).pow(free_item_vouchers.size) * (getTotalCartPrice().value!! - savings)
+        savings += (getTotalCartPrice().value!! - savings) - (0.95f).pow(free_item_vouchers) * (getTotalCartPrice().value!! - savings)
 
         return savings
     }

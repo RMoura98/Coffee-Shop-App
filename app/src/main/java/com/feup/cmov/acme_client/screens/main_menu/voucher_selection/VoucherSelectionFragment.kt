@@ -78,12 +78,15 @@ class VoucherSelectionFragment : Fragment(), VoucherSelectionHandler {
             viewModel.selectVoucher(voucher)
         else
             viewModel.unselectVoucher(voucher)
-        if(voucher.voucherType == "free_coffee") {
-            GlobalScope.launch {
-                withContext(Dispatchers.Main) {
-                    for((position, voucher) in adapter.data.withIndex()) {
-                        if(voucher.voucherType == "free_coffee")
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                for((position, voucher) in adapter.data.withIndex()) {
+                    if(voucher.voucherType == "discount")
+                        adapter.notifyItemChanged(position)
+                    else if(voucher.voucherType == "free_coffee") {
+                        if(viewModel.countCoffeVouchersSelected() == viewModel.countCoffesInCart() || viewModel.countCoffeVouchersSelected() == viewModel.countCoffesInCart() - 1) {
                             adapter.notifyItemChanged(position)
+                        }
                     }
                 }
             }
