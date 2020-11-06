@@ -1,7 +1,6 @@
 package com.feup.cmov.acme_client.screens.main_menu.cart
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +15,7 @@ import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentCartBinding
 import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
 import com.feup.cmov.acme_client.screens.main_menu.MainMenuFragment
+import com.feup.cmov.acme_client.screens.settings.vouchers.VoucherAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,7 +23,8 @@ class CartFragment() : Fragment(), CartHandler {
 
     private val viewModel: CartViewModel by activityViewModels()
     lateinit var binding: FragmentCartBinding
-    private var adapter: CartItemAdapter = CartItemAdapter()
+    private var cartItemAdapter: CartItemAdapter = CartItemAdapter()
+    private var voucherUsedAdapter: VoucherUsedAdapter = VoucherUsedAdapter()
     private lateinit var mainMenu: MainMenuFragment
 
     constructor(mainMenu: MainMenuFragment): this() {
@@ -54,13 +55,27 @@ class CartFragment() : Fragment(), CartHandler {
         binding.seeMenu.setOnClickListener { activity?.onBackPressed() }
 
         viewModel.getCartListLiveData().observe(viewLifecycleOwner, Observer observe@{ cartList ->
-            adapter.data = cartList.values.toList()
+            cartItemAdapter.data = cartList.values.toList()
         });
 
         val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.cart_price)
         viewModel.getTotalCartPrice().observe(viewLifecycleOwner, Observer observe@{ totalCartPrice ->
-            binding.totalPrice.text = String.format(priceStringFormat, totalCartPrice)
-            binding.totalPriceNextButton.text = String.format(priceStringFormat, totalCartPrice)
+            binding.subtotalPrice.text = String.format(priceStringFormat, totalCartPrice)
+            binding.totalPriceNextButton.text = String.format(priceStringFormat, totalCartPrice) // isto tem de estar noutro sitio
+        })
+
+
+
+        viewModel.getSelectedVouchers().observe(viewLifecycleOwner, Observer observe@{ vouchersList ->
+            if (vouchersList.isEmpty()) {
+                binding.noVoucherText.visibility = View.VISIBLE
+                binding.cartVoucherList.visibility = View.GONE
+            } else {
+                binding.noVoucherText.visibility = View.GONE
+                binding.cartVoucherList.visibility = View.VISIBLE
+            }
+
+            voucherUsedAdapter.data = vouchersList
         })
 
         return binding.root
@@ -68,7 +83,8 @@ class CartFragment() : Fragment(), CartHandler {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.mainMenuFragmentItemsList.adapter = adapter
+        binding.cartItemList.adapter = cartItemAdapter
+        binding.cartVoucherList.adapter = voucherUsedAdapter
     }
 
     override fun onAddVoucherClick(v: View) {

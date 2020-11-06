@@ -52,7 +52,7 @@ class VoucherSelectionAdapter(private val selectionHandler: VoucherSelectionHand
                 "free_coffee" ->  {
                     imageView.setImageResource(R.drawable.voucher_free_item)
                     voucherType.text = itemView.resources.getString(R.string.free_item)
-                    voucherCaption.text = itemView.resources.getString(R.string.free_item_coffe)
+                    voucherCaption.text = itemView.resources.getString(R.string.free_item_coffee)
                 }
             }
 

@@ -18,9 +18,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="55dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,6 +52,7 @@
                     </com.google.android.material.appbar.AppBarLayout>
 
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
                 <RelativeLayout
                     android:id="@+id/cart_button"
                     android:layout_width="match_parent"
@@ -60,8 +63,8 @@
                         android:id="@+id/your_order_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
                         android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
 
                         android:text="@string/your_order"
                         android:textAppearance="?attr/textAppearanceHeadline5"
@@ -73,29 +76,30 @@
                         android:id="@+id/see_menu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:textColor="@color/green_800"
-                        android:text="See Menu"/>
+                        android:layout_marginEnd="15dp"
+                        android:text="@string/see_menu"
+                        android:textColor="@color/green_800" />
 
                 </RelativeLayout>
 
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/mainMenuFragment_itemsList"
+                    android:id="@+id/cart_item_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="0dp"
-                    android:nestedScrollingEnabled="false"
                     android:layout_marginBottom="0dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"/>
+                    android:background="@android:color/darker_gray" />
 
                 <RelativeLayout
                     android:id="@+id/vouchers_section"
@@ -103,75 +107,157 @@
                     android:layout_height="55dp"
                     android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/vouchers_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_centerVertical="true"
+                    <TextView
+                        android:id="@+id/vouchers_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
 
-                    android:text="@string/your_vouchers"
-                    android:textAppearance="?attr/textAppearanceHeadline5"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                        android:text="@string/your_vouchers"
+                        android:textAppearance="?attr/textAppearanceHeadline5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/add_promo_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="15dp"
+                        android:text="@string/add_voucher"
+                        android:textColor="@color/green_800"
+                        android:onClick="@{handler::onAddVoucherClick}"/>
+
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cart_voucher_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <TextView
+                    android:id="@+id/no_voucher_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="10dp"
+                    android:gravity="center"
+                    android:text="Nothing to see here. Add a voucher!"
+                    android:visibility="visible" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@android:color/darker_gray" />
+
+                <RelativeLayout
+                    android:id="@+id/summary_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/summary_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+
+                        android:text="@string/order_summary"
+                        android:textAppearance="?attr/textAppearanceHeadline5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/promo_section"
+                    android:id="@+id/subtotal_price_section"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
-                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/subtotal_price_text"
                         android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="15dp"
-                        android:padding="10dp"
-                        android:layout_centerHorizontal="true"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/pill_shape"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:onClick="@{handler.onAddVoucherClick}"
-                        >
+                        android:layout_marginStart="15dp"
 
+                        android:text="@string/subtotal"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-
-                        <TextView
-                            android:id="@+id/add_promo_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:layout_margin="2dp"
-                            android:text="@string/add_voucher"
-                            android:textColor="@color/black"/>
-                    </LinearLayout>
-
-
-
+                    <TextView
+                        android:id="@+id/subtotal_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="15dp"
+                        android:text="€12.50"
+                        android:textColor="@color/black" />
 
                 </RelativeLayout>
-                <View
+
+                <RelativeLayout
+                    android:id="@+id/voucher_price_section"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"/>
+                    android:layout_height="35dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/voucher_price_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+
+                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/coffee_voucher"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/voucher_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="15dp"
+                        android:text="- €1.00"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+
 
                 <RelativeLayout
                     android:id="@+id/total_price_section"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
+                    android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/total_price_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
                         android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
 
                         android:text="@string/total_text"
                         android:textColor="@color/black"
@@ -183,11 +269,11 @@
                         android:id="@+id/total_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:textColor="@color/black"
-                        android:text="€12.50"/>
+                        android:layout_marginEnd="15dp"
+                        android:text="€10.25"
+                        android:textColor="@color/black" />
 
                 </RelativeLayout>
             </LinearLayout>
@@ -220,7 +306,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:textColor="@color/white"
-                android:text="€12.50"/>
+                android:text="€10.25"/>
 
         </RelativeLayout>
     </RelativeLayout>
