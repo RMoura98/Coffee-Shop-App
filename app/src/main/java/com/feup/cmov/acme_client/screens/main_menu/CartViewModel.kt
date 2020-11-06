@@ -10,6 +10,7 @@ import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.database.models.Voucher
 import com.feup.cmov.acme_client.repositories.MenuRepository
 import com.feup.cmov.acme_client.repositories.VoucherRepository
+import com.feup.cmov.acme_client.screens.main_menu.cart.VoucherUsedAdapter
 import com.feup.cmov.acme_client.utils.ShowFeedback
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -101,8 +102,8 @@ class CartViewModel @ViewModelInject constructor(
     fun countCoffesInCart(): Long {
         val cartItems = cartListLiveData.value!!.values
         val coffeInCart = cartItems.filter { it.item.name == "Coffee" }
-        if(coffeInCart.size > 0)
-            return coffeInCart.get(0).quantity.toLong()
+        if(coffeInCart.isNotEmpty())
+            return coffeInCart[0].quantity.toLong()
         else
             return 0L
     }
@@ -129,5 +130,18 @@ class CartViewModel @ViewModelInject constructor(
         savings += (getTotalCartPrice().value!! - savings) - (0.95f).pow(free_item_vouchers) * (getTotalCartPrice().value!! - savings)
 
         return savings
+    }
+
+    fun getSavingsForSelectedVouchers() : List<VoucherUsedAdapter.VoucherWithSavings> {
+        val voucherList = ArrayList<VoucherUsedAdapter.VoucherWithSavings>()
+        for (voucher in selectedVouchers.value!!) {
+            if(voucher.voucherType == "free_coffee")
+                voucherList.add(VoucherUsedAdapter.VoucherWithSavings(voucher, getCoffePrice()!!))
+            else if(voucher.voucherType == "discount") {
+                val savings = (getTotalCartPrice().value!! - getCoffePrice()!! * countCoffeVouchersSelected()) * 0.05F
+                voucherList.add(VoucherUsedAdapter.VoucherWithSavings(voucher, savings))
+            }
+        }
+        return voucherList
     }
 }

@@ -56,13 +56,13 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/used_caption"
+                android:id="@+id/savings_caption"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:gravity="center_vertical"
                 android:paddingEnd="10dp"
-                android:text="€1.50"
+                android:text="- €1.50"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="@color/grey_900" />
 

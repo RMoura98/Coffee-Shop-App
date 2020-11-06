@@ -75,7 +75,8 @@ class CartFragment() : Fragment(), CartHandler {
                 binding.cartVoucherList.visibility = View.VISIBLE
             }
 
-            voucherUsedAdapter.data = vouchersList
+            // Calculate Savings Per Voucher
+            voucherUsedAdapter.data = viewModel.getSavingsForSelectedVouchers()
         })
 
         val totalSavings = viewModel.getTotalSavings()

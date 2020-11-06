@@ -11,11 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.Voucher
+import org.w3c.dom.Text
 
 
 class VoucherUsedAdapter: RecyclerView.Adapter<VoucherUsedAdapter.ViewHolder>() {
 
-    var data = listOf<Voucher>()
+    data class VoucherWithSavings(val voucher: Voucher, val savings: Float)
+
+    var data = listOf<VoucherWithSavings>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -36,9 +39,10 @@ class VoucherUsedAdapter: RecyclerView.Adapter<VoucherUsedAdapter.ViewHolder>() 
         private val voucherType: TextView = itemView.findViewById(R.id.voucher_type)
         private val voucherCaption: TextView = itemView.findViewById(R.id.voucher_caption)
         private val imageView: ImageView =  itemView.findViewById(R.id.voucher_image)
+        private val savingsCaption: TextView = itemView.findViewById(R.id.savings_caption)
 
-        fun bind(voucher: Voucher) {
-            when (voucher.voucherType) {
+        fun bind(voucherWithSavings: VoucherWithSavings) {
+            when (voucherWithSavings.voucher.voucherType) {
                 "discount" -> {
                     imageView.setImageResource(R.drawable.voucher_discount)
                     voucherType.text = itemView.resources.getString(R.string.discount)
@@ -50,6 +54,9 @@ class VoucherUsedAdapter: RecyclerView.Adapter<VoucherUsedAdapter.ViewHolder>() 
                     voucherCaption.text = itemView.resources.getString(R.string.free_item_coffee)
                 }
             }
+
+            val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.cart_price)
+            savingsCaption.text = "- " + String.format(priceStringFormat, voucherWithSavings.savings)
         }
 
         companion object {
