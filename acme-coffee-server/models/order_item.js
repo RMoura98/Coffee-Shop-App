@@ -2,18 +2,14 @@ const Sequelize = require('sequelize');
 const db = require('../db');
 
 const Order = db.define('OrderItem', {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
+  order_item_id: {
     primaryKey: true,
+    type: Sequelize.UUID,
   },
   quantity: {
     type: Sequelize.INTEGER,
   },
-  priceBeforeDiscounts: {
-    type: Sequelize.FLOAT,
-  },
-  priceAfterDiscounts: {
+  price: {
     type: Sequelize.FLOAT,
   },
 });

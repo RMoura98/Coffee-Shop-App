@@ -4,5 +4,6 @@ const authentication = require('../../middleware/authentication');
 
 router.use('*', authentication);
 router.get('/', controller.getOrders);
+router.post('/', controller.placeOrder);
 
 module.exports = router;

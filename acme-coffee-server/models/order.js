@@ -2,10 +2,9 @@ const Sequelize = require('sequelize');
 const db = require('../db');
 
 const Order = db.define('Order', {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
+  order_id: {
     primaryKey: true,
+    type: Sequelize.UUID,
   },
   createdAt: Sequelize.DATE,
   updatedAt: Sequelize.DATE,
