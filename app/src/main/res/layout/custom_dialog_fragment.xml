@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_width="match_parent"
->
+    >
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,10 +86,81 @@
             />
         -->
     </LinearLayout>
-    <View
+
+    <RelativeLayout
+        android:id="@+id/subtotal_price_section"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="5dp"
-        android:background="@android:color/darker_gray"/>
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/plus_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="0dp"
+            android:layout_toStartOf="@+id/cart_button_number_items"
+            android:gravity="center"
+
+            android:padding="10dp"
+            android:text="-"
+            android:textColor="@color/red_800"
+            android:textSize="70sp" />
+
+        <TextView
+            android:id="@+id/minus_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/cart_button_number_items"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="+"
+            android:textColor="@color/green_500"
+            android:textSize="70sp" />
+
+        <TextView
+            android:id="@+id/cart_button_number_items"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/rectangle_with_circular_brown_border"
+            android:gravity="center"
+            android:paddingStart="9dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="6dp"
+            android:text="11"
+            android:textColor="@color/black"
+            android:textSize="50sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/next_button"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/action_sign_in" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="15dp"
+            android:text="Remove All"
+            android:textColor="@color/red_800" />
+
+    </RelativeLayout>
 
 </LinearLayout>
