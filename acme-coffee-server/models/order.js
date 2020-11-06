@@ -6,6 +6,10 @@ const Order = db.define('Order', {
     primaryKey: true,
     type: Sequelize.UUID,
   },
+  order_sequential_id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+  },
   createdAt: Sequelize.DATE,
   updatedAt: Sequelize.DATE,
   completed: {

@@ -7,7 +7,7 @@ async function getOrders(req, res) {
   try {
     const { uuid } = res.locals;
     const orders = await orderService.getOrders(uuid);
-    const ordersIDs = orders.map((item) => item.dataValues.id);
+    const ordersIDs = orders.map((item) => item.dataValues.order_id);
     const orderItems = await orderService.getOrderItems(ordersIDs);
 
     return res.status(200).json({
@@ -15,6 +15,7 @@ async function getOrders(req, res) {
       orderItems,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json(new ErrorMessage());
   }
 }

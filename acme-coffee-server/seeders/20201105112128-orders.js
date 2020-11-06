@@ -35,21 +35,20 @@ module.exports = {
         },
       ],
       {
-        returning: true
+        returning: true,
       });
-    orders.forEach(async (order) => {
+    const allItems = await Promise.all(orders.map(async (order) => {
       const numberOfItems = _.random(1, 6);
-      const items = _.range(1, numberOfItems).map((itemIndex) => {
-        return {
-          order_item_id: uuidv4(),
-          order_id: order.order_id,
-          item_id: itemIndex,
-          quantity: _.random(3),
-          price: _.random(1, 10, true)
-        };
-      });
-      await queryInterface.bulkInsert('OrderItems', items);
-    });
+      const items = _.range(1, numberOfItems).map((itemIndex) => ({
+        order_item_id: uuidv4(),
+        order_id: order.order_id,
+        item_id: itemIndex,
+        quantity: _.random(1, 5),
+        price: _.random(1, 10, true),
+      }));
+      return items;
+    }));
+    await queryInterface.bulkInsert('OrderItems', _.flatten(allItems));
   },
 
   down: async (queryInterface, Sequelize) => {
