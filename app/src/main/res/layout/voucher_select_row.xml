@@ -69,12 +69,14 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/checkBoxWrapper"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:gravity="center_vertical"
                 android:layout_marginRight="6dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <CheckBox
                     android:id="@+id/checkBox"
@@ -90,28 +92,27 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/can_use_wrapper"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/used_caption"
+                    android:id="@+id/can_use_caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:text="No expiration date"
+                    android:text="Not applicable."
                     android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="@color/grey_900"
-                    android:textSize="16sp" />
+                    android:textColor="@color/grey_900" />
 
                 <View
-                    android:id="@+id/used_bar"
+                    android:id="@+id/can_use_bar"
                     android:layout_width="5dp"
                     android:layout_height="match_parent"
-                    android:background="@color/green_500" />
+                    android:background="@color/red_500"/>
 
             </LinearLayout>
         </RelativeLayout>

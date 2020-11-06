@@ -93,7 +93,7 @@ class SignupFragment : Fragment(), SignupHandler {
     }
 
     fun signupSuccessful(v: View, user: User) {
-        Snackbar.make(v, "Register is success :D.", Snackbar.LENGTH_LONG).show();
+        //Snackbar.make(v, "Register is success :D.", Snackbar.LENGTH_LONG).show();
         v.findNavController()
             .navigate(R.id.action_signupFragment_to_mainMenuFragment)
     }

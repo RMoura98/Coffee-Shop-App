@@ -17,6 +17,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.collections.set
+import kotlin.math.pow
 
 
 class CartViewModel @ViewModelInject constructor(
@@ -77,13 +78,44 @@ class CartViewModel @ViewModelInject constructor(
         notifyVoucherChanges()
     }
 
+    fun isVoucherSelected(voucher: Voucher): Boolean {
+        return selectedVouchers.value!!.contains(voucher)
+    }
+
+    fun isCoffeeInTheCart(): Boolean {
+        val cartItems = cartListLiveData.value!!.values
+        return cartItems.any { it.item.name == "Coffee" }
+    }
+
+    fun getCoffePrice(): Float? {
+        if(!isCoffeeInTheCart())
+            return null
+        val cartItems = cartListLiveData.value!!.values
+        return cartItems.filter { it.item.name == "Coffee" }[0].item.price
+    }
+
+    fun isAnyCoffeVoucherSelected(): Boolean {
+        return selectedVouchers.value!!.any { it.voucherType == "free_coffee" }
+    }
+
     private fun notifyVoucherChanges() {
         selectedVouchers.postValue(selectedVouchers.value)
-        viewModelScope.launch {
-            withContext(Dispatchers.Main) {
-                delay(200)
-                ShowFeedback.makeSnackbar("New order total: 25.63€", Snackbar.LENGTH_SHORT)
-            }
-        }
+    }
+
+    fun calculateSavings(): Float {
+        var savings = 0f
+
+        val free_coffee_vouchers = selectedVouchers.value!!.filter { it.voucherType == "free_coffee" }
+        val free_item_vouchers = selectedVouchers.value!!.filter { it.voucherType == "discount" }
+        val coffee_price = getCoffePrice()
+
+        // Apply free coffe voucher
+        if(free_coffee_vouchers.isNotEmpty())
+            savings += coffee_price!!
+        // Apply discount vouchers.
+        if(free_item_vouchers.isNotEmpty())
+            savings += (getTotalCartPrice().value!! - savings) - (0.95f).pow(free_item_vouchers.size) * (getTotalCartPrice().value!! - savings)
+
+        return savings
     }
 }

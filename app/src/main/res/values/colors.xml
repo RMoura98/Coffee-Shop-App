@@ -22,6 +22,9 @@
     <color name="green_700">#388E3C</color>
     <color name="green_800">#2E7D32</color>
     <color name="green_900">#1B5E20</color>
+    <color name="orange_500">#FF9800</color>
+    <color name="orange_600">#FB8C00</color>
+    <color name="orange_700">#F57C00</color>
     <color name="orange_800">#FF8F00</color>
     <color name="red_500">#f44336</color>
     <color name="red_600">#e53935</color>
