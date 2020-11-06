@@ -1,6 +1,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => queryInterface.bulkInsert('MenuItems', [{
-    name: 'Caffe',
+    name: 'Coffee',
     imageName: 'coffee.png',
     category: 'Drinks',
     price: 1.20,
