@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">The Acme Coffee Terminal</string>
+    <string name="scan_order">Scan Order</string>
+    <string name="welcome">Welcome to the ACME Coffee experience!</string>
+</resources>
