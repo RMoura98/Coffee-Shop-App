@@ -1,6 +1,5 @@
-package com.feup.cmov.acme_client.screens.settings.vouchers
+package com.feup.cmov.acme_client.screens.main_menu.cart
 
-import android.content.res.Resources
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,7 @@ import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.Voucher
 
 
-class VoucherAdapter: RecyclerView.Adapter<VoucherAdapter.ViewHolder>() {
+class VoucherUsedAdapter: RecyclerView.Adapter<VoucherUsedAdapter.ViewHolder>() {
 
     var data = listOf<Voucher>()
         set(value) {
@@ -36,8 +35,6 @@ class VoucherAdapter: RecyclerView.Adapter<VoucherAdapter.ViewHolder>() {
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val voucherType: TextView = itemView.findViewById(R.id.voucher_type)
         private val voucherCaption: TextView = itemView.findViewById(R.id.voucher_caption)
-        private val usedCaption: TextView = itemView.findViewById(R.id.used_caption)
-        private val usedBar: View = itemView.findViewById(R.id.used_bar)
         private val imageView: ImageView =  itemView.findViewById(R.id.voucher_image)
 
         fun bind(voucher: Voucher) {
@@ -53,24 +50,13 @@ class VoucherAdapter: RecyclerView.Adapter<VoucherAdapter.ViewHolder>() {
                     voucherCaption.text = itemView.resources.getString(R.string.free_item_coffee)
                 }
             }
-
-            when (voucher.used) {
-                true -> {
-                    usedBar.setBackgroundColor(getColor(AcmeApplication.getAppContext(), R.color.red_500))
-                    usedCaption.text = "Used on 05-10-2020"
-                }
-                false -> {
-                    usedBar.setBackgroundColor(getColor(AcmeApplication.getAppContext(), R.color.green_500))
-                    usedCaption.text = "No expiration date"
-                }
-            }
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.voucher_row, parent, false)
+                    .inflate(R.layout.voucher_used_row, parent, false)
 
                 return ViewHolder(view)
             }

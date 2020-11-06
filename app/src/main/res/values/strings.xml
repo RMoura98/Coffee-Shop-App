@@ -39,7 +39,7 @@
 
     <!--Vouchers-->
     <string name="free_item">Free Item</string>
-    <string name="free_item_coffe">Coffee</string>
+    <string name="free_item_coffee">Coffee</string>
     <string name="discount">Discount</string>
     <string name="discount_5">5% Off</string>
 
@@ -51,5 +51,10 @@
     <string name="next">Next</string>
     <string name="add_voucher">+ Add Voucher</string>
     <string name="your_vouchers">Your Vouchers</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="see_menu">See Menu</string>
+    <string name="coffee_voucher">Coffee Voucher</string>
+    <string name="discount_voucher">Discount Voucher</string>
 
 </resources>
