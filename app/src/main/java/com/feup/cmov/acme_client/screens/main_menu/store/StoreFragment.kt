@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.marginTop
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.feup.cmov.acme_client.R
@@ -27,7 +28,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class StoreFragment() : Fragment(), StoreHandler {
 
-    private val cartViewModel: CartViewModel by viewModels()
+    private val cartViewModel: CartViewModel by activityViewModels()
     lateinit var binding: FragmentStoreBinding
     private lateinit var adapter: MenuItemAdapter
 
@@ -55,8 +56,8 @@ class StoreFragment() : Fragment(), StoreHandler {
     }
 
     override fun addToCartOnClick(item: MenuItem, x: Float, y: Float, drawable: Drawable) {
-        Log.e("StoreFragment X", x.toString())
-        Log.e("StoreFragment Y", y.toString())
+        // Log.e("StoreFragment X", x.toString())
+        // Log.e("StoreFragment Y", y.toString())
 
         val imageView = ImageView(this.context)
         imageView.layoutParams = LinearLayout.LayoutParams(120, 120) // value is in pixels

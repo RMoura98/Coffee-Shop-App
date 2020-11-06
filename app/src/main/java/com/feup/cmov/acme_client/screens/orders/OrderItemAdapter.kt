@@ -71,7 +71,7 @@ class OrderItemAdapter(private val ordersHistoryHandler: OrdersHistoryHandler) :
 
             val numberOfItems = item.getNumberOfItemsBought()
             val totalPrice = item.getTotalPriceAfterDiscount()
-            orderItemDescription.text = "${numberOfItems} items | ${String.format("%.2f", totalPrice)} €"
+            orderItemDescription.text = "${numberOfItems} ${if(numberOfItems == 1L) "item" else "items"} | ${String.format("%.2f", totalPrice)} €"
 
             if(item.order.completed) {
                 orderCompletedIcon.setImageResource(R.drawable.ic_baseline_check_circle_outline_24)

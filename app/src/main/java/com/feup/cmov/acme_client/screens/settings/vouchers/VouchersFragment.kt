@@ -18,7 +18,7 @@ class VouchersFragment : Fragment(), VouchersHandler {
 
     private val viewModel : VouchersViewModel by viewModels()
     lateinit var binding: FragmentVouchersBinding
-    private lateinit var adapter: VoucherAdapter
+    private var adapter: VoucherAdapter = VoucherAdapter()
     private lateinit var refreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
@@ -51,8 +51,8 @@ class VouchersFragment : Fragment(), VouchersHandler {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = VoucherAdapter()
         binding.vouchersFragmentVouchersList.adapter = adapter
+        binding.vouchersFragmentVouchersList.isNestedScrollingEnabled = false
 
         refreshLayout = view.findViewById(R.id.vouchersFragment_swipeRefresh)
 

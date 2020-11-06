@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -22,7 +23,7 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
 
     private lateinit var myContext: FragmentActivity
     private val viewModel: MainMenuViewModel by viewModels()
-    private val cartViewModel: CartViewModel by viewModels()
+    private val cartViewModel: CartViewModel by activityViewModels()
     lateinit var binding: FragmentMainMenuBinding
 
 

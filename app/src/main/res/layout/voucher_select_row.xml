@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/wrapperLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="75dp"
+    android:orientation="vertical"
+    android:layout_marginVertical="2dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingBottom="2dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/voucher_row_template"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="8dp"
+        android:orientation="horizontal"
+        android:padding="15dp"
+        app:cardElevation="2dp"
+        app:cardMaxElevation="2dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:translationY="-2dp">
+
+                <ImageView
+                    android:id="@+id/voucher_image"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="14dp"
+                    android:translationY="-2dp"
+                    app:srcCompat="@drawable/voucher_free_item" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp"
+                    android:translationX="-2dp">
+
+                    <TextView
+                        android:id="@+id/voucher_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="5dp"
+                        android:text="Free item"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:textColor="@color/grey_900" />
+
+                    <TextView
+                        android:id="@+id/voucher_caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:paddingHorizontal="5dp"
+                        android:text="Coffe"
+                        android:textAppearance="?attr/textAppearanceCaption" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical"
+                android:layout_marginRight="6dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkBox"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_gravity="center"
+                    android:background="?android:attr/listChoiceIndicatorMultiple"
+                    android:backgroundTint="@color/brown_600"
+                    android:button="@null"
+                    android:checked="false"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/used_caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="No expiration date"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="@color/grey_900"
+                    android:textSize="16sp" />
+
+                <View
+                    android:id="@+id/used_bar"
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/green_500" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

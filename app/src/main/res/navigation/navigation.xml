@@ -70,5 +70,13 @@
         android:id="@+id/cartFragment"
         android:name="com.feup.cmov.acme_client.screens.main_menu.cart.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartFragment_to_voucherSelectionFragment"
+            app:destination="@id/voucherSelectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/voucherSelectionFragment"
+        android:name="com.feup.cmov.acme_client.screens.settings.vouchers.VoucherSelectionFragment"
+        android:label="VoucherSelectionFragment" />
 </navigation>

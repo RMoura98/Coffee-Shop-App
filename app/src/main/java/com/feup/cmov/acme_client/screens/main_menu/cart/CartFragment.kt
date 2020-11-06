@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentCartBinding
@@ -19,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class CartFragment() : Fragment(), CartHandler {
 
-    private val viewModel: CartViewModel by viewModels()
+    private val viewModel: CartViewModel by activityViewModels()
     lateinit var binding: FragmentCartBinding
     private var adapter: CartItemAdapter = CartItemAdapter()
     private lateinit var mainMenu: MainMenuFragment
@@ -67,6 +69,11 @@ class CartFragment() : Fragment(), CartHandler {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.mainMenuFragmentItemsList.adapter = adapter
+    }
+
+    override fun onAddVoucherClick(v: View) {
+        v.findNavController()
+            .navigate(R.id.action_cartFragment_to_voucherSelectionFragment)
     }
 
 }
