@@ -22,6 +22,8 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp"
             android:layout_marginBottom="55dp">
 
             <LinearLayout
@@ -127,9 +129,9 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="15dp"
+                        android:onClick="@{handler::onAddVoucherClick}"
                         android:text="@string/add_voucher"
-                        android:textColor="@color/green_800"
-                        android:onClick="@{handler::onAddVoucherClick}"/>
+                        android:textColor="@color/green_800" />
 
 
                 </RelativeLayout>
@@ -188,17 +190,12 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/subtotal_price_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="15dp"
-
                         android:text="@string/subtotal"
-                        android:textColor="@color/black"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/subtotal_price"
@@ -219,18 +216,12 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/voucher_price_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-
+                        android:layout_centerVertical="true"
                         android:layout_marginStart="15dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="@string/coffee_voucher"
-                        android:textColor="@color/black"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:text="Your Savings"
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/voucher_price"
@@ -253,17 +244,12 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/total_price_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="15dp"
-
                         android:text="@string/total_text"
-                        android:textColor="@color/black"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/total_price"
