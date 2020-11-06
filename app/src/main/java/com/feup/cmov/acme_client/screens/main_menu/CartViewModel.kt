@@ -1,6 +1,7 @@
 package com.feup.cmov.acme_client.screens.main_menu
 
 import android.util.Log
+import androidx.databinding.ObservableField
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,8 +9,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.database.models.Voucher
+import com.feup.cmov.acme_client.network.Result
+import com.feup.cmov.acme_client.network.responses.PlaceOrderResponse
 import com.feup.cmov.acme_client.repositories.MenuRepository
+import com.feup.cmov.acme_client.repositories.OrderRepository
 import com.feup.cmov.acme_client.repositories.VoucherRepository
+import com.feup.cmov.acme_client.screens.login.LoginViewModel
 import com.feup.cmov.acme_client.screens.main_menu.cart.VoucherUsedAdapter
 import com.feup.cmov.acme_client.utils.ShowFeedback
 import com.google.android.material.snackbar.Snackbar
@@ -23,7 +28,8 @@ import kotlin.math.pow
 
 class CartViewModel @ViewModelInject constructor(
     menuRepository: MenuRepository,
-    vouchersRepository: VoucherRepository
+    vouchersRepository: VoucherRepository,
+    private val ordersRepository: OrderRepository
 ): ViewModel() {
 
     private var menuItems = menuRepository.getMenu()
@@ -33,6 +39,10 @@ class CartViewModel @ViewModelInject constructor(
     private var totalCartItems = MutableLiveData(0)
     private var totalCartPrice = MutableLiveData(0f)
     private val cartListLiveData = MutableLiveData<MutableMap<Long, CartItem>>()
+    private val orderPlacedResponse = MutableLiveData<Result<PlaceOrderResponse>>()
+
+    var isLoading = ObservableField<Boolean>(false)
+
 
     fun getMenuItems(): LiveData<List<MenuItem>> = menuItems
     fun getVouchers(): LiveData<List<Voucher>> = vouchers
@@ -40,6 +50,8 @@ class CartViewModel @ViewModelInject constructor(
 
     fun getTotalCartItems() : LiveData<Int> = totalCartItems
     fun getTotalCartPrice() : LiveData<Float> = totalCartPrice
+
+    fun isOrderPlaced(): LiveData<Result<PlaceOrderResponse>> = orderPlacedResponse
 
     data class CartItem(val item: MenuItem, var quantity: Int = 1) {
         fun plus(other: Int) {
@@ -124,7 +136,8 @@ class CartViewModel @ViewModelInject constructor(
         val coffee_price = getCoffePrice()
 
         // Apply free coffe voucher
-        savings += coffee_price!! * free_coffee_vouchers
+        if(free_coffee_vouchers > 0)
+            savings += coffee_price!! * free_coffee_vouchers
 
         // Apply discount vouchers.
         savings += (getTotalCartPrice().value!! - savings) - (0.95f).pow(free_item_vouchers) * (getTotalCartPrice().value!! - savings)
@@ -143,5 +156,15 @@ class CartViewModel @ViewModelInject constructor(
             }
         }
         return voucherList
+    }
+
+    // Returns `true` if order was successfully placed; false otherwise.
+    fun completeOrder() {
+        isLoading.set(true)
+        viewModelScope.launch {
+            val result = ordersRepository.completeOrder(cartList.values, selectedVouchers.value!!)
+            isLoading.set(false)
+            orderPlacedResponse.postValue(result)
+        }
     }
 }

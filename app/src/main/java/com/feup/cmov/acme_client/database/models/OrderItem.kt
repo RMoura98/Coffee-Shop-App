@@ -7,16 +7,13 @@ import androidx.room.*
 )
 data class OrderItem(
     @PrimaryKey
-    val id: Long,
+    val order_item_id: String,
 
     @ColumnInfo(name = "quantity")
     val quantity: Long,
 
-    @ColumnInfo(name = "price_before_discounts")
-    val priceBeforeDiscounts: Float,
-
-    @ColumnInfo(name = "price_after_discounts")
-    val priceAfterDiscounts: Float,
+    @ColumnInfo(name = "price")
+    val price: Float,
 
     @ColumnInfo(name = "order_id")
     val order_id: Long,

@@ -81,6 +81,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="15dp"
+                        android:background="?android:attr/selectableItemBackground"
                         android:text="@string/see_menu"
                         android:textColor="@color/green_800"/>
 
@@ -130,6 +131,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="15dp"
                         android:onClick="@{handler::onAddVoucherClick}"
+                        android:background="?android:attr/selectableItemBackground"
                         android:text="@string/add_voucher"
                         android:textColor="@color/green_800" />
 
@@ -270,6 +272,8 @@
             android:background="@color/black"
             android:orientation="horizontal"
             android:layout_alignParentBottom="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{handler.placeOrder}"
             >
 
             <TextView
@@ -293,6 +297,19 @@
                 android:text="€10.25"/>
 
         </RelativeLayout>
+        <ProgressBar
+            android:id="@+id/loginFragment_progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminateTint="@android:color/white"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_centerInParent="true"
+            android:padding="175dp"
+            android:background="@color/blackOverlay"
+            android:visibility="@{viewModel.isLoading}">
+
+        </ProgressBar>
+
     </RelativeLayout>
 
 </layout>

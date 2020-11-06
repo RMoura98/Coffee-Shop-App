@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat
 data class OrderWithItems(
     @Embedded val order: Order,
     @Relation(
-        parentColumn = "id",
+        parentColumn = "order_id",
         entityColumn = "order_id",
         entity = OrderItem::class
     )
@@ -36,17 +36,18 @@ data class OrderWithItems(
         return quantity
     }
 
-    fun getTotalPriceAfterDiscount(): Float {
+    fun getTotalPrice(): Float {
         var price = 0f
         for(orderItem in orderItems) {
-            price += orderItem.orderItem.priceAfterDiscounts
+            price += orderItem.orderItem.price
         }
         return price
     }
 
     fun getOrderNumber(): String {
-        val hash = MessageDigest.getInstance("MD5").digest(BigInteger.valueOf(order.id).toByteArray())
-        val hashAsString = BigInteger(1, hash).toString(24)
-        return hashAsString.substring(0, 4).toUpperCase()
+//        val hash = MessageDigest.getInstance("MD5").digest(BigInteger.valueOf(order.order_id).toByteArray())
+//        val hashAsString = BigInteger(1, hash).toString(24)
+//        return hashAsString.substring(0, 4).toUpperCase()
+        return order.order_id.substring(0, 4).toUpperCase()
     }
 }

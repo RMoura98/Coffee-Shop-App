@@ -70,7 +70,7 @@ class OrderItemAdapter(private val ordersHistoryHandler: OrdersHistoryHandler) :
             orderDateText.text = item.formatCompletedDate()
 
             val numberOfItems = item.getNumberOfItemsBought()
-            val totalPrice = item.getTotalPriceAfterDiscount()
+            val totalPrice = item.getTotalPrice()
             orderItemDescription.text = "${numberOfItems} ${if(numberOfItems == 1L) "item" else "items"} | ${String.format("%.2f", totalPrice)} €"
 
             if(item.order.completed) {

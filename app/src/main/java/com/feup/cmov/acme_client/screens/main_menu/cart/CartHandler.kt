@@ -4,4 +4,5 @@ import android.view.View
 
 interface CartHandler {
     fun onAddVoucherClick(v: View)
+    fun placeOrder(v: View)
 }

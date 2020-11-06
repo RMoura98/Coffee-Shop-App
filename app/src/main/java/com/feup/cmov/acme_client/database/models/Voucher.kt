@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
     tableName = "voucher_table"
 )
 data class Voucher(
-    @PrimaryKey()
+    @PrimaryKey
     val voucherId: String,
 
     @ColumnInfo(name = "user_id")

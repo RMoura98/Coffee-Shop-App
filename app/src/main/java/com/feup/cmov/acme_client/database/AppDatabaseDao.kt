@@ -2,8 +2,7 @@ package com.feup.cmov.acme_client.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import androidx.room.OnConflictStrategy.ABORT
-import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.OnConflictStrategy.*
 import com.feup.cmov.acme_client.database.models.*
 import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
 
@@ -34,7 +33,7 @@ interface AppDatabaseDao {
     @Query("SELECT * FROM voucher_table WHERE user_id = :userId")
     fun getAllVouchers(userId: String): LiveData<List<Voucher>>
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = IGNORE)
     fun createVouchers(vouchers: List<Voucher>): Void
 
     // Orders

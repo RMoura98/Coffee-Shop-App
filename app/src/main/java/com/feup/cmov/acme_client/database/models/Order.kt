@@ -10,7 +10,7 @@ import java.util.*
 @TypeConverters(DateConverter::class)
 data class Order (
     @PrimaryKey
-    val id: Long,
+    val order_id: String,
 
     @ColumnInfo(name = "createdAt")
     val createdAt: Date,
@@ -20,6 +20,9 @@ data class Order (
 
     @ColumnInfo(name = "completed")
     val completed: Boolean,
+
+    @ColumnInfo(name = "total")
+    val total: Float,
 
     @ColumnInfo(name = "userId")
     val userId: String

@@ -48,7 +48,7 @@
     <string name="credentials">Credentials</string>
     <string name="cart_price">€%.2f</string>
     <string name="total_text">Total</string>
-    <string name="next">Next</string>
+    <string name="next">Place Order</string>
     <string name="add_voucher">+ Add Voucher</string>
     <string name="your_vouchers">Your Vouchers</string>
     <string name="order_summary">Order Summary</string>

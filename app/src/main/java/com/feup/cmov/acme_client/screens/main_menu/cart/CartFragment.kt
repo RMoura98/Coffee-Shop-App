@@ -9,14 +9,18 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentCartBinding
+import com.feup.cmov.acme_client.network.Result
+import com.feup.cmov.acme_client.network.responses.PlaceOrderResponse
 import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
 import com.feup.cmov.acme_client.screens.main_menu.MainMenuFragment
 import com.feup.cmov.acme_client.screens.settings.vouchers.VoucherAdapter
+import com.feup.cmov.acme_client.utils.ShowFeedback
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -79,6 +83,23 @@ class CartFragment() : Fragment(), CartHandler {
             voucherUsedAdapter.data = viewModel.getSavingsForSelectedVouchers()
         })
 
+        viewModel.isOrderPlaced().observe(viewLifecycleOwner, Observer observe@{ result ->
+            if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED)
+                return@observe
+
+            when(result) {
+                is Result.Success -> {
+                    ShowFeedback.makeSnackbar("Success")
+                }
+                is Result.NetworkError -> {
+                    ShowFeedback.makeSnackbar("No internet connection")
+                }
+                is Result.OtherError -> {
+                    ShowFeedback.makeSnackbar(result.msg)
+                }
+            }
+        });
+
         val totalSavings = viewModel.getTotalSavings()
         binding.voucherPrice.text = (if(totalSavings > 0) "- " else "") +
                 String.format(priceStringFormat, totalSavings)
@@ -98,6 +119,10 @@ class CartFragment() : Fragment(), CartHandler {
     override fun onAddVoucherClick(v: View) {
         v.findNavController()
             .navigate(R.id.action_cartFragment_to_voucherSelectionFragment)
+    }
+
+    override fun placeOrder(v: View) {
+        viewModel.completeOrder()
     }
 
 }
