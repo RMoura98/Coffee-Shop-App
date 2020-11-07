@@ -16,7 +16,7 @@
 
         <variable
             name="cartViewModel"
-            type="com.feup.cmov.acme_client.screens.main_menu.CartViewModel" />
+            type="com.feup.cmov.acme_client.screens.checkout.CartViewModel" />
 
     </data>
 

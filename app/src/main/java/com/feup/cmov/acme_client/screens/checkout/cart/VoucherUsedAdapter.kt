@@ -1,17 +1,14 @@
-package com.feup.cmov.acme_client.screens.main_menu.cart
+package com.feup.cmov.acme_client.screens.checkout.cart
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.Voucher
-import org.w3c.dom.Text
 
 
 class VoucherUsedAdapter: RecyclerView.Adapter<VoucherUsedAdapter.ViewHolder>() {

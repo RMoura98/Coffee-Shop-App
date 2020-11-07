@@ -1,7 +1,6 @@
-package com.feup.cmov.acme_client.screens.main_menu
+package com.feup.cmov.acme_client.screens.checkout
 
 import android.util.Log
-import androidx.databinding.ObservableField
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,14 +13,8 @@ import com.feup.cmov.acme_client.network.responses.PlaceOrderResponse
 import com.feup.cmov.acme_client.repositories.MenuRepository
 import com.feup.cmov.acme_client.repositories.OrderRepository
 import com.feup.cmov.acme_client.repositories.VoucherRepository
-import com.feup.cmov.acme_client.screens.login.LoginViewModel
-import com.feup.cmov.acme_client.screens.main_menu.cart.VoucherUsedAdapter
-import com.feup.cmov.acme_client.utils.ShowFeedback
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import com.feup.cmov.acme_client.screens.checkout.cart.VoucherUsedAdapter
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.collections.set
 import kotlin.math.pow
 
@@ -40,9 +33,6 @@ class CartViewModel @ViewModelInject constructor(
     private var totalCartPrice = MutableLiveData(0f)
     private val cartListLiveData = MutableLiveData<MutableMap<Long, CartItem>>()
     private val orderPlacedResponse = MutableLiveData<Result<PlaceOrderResponse>>()
-
-    var isLoading = ObservableField<Boolean>(false)
-
 
     fun getMenuItems(): LiveData<List<MenuItem>> = menuItems
     fun getVouchers(): LiveData<List<Voucher>> = vouchers
@@ -64,7 +54,10 @@ class CartViewModel @ViewModelInject constructor(
     fun addItemToCart(item: MenuItem) {
 
         if (!cartList.containsKey(item.id))
-            cartList[item.id] = CartItem(item)
+            cartList[item.id] =
+                CartItem(
+                    item
+                )
         else
             cartList[item.id]!!.plus(1)
 
@@ -159,11 +152,9 @@ class CartViewModel @ViewModelInject constructor(
     }
 
     // Returns `true` if order was successfully placed; false otherwise.
-    fun completeOrder() {
-        isLoading.set(true)
+    fun placeOrder() {
         viewModelScope.launch {
-            val result = ordersRepository.completeOrder(cartList.values, selectedVouchers.value!!)
-            isLoading.set(false)
+            val result = ordersRepository.placeOrder(cartList.values, selectedVouchers.value!!)
             orderPlacedResponse.postValue(result)
         }
     }

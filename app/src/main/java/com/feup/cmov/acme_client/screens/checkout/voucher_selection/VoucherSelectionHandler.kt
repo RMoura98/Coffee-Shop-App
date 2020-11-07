@@ -1,4 +1,4 @@
-package com.feup.cmov.acme_client.screens.main_menu.voucher_selection
+package com.feup.cmov.acme_client.screens.checkout.voucher_selection
 
 import com.feup.cmov.acme_client.database.models.Voucher
 

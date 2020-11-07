@@ -1,24 +1,20 @@
-package com.feup.cmov.acme_client.screens.main_menu.store
+package com.feup.cmov.acme_client.screens.store
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
-import android.view.DragAndDropPermissions
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.view.marginTop
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.databinding.FragmentStoreBinding
-import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
+import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

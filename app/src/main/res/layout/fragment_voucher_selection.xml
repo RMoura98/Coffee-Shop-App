@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".screens.main_menu.voucher_selection.VoucherSelectionFragment">
+    tools:context=".screens.checkout.voucher_selection.VoucherSelectionFragment">
 
     <data>
         <variable
             name="handler"
-            type="com.feup.cmov.acme_client.screens.main_menu.voucher_selection.VoucherSelectionHandler" />
+            type="com.feup.cmov.acme_client.screens.checkout.voucher_selection.VoucherSelectionHandler" />
     </data>
 
     <LinearLayout

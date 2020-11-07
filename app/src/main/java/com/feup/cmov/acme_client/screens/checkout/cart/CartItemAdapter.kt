@@ -1,4 +1,4 @@
-package com.feup.cmov.acme_client.screens.main_menu.cart
+package com.feup.cmov.acme_client.screens.checkout.cart
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
-import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
-import com.squareup.picasso.Picasso
+import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 
 class CartItemAdapter() : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
 

@@ -1,4 +1,4 @@
-package com.feup.cmov.acme_client.screens.main_menu.store
+package com.feup.cmov.acme_client.screens.store
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable

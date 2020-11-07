@@ -68,7 +68,7 @@
         tools:layout="@layout/fragment_vouchers" />
     <fragment
         android:id="@+id/cartFragment"
-        android:name="com.feup.cmov.acme_client.screens.main_menu.cart.CartFragment"
+        android:name="com.feup.cmov.acme_client.screens.checkout.cart.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" >
         <action

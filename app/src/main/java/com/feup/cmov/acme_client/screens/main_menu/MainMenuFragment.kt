@@ -15,6 +15,7 @@ import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentMainMenuBinding
+import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 

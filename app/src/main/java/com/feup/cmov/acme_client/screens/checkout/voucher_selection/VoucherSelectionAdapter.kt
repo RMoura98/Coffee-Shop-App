@@ -1,18 +1,13 @@
-package com.feup.cmov.acme_client.screens.main_menu.voucher_selection
+package com.feup.cmov.acme_client.screens.checkout.voucher_selection
 
-import android.content.res.Resources
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
-import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.Voucher
-import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
-import org.w3c.dom.Text
+import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 
 
 class VoucherSelectionAdapter(private val cartViewModel: CartViewModel, private val selectionHandler: VoucherSelectionHandler) :

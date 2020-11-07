@@ -1,23 +1,19 @@
 package com.feup.cmov.acme_client.screens.settings.vouchers
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.Voucher
 import com.feup.cmov.acme_client.databinding.FragmentVoucherSelectionBinding
-import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
-import com.feup.cmov.acme_client.screens.main_menu.voucher_selection.VoucherSelectionAdapter
-import com.feup.cmov.acme_client.screens.main_menu.voucher_selection.VoucherSelectionHandler
-import com.feup.cmov.acme_client.utils.ShowFeedback
-import com.google.android.material.snackbar.Snackbar
+import com.feup.cmov.acme_client.screens.checkout.CartViewModel
+import com.feup.cmov.acme_client.screens.checkout.voucher_selection.VoucherSelectionAdapter
+import com.feup.cmov.acme_client.screens.checkout.voucher_selection.VoucherSelectionHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

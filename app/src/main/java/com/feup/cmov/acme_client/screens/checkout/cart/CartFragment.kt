@@ -1,4 +1,4 @@
-package com.feup.cmov.acme_client.screens.main_menu.cart
+package com.feup.cmov.acme_client.screens.checkout.cart
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -16,10 +15,8 @@ import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentCartBinding
 import com.feup.cmov.acme_client.network.Result
-import com.feup.cmov.acme_client.network.responses.PlaceOrderResponse
-import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
+import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 import com.feup.cmov.acme_client.screens.main_menu.MainMenuFragment
-import com.feup.cmov.acme_client.screens.settings.vouchers.VoucherAdapter
 import com.feup.cmov.acme_client.utils.ShowFeedback
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,10 +28,6 @@ class CartFragment() : Fragment(), CartHandler {
     private var cartItemAdapter: CartItemAdapter = CartItemAdapter()
     private var voucherUsedAdapter: VoucherUsedAdapter = VoucherUsedAdapter()
     private lateinit var mainMenu: MainMenuFragment
-
-    constructor(mainMenu: MainMenuFragment): this() {
-        this.mainMenu = mainMenu
-    }
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -122,7 +115,7 @@ class CartFragment() : Fragment(), CartHandler {
     }
 
     override fun placeOrder(v: View) {
-        viewModel.completeOrder()
+        viewModel.placeOrder()
     }
 
 }

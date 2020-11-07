@@ -3,18 +3,14 @@ package com.feup.cmov.acme_client.repositories
 import androidx.lifecycle.LiveData
 import com.feup.cmov.acme_client.utils.PreferencesUtils
 import com.feup.cmov.acme_client.database.AppDatabaseDao
-import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.database.models.Voucher
 import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
 import com.feup.cmov.acme_client.network.Result
 import com.feup.cmov.acme_client.network.WebService
 import com.feup.cmov.acme_client.network.requests.PlaceOrderRequest
-import com.feup.cmov.acme_client.network.requests.SignupRequest
 import com.feup.cmov.acme_client.network.responses.FetchOrdersResponse
 import com.feup.cmov.acme_client.network.responses.PlaceOrderResponse
-import com.feup.cmov.acme_client.network.responses.SignupResponse
-import com.feup.cmov.acme_client.screens.main_menu.CartViewModel
-import com.feup.cmov.acme_client.utils.Security
+import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 import com.feup.cmov.acme_client.utils.ShowFeedback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -56,7 +52,7 @@ class OrderRepository
     }
 
     // Register user on the platform.
-    suspend fun completeOrder(
+    suspend fun placeOrder(
         cartItems: Collection<CartViewModel.CartItem>,
         vouchers: Collection<Voucher>
     ): Result<PlaceOrderResponse> {

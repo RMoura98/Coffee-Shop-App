@@ -2,17 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".screens.main_menu.store.StoreFragment">
+    tools:context=".screens.store.StoreFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.feup.cmov.acme_client.screens.main_menu.CartViewModel" />
+            type="com.feup.cmov.acme_client.screens.checkout.CartViewModel" />
 
         <variable
             name="handler"
-            type="com.feup.cmov.acme_client.screens.main_menu.store.StoreHandler" />
+            type="com.feup.cmov.acme_client.screens.store.StoreHandler" />
 
     </data>
 
