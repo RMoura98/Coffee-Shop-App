@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_mainMenuFragment_to_cartFragment"
             app:destination="@id/cartFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_viewOrderFragment"
+            app:destination="@id/viewOrderFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -74,9 +77,27 @@
         <action
             android:id="@+id/action_cartFragment_to_voucherSelectionFragment"
             app:destination="@id/voucherSelectionFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_orderPlacedFragment"
+            app:destination="@id/orderPlacedFragment" />
     </fragment>
     <fragment
         android:id="@+id/voucherSelectionFragment"
         android:name="com.feup.cmov.acme_client.screens.settings.vouchers.VoucherSelectionFragment"
         android:label="VoucherSelectionFragment" />
+    <fragment
+        android:id="@+id/orderPlacedFragment"
+        android:name="com.feup.cmov.acme_client.screens.checkout.order_placed.OrderPlacedFragment"
+        android:label="OrderPlacedFragment" >
+        <action
+            android:id="@+id/action_orderPlacedFragment_to_viewOrderFragment"
+            app:destination="@id/viewOrderFragment"
+            app:popUpTo="@id/mainMenuFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewOrderFragment"
+        android:name="com.feup.cmov.acme_client.screens.orders.view_order.ViewOrderFragment"
+        android:label="fragment_view_order"
+        tools:layout="@layout/fragment_view_order" />
 </navigation>

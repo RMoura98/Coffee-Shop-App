@@ -272,6 +272,8 @@
             android:background="@color/black"
             android:orientation="horizontal"
             android:layout_alignParentBottom="true"
+            android:onClick="@{handler.placeOrder}"
+            android:foreground="?attr/selectableItemBackground"
             >
 
             <TextView
@@ -295,6 +297,21 @@
                 android:text="€10.25"/>
 
         </RelativeLayout>
+
+
+        <ProgressBar
+            android:id="@+id/loginFragment_progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminateTint="@android:color/white"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_centerInParent="true"
+            android:padding="175dp"
+            android:background="@color/blackOverlay"
+            android:visibility="@{viewModel.isLoading}">
+
+        </ProgressBar>
+
     </RelativeLayout>
 
 </layout>

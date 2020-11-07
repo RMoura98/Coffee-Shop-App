@@ -8,7 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
+import com.feup.cmov.acme_client.database.models.Order
 import com.feup.cmov.acme_client.databinding.FragmentOrdersHistoryBinding
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,17 +70,40 @@ class OrdersHistoryFragment : Fragment(), OrdersHistoryHandler {
             }
         })
 
+        if(nextTabIndex != null) {
+            if(nextTabIndex == 0) {
+                binding.orderTabLayout.getTabAt(0)!!.select()
+                adapter.showing == OrderItemAdapter.SHOWING.COMPLETED_ORDERS
+            }
+            else if (nextTabIndex == 1) {
+                binding.orderTabLayout.getTabAt(1)!!.select()
+                adapter.showing == OrderItemAdapter.SHOWING.ONGOING_ORDERS
+            }
+
+            nextTabIndex = null
+        }
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.orderHistoryOrdersItems.adapter = adapter
+        binding.orderHistoryOrdersItems.isNestedScrollingEnabled = false
 
         if(adapter.showing == OrderItemAdapter.SHOWING.COMPLETED_ORDERS)
             binding.orderTabLayout.getTabAt(0)!!.select()
         else
             binding.orderTabLayout.getTabAt(1)!!.select()
+    }
+
+    override fun viewOrder(v: View, orderId: String) {
+        v.findNavController()
+            .navigate(R.id.action_mainMenuFragment_to_viewOrderFragment)
+    }
+
+    companion object {
+        var nextTabIndex: Int? = null
     }
 
 }

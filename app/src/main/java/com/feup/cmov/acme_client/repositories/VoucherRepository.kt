@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.feup.cmov.acme_client.utils.PreferencesUtils
 import com.feup.cmov.acme_client.database.AppDatabaseDao
 import com.feup.cmov.acme_client.database.models.Voucher
+import com.feup.cmov.acme_client.database.models.composed_models.VoucherWithOrder
 import com.feup.cmov.acme_client.network.WebService
 import com.feup.cmov.acme_client.utils.ShowFeedback
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,17 @@ class VoucherRepository
         val (_, uuid) = PreferencesUtils.getLoggedInUser()
 
         val cached = appDatabaseDao.getAllVouchers(uuid!!)
+        GlobalScope.launch {
+            refreshVouchers()
+        }
+
+        return cached
+    }
+
+    fun getAllVouchersWithOrders(): LiveData<List<VoucherWithOrder>> {
+        val (_, uuid) = PreferencesUtils.getLoggedInUser()
+
+        val cached = appDatabaseDao.getAllVouchersWithOrder(uuid!!)
         GlobalScope.launch {
             refreshVouchers()
         }

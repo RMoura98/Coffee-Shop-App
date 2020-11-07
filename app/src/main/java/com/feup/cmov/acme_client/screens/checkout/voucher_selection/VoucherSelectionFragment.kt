@@ -43,7 +43,7 @@ class VoucherSelectionFragment : Fragment(), VoucherSelectionHandler {
         binding.handler = this
 
         viewModel.getVouchers().observe(viewLifecycleOwner, Observer { vouchers ->
-            adapter.data = vouchers.filter { voucher -> !voucher.used }
+            adapter.data = vouchers.filter { voucher -> !voucher.hasBeenUsed() }
         })
 
         val toolbar = binding.topAppBar

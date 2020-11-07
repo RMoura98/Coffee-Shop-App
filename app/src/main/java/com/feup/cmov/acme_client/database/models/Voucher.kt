@@ -17,6 +17,10 @@ data class Voucher(
     @ColumnInfo(name = "voucher_type")
     val voucherType: String,
 
-    @ColumnInfo(name = "used")
-    val used: Boolean
-)
+    @ColumnInfo(name = "used_on_order_id")
+    val used_on_order_id: String?
+) {
+    fun hasBeenUsed(): Boolean {
+        return used_on_order_id != null
+    }
+}

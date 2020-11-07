@@ -2,6 +2,8 @@ package com.feup.cmov.acme_client.database.models
 
 import androidx.room.*
 import com.feup.cmov.acme_client.database.type_converters.DateConverter
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Entity(
@@ -11,6 +13,9 @@ import java.util.*
 data class Order (
     @PrimaryKey
     val order_id: String,
+
+    @ColumnInfo(name = "userId")
+    val userId: String,
 
     @ColumnInfo(name = "order_sequential_id")
     val order_sequential_id: Long,
@@ -25,8 +30,15 @@ data class Order (
     val completed: Boolean,
 
     @ColumnInfo(name = "total")
-    val total: Float,
+    val total: Float
+) {
+    fun formatCreationDate(): String {
+        val df: DateFormat = SimpleDateFormat("dd/MM/YYYY HH:mm")
+        return df.format(updatedAt)
+    }
 
-    @ColumnInfo(name = "userId")
-    val userId: String
-)
+    fun formatCompletedDate(): String {
+        val df: DateFormat = SimpleDateFormat("dd/MM/YYYY HH:mm")
+        return df.format(createdAt)
+    }
+}

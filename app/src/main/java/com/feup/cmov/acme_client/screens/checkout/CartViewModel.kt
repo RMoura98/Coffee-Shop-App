@@ -1,6 +1,7 @@
 package com.feup.cmov.acme_client.screens.checkout
 
 import android.util.Log
+import androidx.databinding.ObservableField
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +15,7 @@ import com.feup.cmov.acme_client.repositories.MenuRepository
 import com.feup.cmov.acme_client.repositories.OrderRepository
 import com.feup.cmov.acme_client.repositories.VoucherRepository
 import com.feup.cmov.acme_client.screens.checkout.cart.VoucherUsedAdapter
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.collections.set
 import kotlin.math.pow
@@ -21,7 +23,7 @@ import kotlin.math.pow
 
 class CartViewModel @ViewModelInject constructor(
     menuRepository: MenuRepository,
-    vouchersRepository: VoucherRepository,
+    private val vouchersRepository: VoucherRepository,
     private val ordersRepository: OrderRepository
 ): ViewModel() {
 
@@ -32,7 +34,10 @@ class CartViewModel @ViewModelInject constructor(
     private var totalCartItems = MutableLiveData(0)
     private var totalCartPrice = MutableLiveData(0f)
     private val cartListLiveData = MutableLiveData<MutableMap<Long, CartItem>>()
-    private val orderPlacedResponse = MutableLiveData<Result<PlaceOrderResponse>>()
+    private val orderPlaced = MutableLiveData<Boolean>()
+
+    var isLoading = ObservableField<Boolean>(false)
+    private val cartList = mutableMapOf<Long, CartItem>()
 
     fun getMenuItems(): LiveData<List<MenuItem>> = menuItems
     fun getVouchers(): LiveData<List<Voucher>> = vouchers
@@ -41,14 +46,14 @@ class CartViewModel @ViewModelInject constructor(
     fun getTotalCartItems() : LiveData<Int> = totalCartItems
     fun getTotalCartPrice() : LiveData<Float> = totalCartPrice
 
-    fun isOrderPlaced(): LiveData<Result<PlaceOrderResponse>> = orderPlacedResponse
+    fun isOrderPlaced(): LiveData<Boolean> = orderPlaced
+
 
     data class CartItem(val item: MenuItem, var quantity: Int = 1) {
         fun plus(other: Int) {
             quantity += other
         }
     }
-    private val cartList = mutableMapOf<Long, CartItem>()
     fun getCartListLiveData(): LiveData<MutableMap<Long, CartItem>> = cartListLiveData
 
     fun addItemToCart(item: MenuItem) {
@@ -144,7 +149,7 @@ class CartViewModel @ViewModelInject constructor(
             if(voucher.voucherType == "free_coffee")
                 voucherList.add(VoucherUsedAdapter.VoucherWithSavings(voucher, getCoffePrice()!!))
             else if(voucher.voucherType == "discount") {
-                val savings = (getTotalCartPrice().value!! - getCoffePrice()!! * countCoffeVouchersSelected()) * 0.05F
+                val savings = (getTotalCartPrice().value!! - (getCoffePrice() ?: 0f) * countCoffeVouchersSelected()) * 0.05F
                 voucherList.add(VoucherUsedAdapter.VoucherWithSavings(voucher, savings))
             }
         }
@@ -153,9 +158,25 @@ class CartViewModel @ViewModelInject constructor(
 
     // Returns `true` if order was successfully placed; false otherwise.
     fun placeOrder() {
+        // Prevent user from clicking button multiple times.
+        if(isLoading.get()!!)
+            return
         viewModelScope.launch {
-            val result = ordersRepository.placeOrder(cartList.values, selectedVouchers.value!!)
-            orderPlacedResponse.postValue(result)
+            isLoading.set(true)
+            delay(500)
+            ordersRepository.placeOrder(cartList.values, selectedVouchers.value!!, totalCartPrice.value!! - getTotalSavings())
+            orderPlaced.postValue(true)
+            isLoading.set(false)
         }
+    }
+
+    fun clearViewModel() {
+        vouchers = vouchersRepository.getAllVouchers()
+        selectedVouchers.postValue(ArrayList())
+        totalCartItems.postValue(0)
+        totalCartPrice.postValue(0f)
+        cartList.clear()
+        cartListLiveData.postValue(cartList)
+        orderPlaced.postValue(false)
     }
 }

@@ -56,5 +56,7 @@
     <string name="see_menu">See Menu</string>
     <string name="coffee_voucher">Coffee Voucher</string>
     <string name="discount_voucher">Discount Voucher</string>
+    <string name="proceed_to_counter">Please proceed to the counter of ACME Coffee Shop.</string>
+    <string name="order_placed_success">Order has been successfully placed.</string>
 
 </resources>

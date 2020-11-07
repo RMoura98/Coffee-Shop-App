@@ -52,14 +52,21 @@
             </com.google.android.material.tabs.TabLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/orderHistory_ordersItems"
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="0dp"
-            android:nestedScrollingEnabled="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:scrollbars="vertical">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/orderHistory_ordersItems"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 </layout>

@@ -3,6 +3,8 @@ package com.feup.cmov.acme_client.repositories
 import androidx.lifecycle.LiveData
 import com.feup.cmov.acme_client.utils.PreferencesUtils
 import com.feup.cmov.acme_client.database.AppDatabaseDao
+import com.feup.cmov.acme_client.database.models.Order
+import com.feup.cmov.acme_client.database.models.OrderItem
 import com.feup.cmov.acme_client.database.models.Voucher
 import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
 import com.feup.cmov.acme_client.network.Result
@@ -17,7 +19,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class OrderRepository
 @Inject constructor(
@@ -51,28 +55,47 @@ class OrderRepository
         }
     }
 
-    // Register user on the platform.
+    // Place order locally.
     suspend fun placeOrder(
         cartItems: Collection<CartViewModel.CartItem>,
-        vouchers: Collection<Voucher>
-    ): Result<PlaceOrderResponse> {
+        vouchers: Collection<Voucher>,
+        total: Float
+    ) {
         return withContext(Dispatchers.IO) {
-            try {
-                // Create Request
-                val request = PlaceOrderRequest(
-                    cartItems,
-                    vouchers
+            val orderId = UUID.randomUUID().toString()
+            val order = Order(
+                order_id = orderId,
+                order_sequential_id = 0,
+                createdAt = Date(),
+                updatedAt = Date(),
+                total = total,
+                completed = false,
+                userId = PreferencesUtils.getLoggedInUser().second!!
+            )
+            appDatabaseDao.createOrder(order)
+            // Mark vouchers as used.
+            appDatabaseDao.markVouchersAsUsed(vouchers.map { voucher ->
+                Voucher(
+                    voucherId = voucher.voucherId,
+                    userId = voucher.userId,
+                    voucherType = voucher.voucherType,
+                    used_on_order_id = orderId
                 )
-                // Send HTTP request.
-                val response: PlaceOrderResponse = webService.placeOrder(request)
-
-                Result.Success(PlaceOrderResponse())
-            } catch (e: Throwable) {
-                when (e) {
-                    is IOException -> Result.NetworkError
-                    else -> Result.OtherError(e)
-                }
+            })
+            val orderItems = ArrayList<OrderItem>()
+            for (item in cartItems) {
+                orderItems.add(
+                    OrderItem(
+                        order_item_id = orderId,
+                        order_id = order.order_id,
+                        quantity = item.quantity.toLong(),
+                        price = item.item.price,
+                        item_id = item.item.id
+                    )
+                )
             }
+            appDatabaseDao.createOrderItems(orderItems)
+            return@withContext
         }
     }
 }

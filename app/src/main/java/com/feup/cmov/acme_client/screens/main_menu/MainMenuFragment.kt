@@ -2,9 +2,11 @@ package com.feup.cmov.acme_client.screens.main_menu
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -16,6 +18,9 @@ import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentMainMenuBinding
 import com.feup.cmov.acme_client.screens.checkout.CartViewModel
+import com.feup.cmov.acme_client.screens.orders.OrdersHistoryFragment
+import com.feup.cmov.acme_client.screens.settings.SettingsFragment
+import com.feup.cmov.acme_client.screens.store.StoreFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -23,10 +28,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainMenuFragment : Fragment(), MainMenuHandler {
 
     private lateinit var myContext: FragmentActivity
-    private val viewModel: MainMenuViewModel by viewModels()
+    private val viewModel: MainMenuViewModel by activityViewModels()
     private val cartViewModel: CartViewModel by activityViewModels()
     lateinit var binding: FragmentMainMenuBinding
-
 
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
@@ -47,11 +51,6 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         binding.cartViewModel = cartViewModel
         binding.handler = this
 
-        val bottomNavigation = binding.bottomNavigation
-
-        // Create the fragments
-        makeCurrentFragment(viewModel.getCurrentFragment(), true)
-
         cartViewModel.getTotalCartItems().observe(viewLifecycleOwner, Observer observe@{ totalCartItems ->
             if(totalCartItems >= 1) {
                 with(binding.cartButton.animate()){
@@ -68,17 +67,6 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
             binding.cartButtonTotalPrice.text = String.format(priceStringFormat, totalCartPrice)
         })
 
-        bottomNavigation.setOnNavigationItemSelectedListener { item ->
-            val menuItem = bottomNavigation.menu.findItem(item.itemId)
-            if(menuItem.itemId != viewModel.getCurrentAction()) {
-                menuItem.isChecked = true
-                viewModel.setCurrentAction(menuItem.itemId)
-                makeCurrentFragment(viewModel.getCurrentFragment(), false)
-            }
-            false
-        }
-
-
         return binding.root
     }
 
@@ -93,8 +81,22 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Create the fragments
+        val bottomNavigation = binding.bottomNavigation
+        makeCurrentFragment(viewModel.getCurrentFragment(), true)
+
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            val menuItem = bottomNavigation.menu.findItem(item.itemId)
+            if(menuItem.itemId != viewModel.getCurrentAction()) {
+                menuItem.isChecked = true
+                viewModel.setCurrentAction(menuItem.itemId)
+                makeCurrentFragment(viewModel.getCurrentFragment(), false)
+            }
+            false
+        }
     }
 
     override fun onShowCartButtonClick(v: View) {

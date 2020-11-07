@@ -76,20 +76,13 @@ class CartFragment() : Fragment(), CartHandler {
             voucherUsedAdapter.data = viewModel.getSavingsForSelectedVouchers()
         })
 
-        viewModel.isOrderPlaced().observe(viewLifecycleOwner, Observer observe@{ result ->
+        viewModel.isOrderPlaced().observe(viewLifecycleOwner, Observer observe@{ isOrderPlaced ->
             if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED)
                 return@observe
 
-            when(result) {
-                is Result.Success -> {
-                    ShowFeedback.makeSnackbar("Success")
-                }
-                is Result.NetworkError -> {
-                    ShowFeedback.makeSnackbar("No internet connection")
-                }
-                is Result.OtherError -> {
-                    ShowFeedback.makeSnackbar(result.msg)
-                }
+            if(isOrderPlaced) {
+                container!!.findNavController()
+                    .navigate(R.id.action_cartFragment_to_orderPlacedFragment)
             }
         });
 

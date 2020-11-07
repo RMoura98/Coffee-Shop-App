@@ -60,20 +60,24 @@ class OrderItemAdapter(private val ordersHistoryHandler: OrdersHistoryHandler) :
     }
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val container: View = itemView.findViewById(R.id.order_row_template)
         private val mainText: TextView = itemView.findViewById(R.id.order_main_text)
         private val orderDateText: TextView = itemView.findViewById(R.id.order_date)
         private val orderItemDescription: TextView = itemView.findViewById(R.id.order_info)
         private val orderCompletedIcon: ImageView = itemView.findViewById(R.id.orderCompletedIcon)
 
         fun bind(item: OrderWithItems, ordersHistoryHandler: OrdersHistoryHandler) {
-            if(item.order.completed)
+            if(item.order.completed) {
                 mainText.text = "Order #${item.order.order_sequential_id}"
-            else
+                orderDateText.text = item.order.formatCompletedDate()
+            }
+            else {
                 mainText.text = "Order Pending"
-            orderDateText.text = item.formatCompletedDate()
+                orderDateText.text = item.order.formatCreationDate()
+            }
 
             val numberOfItems = item.getNumberOfItemsBought()
-            val totalPrice = item.getTotalPrice()
+            val totalPrice = item.order.total
             orderItemDescription.text = "${numberOfItems} ${if(numberOfItems == 1L) "item" else "items"} | ${String.format("%.2f", totalPrice)} €"
 
             if(item.order.completed) {
@@ -82,6 +86,9 @@ class OrderItemAdapter(private val ordersHistoryHandler: OrdersHistoryHandler) :
             } else {
                 orderCompletedIcon.setImageResource(R.drawable.ic_outline_play_circle_outline_24)
                 orderCompletedIcon.setColorFilter(ContextCompat.getColor(AcmeApplication.getAppContext(), R.color.orange_800), android.graphics.PorterDuff.Mode.SRC_IN);
+            }
+            container.setOnClickListener {
+                ordersHistoryHandler.viewOrder(itemView, item.order.order_id)
             }
         }
         companion object {

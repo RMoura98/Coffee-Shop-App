@@ -18,15 +18,6 @@ data class OrderWithItems(
     )
     val orderItems: List<ItemsWithInfo>
 ) {
-    fun formatCreationDate(): String {
-        val df: DateFormat = SimpleDateFormat("dd/MM/YYYY HH:mm")
-        return df.format(order.updatedAt)
-    }
-
-    fun formatCompletedDate(): String {
-        val df: DateFormat = SimpleDateFormat("dd/MM/YYYY HH:mm")
-        return df.format(order.createdAt)
-    }
 
     fun getNumberOfItemsBought(): Long {
         var quantity = 0L
@@ -34,13 +25,5 @@ data class OrderWithItems(
             quantity += orderItem.orderItem.quantity
         }
         return quantity
-    }
-
-    fun getTotalPrice(): Float {
-        var price = 0f
-        for(orderItem in orderItems) {
-            price += orderItem.orderItem.price
-        }
-        return price
     }
 }

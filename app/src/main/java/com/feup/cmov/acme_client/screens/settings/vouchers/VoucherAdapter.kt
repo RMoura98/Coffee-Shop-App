@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.Voucher
+import com.feup.cmov.acme_client.database.models.composed_models.VoucherWithOrder
 
 
 class VoucherAdapter: RecyclerView.Adapter<VoucherAdapter.ViewHolder>() {
 
-    var data = listOf<Voucher>()
+    var data = listOf<VoucherWithOrder>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -40,8 +41,8 @@ class VoucherAdapter: RecyclerView.Adapter<VoucherAdapter.ViewHolder>() {
         private val usedBar: View = itemView.findViewById(R.id.used_bar)
         private val imageView: ImageView =  itemView.findViewById(R.id.voucher_image)
 
-        fun bind(voucher: Voucher) {
-            when (voucher.voucherType) {
+        fun bind(item: VoucherWithOrder) {
+            when (item.voucher.voucherType) {
                 "discount" -> {
                     imageView.setImageResource(R.drawable.voucher_discount)
                     voucherType.text = itemView.resources.getString(R.string.discount)
@@ -54,10 +55,10 @@ class VoucherAdapter: RecyclerView.Adapter<VoucherAdapter.ViewHolder>() {
                 }
             }
 
-            when (voucher.used) {
+            when (item.voucher.hasBeenUsed()) {
                 true -> {
                     usedBar.setBackgroundColor(getColor(AcmeApplication.getAppContext(), R.color.red_500))
-                    usedCaption.text = "Used on 05-10-2020"
+                    usedCaption.text = "Used on " + item.order!!.formatCompletedDate().split(' ')[0]
                 }
                 false -> {
                     usedBar.setBackgroundColor(getColor(AcmeApplication.getAppContext(), R.color.green_500))
