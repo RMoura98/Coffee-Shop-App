@@ -10,6 +10,14 @@ const models = {
 // Vouchers Relations
 models.Voucher.belongsTo(models.User, { foreignKey: 'userId' });
 models.User.hasMany(models.Voucher, { foreignKey: 'userId' });
+models.Voucher.belongsTo(models.Order, {
+  foreignKey:
+  {
+    name: 'used_on_order_id',
+    alowNull: true,
+    defaultValue: null
+  },
+});
 
 // Orders Relations
 models.Order.belongsTo(models.User, { foreignKey: 'userId' });

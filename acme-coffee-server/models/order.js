@@ -16,6 +16,7 @@ const Order = db.define('Order', {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
+  total: Sequelize.FLOAT,
 }, {
   timestamps: true,
 });

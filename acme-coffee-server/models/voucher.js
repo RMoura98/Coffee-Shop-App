@@ -10,10 +10,6 @@ const Voucher = db.define('Voucher', {
     type: Sequelize.ENUM('free_coffee', 'discount'),
     allowNull: false,
   },
-  used: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false,
-  },
 }, { timestamps: true });
 
 module.exports = Voucher;

@@ -11,6 +11,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           completed: false,
+          total: _.random(1, 10, true),
         },
         {
           order_id: uuidv4(),
@@ -18,6 +19,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           completed: true,
+          total: _.random(1, 10, true),
         },
         {
           order_id: uuidv4(),
@@ -25,6 +27,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           completed: true,
+          total: _.random(1, 10, true),
         },
         {
           order_id: uuidv4(),
@@ -32,13 +35,14 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           completed: false,
+          total: _.random(1, 10, true),
         },
       ],
       {
         returning: true,
       });
     const allItems = await Promise.all(orders.map(async (order) => {
-      const numberOfItems = _.random(1, 6);
+      const numberOfItems = _.random(2, 6);
       const items = _.range(1, numberOfItems).map((itemIndex) => ({
         order_item_id: uuidv4(),
         order_id: order.order_id,
