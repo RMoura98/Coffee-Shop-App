@@ -70,6 +70,14 @@ class OrdersHistoryFragment : Fragment(), OrdersHistoryHandler {
             }
         })
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.orderHistoryOrdersItems.adapter = adapter
+        binding.orderHistoryOrdersItems.isNestedScrollingEnabled = false
+
         if(nextTabIndex != null) {
             if(nextTabIndex == 0) {
                 binding.orderTabLayout.getTabAt(0)!!.select()
@@ -82,16 +90,7 @@ class OrdersHistoryFragment : Fragment(), OrdersHistoryHandler {
 
             nextTabIndex = null
         }
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.orderHistoryOrdersItems.adapter = adapter
-        binding.orderHistoryOrdersItems.isNestedScrollingEnabled = false
-
-        if(adapter.showing == OrderItemAdapter.SHOWING.COMPLETED_ORDERS)
+        else if(adapter.showing == OrderItemAdapter.SHOWING.COMPLETED_ORDERS)
             binding.orderTabLayout.getTabAt(0)!!.select()
         else
             binding.orderTabLayout.getTabAt(1)!!.select()

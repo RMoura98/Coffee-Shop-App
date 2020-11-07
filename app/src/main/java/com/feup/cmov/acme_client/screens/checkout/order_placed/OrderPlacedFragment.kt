@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentOrderPlacedBinding
 import com.feup.cmov.acme_client.screens.checkout.CartViewModel
+import com.feup.cmov.acme_client.screens.main_menu.MainMenuFragment
 import com.feup.cmov.acme_client.screens.main_menu.MainMenuViewModel
 import com.feup.cmov.acme_client.screens.orders.OrdersHistoryFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,23 +41,22 @@ class OrderPlacedFragment : Fragment(), OrderPlacedHandler {
         binding.handler = this
         binding.viewModel = cartViewModel
 
-        val progresBar = binding.progressBar
+        val progressBar = binding.progressBar
 
         GlobalScope.launch {
             val animationTime = 3000 // milliseconds
             for (i in 1..100) {
                 delay( (animationTime / 100).toLong() )
-                progresBar.progress = i
+                progressBar.progress = i
             }
             cartViewModel.clearViewModel()
             mainMenuViewModel.setCurrentAction(R.id.historyAction)
             OrdersHistoryFragment.nextTabIndex = 1
+            MainMenuFragment.hasShownCartAnimation = false
             container!!.findNavController()
                 .navigate(R.id.action_orderPlacedFragment_to_viewOrderFragment)
         }
-
-        //MainMenuViewModel by activityViewModels()
-
+        
         return binding.root
     }
 }

@@ -72,9 +72,10 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
 
     private fun makeCurrentFragment(fragment: Fragment, refresh: Boolean) {
         with(myContext.supportFragmentManager.beginTransaction()) {
-            if(refresh) {
-                detach(fragment);
-                attach(fragment);
+            if(refresh && !hasRefreshed) {
+                detach(fragment)
+                attach(fragment)
+                hasRefreshed = false
             }
             replace(R.id.content_frame, fragment)
             commit()
@@ -106,5 +107,6 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
 
     companion object {
         var hasShownCartAnimation = false
+        var hasRefreshed = false
     }
 }
