@@ -80,7 +80,7 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
     }
 
     private fun makeCurrentFragment(fragment: Fragment, refresh: Boolean) {
-        with(myContext.supportFragmentManager.beginTransaction()) {
+        with(childFragmentManager.beginTransaction()) {
             if(refresh && !hasRefreshed) {
                 detach(fragment)
                 attach(fragment)
