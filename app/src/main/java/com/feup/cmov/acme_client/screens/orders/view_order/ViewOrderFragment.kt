@@ -1,6 +1,7 @@
 package com.feup.cmov.acme_client.screens.orders.view_order
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentSettingsBinding
 import com.feup.cmov.acme_client.databinding.FragmentViewOrderBinding
@@ -27,6 +29,8 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        Log.e("YEA", requireArguments().getString("orderId")!!)
 
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(

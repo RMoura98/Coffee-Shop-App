@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -76,7 +77,7 @@ class OrdersHistoryFragment : Fragment(), OrdersHistoryHandler {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.orderHistoryOrdersItems.adapter = adapter
-        binding.orderHistoryOrdersItems.isNestedScrollingEnabled = false
+        //binding.orderHistoryOrdersItems.isNestedScrollingEnabled = false
 
         if(nextTabIndex != null) {
             if(nextTabIndex == 0) {
@@ -98,7 +99,7 @@ class OrdersHistoryFragment : Fragment(), OrdersHistoryHandler {
 
     override fun viewOrder(v: View, orderId: String) {
         v.findNavController()
-            .navigate(R.id.action_mainMenuFragment_to_viewOrderFragment)
+            .navigate(R.id.action_mainMenuFragment_to_viewOrderFragment, bundleOf("orderId" to orderId))
     }
 
     companion object {

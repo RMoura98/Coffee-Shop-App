@@ -211,7 +211,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:id="@+id/subtotal_price"
+                        android:id="@+id/subtotalPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -237,7 +237,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:id="@+id/voucher_price"
+                        android:id="@+id/voucherPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -264,7 +264,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:id="@+id/total_price"
+                        android:id="@+id/totalPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
