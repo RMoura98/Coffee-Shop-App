@@ -17,6 +17,7 @@ import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
 import com.feup.cmov.acme_client.databinding.FragmentViewOrderBinding
 import com.feup.cmov.acme_client.screens.checkout.CartViewModel
+import com.feup.cmov.acme_client.screens.main_menu.MainMenuFragment
 import com.feup.cmov.acme_client.screens.main_menu.MainMenuViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -103,6 +104,7 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
                 cartViewModel.addItemToCart(orderItem.menuItem)
         }
         mainMenuViewModel.setCurrentAction(R.id.storeAction)
+        MainMenuFragment.hasShownCartAnimation = true
         v.findNavController().navigate(R.id.action_viewOrderFragment_to_cartFragment)
     }
 

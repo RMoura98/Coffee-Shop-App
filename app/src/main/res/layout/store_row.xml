@@ -1,95 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/store_row_layout"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_width="match_parent"
->
+    android:layout_height="88dp"
+    android:orientation="vertical"
+    android:layout_marginVertical="3dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingBottom="2dp">
 
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/store_row_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="8dp"
+        android:background="?attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:background="?android:attr/selectableItemBackground"
-        android:padding="10dp" >
+        android:padding="20dp"
+        app:cardElevation="2dp"
+        app:cardMaxElevation="2dp">
 
 
-        <ImageView
-            android:id="@+id/item_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/coffee" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginHorizontal="5dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/item_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:layout_marginBottom="5dp"
-                android:text="Product Name"
-                android:width="200dp"
-                android:textStyle="bold"
-                android:paddingHorizontal="5dp" />
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/item_category_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/item_image"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:padding="12dp"
+                    android:layout_marginEnd="-4dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginLeft="4dp"
-                    android:src="@drawable/ic_restaurant_black_18dp"
-                    android:tint="@color/material_on_primary_disabled"/>
+                    app:srcCompat="@drawable/order_icon" />
 
-                <TextView
-                    android:id="@+id/item_category"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:text="Product Category"
-                    android:paddingHorizontal="5dp" />
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/item_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="5dp"
+                        android:text="Pastel de Nata"
+                        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                    <TextView
+                        android:id="@+id/item_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:paddingHorizontal="5dp"
+                        android:text="5.67€"
+                        android:textAppearance="?attr/textAppearanceCaption"
+                        android:textColor="@color/grey_800" />
+
+                    <TextView
+                        android:id="@+id/order_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="5dp"
+                        android:text="A popular pastry from Portugal."
+                        android:textAppearance="?attr/textAppearanceCaption" />
+
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <TextView
-            android:id="@+id/item_price"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:gravity="center"
-            android:maxWidth="10dp"
-            android:minWidth="10dp"
-            android:paddingHorizontal="3dp"
-            android:text="100,50 €"
-            android:textSize="25sp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="10dp"
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:background="@color/brown_600"
+                        android:padding="2dp"
+                        android:src="@drawable/ic_baseline_add_24"
+                        app:tint="@color/white" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+        </RelativeLayout>
 
 
-
-
-        <!--
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_circle_outline_black_18dp"
-            />
-        -->
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="5dp"
-        android:background="@android:color/darker_gray"/>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

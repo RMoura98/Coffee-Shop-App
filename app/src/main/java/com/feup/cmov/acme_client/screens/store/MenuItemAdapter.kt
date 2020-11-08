@@ -38,10 +38,9 @@ class MenuItemAdapter(private val storeHandler: StoreHandler) : RecyclerView.Ada
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val name: TextView = itemView.findViewById(R.id.item_name)
         private val price: TextView = itemView.findViewById(R.id.item_price)
-        private val category: TextView = itemView.findViewById(R.id.item_category)
+        //private val category: TextView = itemView.findViewById(R.id.item_category)
         private val imageView: ImageView =  itemView.findViewById(R.id.item_image)
-        private val categoryIcon: ImageView = itemView.findViewById(R.id.item_category_icon)
-        private val linearLayout: LinearLayout = itemView.findViewById(R.id.store_row_layout)
+        private val linearLayout: View = itemView.findViewById(R.id.store_row_layout)
 
         private val assetPath: String = AcmeApplication.getAppContext().getString(R.string.serverURL) + "/assets/"
         private val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.item_price)
@@ -54,12 +53,7 @@ class MenuItemAdapter(private val storeHandler: StoreHandler) : RecyclerView.Ada
         fun bind(item: MenuItem, storeHandler: StoreHandler) {
             name.text = item.name
             price.text = String.format(priceStringFormat, item.price)
-            category.text = item.category
-
-            when (item.category) {
-                "Food" -> categoryIcon.setImageDrawable(foodIcon)
-                "Drinks" -> categoryIcon.setImageDrawable(drinkIcon)
-            }
+            //category.text = item.category
 
             val imagePath = assetPath + item.imageName
             Picasso.get().load(imagePath).into(imageView);
