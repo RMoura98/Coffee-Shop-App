@@ -2,10 +2,13 @@ const Sequelize = require('sequelize');
 const db = require('../db');
 
 const Order = db.define('Order', {
-  id: {
+  order_id: {
+    primaryKey: true,
+    type: Sequelize.UUID,
+  },
+  order_sequential_id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
-    primaryKey: true,
   },
   createdAt: Sequelize.DATE,
   updatedAt: Sequelize.DATE,
@@ -13,6 +16,7 @@ const Order = db.define('Order', {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
+  total: Sequelize.FLOAT,
 }, {
   timestamps: true,
 });
