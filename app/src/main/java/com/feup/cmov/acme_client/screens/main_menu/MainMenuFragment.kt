@@ -4,6 +4,7 @@ import android.R.attr.paddingBottom
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,8 +50,13 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         binding.cartViewModel = cartViewModel
         binding.handler = this
 
+        var lastTotalCartItems = 0
         cartViewModel.getTotalCartItems().observe(viewLifecycleOwner, Observer observe@{ totalCartItems ->
+            if(lastTotalCartItems == totalCartItems)
+                return@observe
+            lastTotalCartItems = totalCartItems
             if(totalCartItems >= 1) {
+                Log.e("yea", hasShownCartAnimation.toString())
                 with(binding.cartButton.animate()){
                     translationY(0f)
                     setDuration(if(!hasShownCartAnimation) 300 else 0)
