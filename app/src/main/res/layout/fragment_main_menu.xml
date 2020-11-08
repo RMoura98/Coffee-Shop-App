@@ -30,7 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/cart_button"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="55dp"/>
 
         <RelativeLayout
             android:id="@+id/cart_button"

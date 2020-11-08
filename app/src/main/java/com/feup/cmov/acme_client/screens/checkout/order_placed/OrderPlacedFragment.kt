@@ -44,7 +44,7 @@ class OrderPlacedFragment : Fragment(), OrderPlacedHandler {
         val progressBar = binding.progressBar
 
         GlobalScope.launch {
-            val animationTime = 3000 // milliseconds
+            val animationTime = 3700 // milliseconds
             for (i in 1..100) {
                 delay( (animationTime / 100).toLong() )
                 progressBar.progress = i
@@ -56,7 +56,7 @@ class OrderPlacedFragment : Fragment(), OrderPlacedHandler {
             container!!.findNavController()
                 .navigate(R.id.action_orderPlacedFragment_to_viewOrderFragment)
         }
-        
+
         return binding.root
     }
 }
