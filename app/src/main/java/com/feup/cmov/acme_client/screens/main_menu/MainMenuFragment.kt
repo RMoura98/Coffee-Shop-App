@@ -19,6 +19,7 @@ import com.feup.cmov.acme_client.databinding.FragmentMainMenuBinding
 import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 import com.feup.cmov.acme_client.utils.Measurements
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.*
 
 
 @AndroidEntryPoint
@@ -91,21 +92,20 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
 
-        // Create the fragments
         val bottomNavigation = binding.bottomNavigation
         makeCurrentFragment(viewModel.getCurrentFragment(), true)
+        bottomNavigation.menu.findItem(viewModel.getCurrentAction()).isChecked = true
 
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             val menuItem = bottomNavigation.menu.findItem(item.itemId)
             if(menuItem.itemId != viewModel.getCurrentAction()) {
-                menuItem.isChecked = true
                 viewModel.setCurrentAction(menuItem.itemId)
                 makeCurrentFragment(viewModel.getCurrentFragment(), false)
             }
-            false
+            true
         }
     }
 
