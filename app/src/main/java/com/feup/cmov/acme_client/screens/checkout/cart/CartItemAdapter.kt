@@ -11,6 +11,8 @@ import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 
 class CartItemAdapter() : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
 
+    private val dialog = EditItemQuantityDialog()
+
     var data = listOf<CartViewModel.CartItem>()
         set(value) {
             field = value
@@ -21,7 +23,7 @@ class CartItemAdapter() : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.bind(item)
+        holder.bind(item, dialog)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,10 +37,15 @@ class CartItemAdapter() : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
 
         private val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.cart_price)
 
-        fun bind(cartItem: CartViewModel.CartItem) {
+
+        fun bind(cartItem: CartViewModel.CartItem, dialog: EditItemQuantityDialog) {
             name.text = cartItem.item.name
             price.text = String.format(priceStringFormat, cartItem.item.price)
             quantity.text = cartItem.quantity.toString()
+
+            itemView.setOnClickListener {
+                dialog.show(cartItem)
+            }
         }
 
         companion object {

@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="?android:attr/selectableItemBackground"
 >
     <RelativeLayout
         android:id="@+id/cart_button"

@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/item_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:src="@drawable/coffee" />
 
         <LinearLayout
@@ -34,33 +34,16 @@
                 android:textSize="25sp"
                 android:layout_marginBottom="5dp"
                 android:text="Product Name"
-                android:width="200dp"
+                android:width="180dp"
                 android:textStyle="bold"
                 android:paddingHorizontal="5dp" />
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/item_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/item_category_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginLeft="4dp"
-                    android:src="@drawable/ic_restaurant_black_18dp"
-                    android:tint="@color/material_on_primary_disabled"/>
-
-                <TextView
-                    android:id="@+id/item_category"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:text="Product Category"
-                    android:paddingHorizontal="5dp" />
-            </LinearLayout>
+                android:textSize="20sp"
+                android:text="Product Category"
+                android:paddingHorizontal="5dp" />
         </LinearLayout>
 
         <TextView
@@ -91,43 +74,42 @@
         android:id="@+id/subtotal_price_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/plus_one"
+
+        <ImageView
+            android:id="@+id/minus_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
+            android:src="@drawable/ic_baseline_remove_circle_outline_24"
+            android:layout_centerInParent="true"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="0dp"
             android:layout_toStartOf="@+id/cart_button_number_items"
             android:gravity="center"
+            android:tint="@color/colorPrimary"
+            android:layout_marginHorizontal="30dp"
+            />
 
-            android:padding="10dp"
-            android:text="-"
-            android:textColor="@color/red_800"
-            android:textSize="70sp" />
-
-        <TextView
-            android:id="@+id/minus_one"
+        <ImageView
+            android:id="@+id/plus_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
+            android:src="@drawable/ic_baseline_add_circle_outline_24"
+            android:layout_centerInParent="true"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/cart_button_number_items"
             android:gravity="center"
-            android:padding="10dp"
-            android:text="+"
-            android:textColor="@color/green_500"
-            android:textSize="70sp" />
+            android:tint="@color/colorPrimary"
+            android:layout_marginHorizontal="30dp"
+            />
+
 
         <TextView
             android:id="@+id/cart_button_number_items"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/rectangle_with_circular_brown_border"
             android:gravity="center"
             android:paddingStart="9dp"
             android:paddingTop="5dp"
@@ -145,21 +127,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/next_button"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="@string/action_sign_in" />
-
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/remove_all_button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
             android:padding="15dp"
-            android:text="Remove All"
+            android:gravity="center"
+            android:text="Remove item from cart"
             android:textColor="@color/red_800" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/darker_gray" />
+
+    <RelativeLayout
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/update_cart_button"
+            android:layout_marginHorizontal="20dp"
+            android:paddingVertical="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/update_cart_value" />
+
 
     </RelativeLayout>
 

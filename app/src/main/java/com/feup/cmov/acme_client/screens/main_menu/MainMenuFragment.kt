@@ -2,25 +2,19 @@ package com.feup.cmov.acme_client.screens.main_menu
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentMainMenuBinding
 import com.feup.cmov.acme_client.screens.checkout.CartViewModel
-import com.feup.cmov.acme_client.screens.orders.OrdersHistoryFragment
-import com.feup.cmov.acme_client.screens.settings.SettingsFragment
-import com.feup.cmov.acme_client.screens.store.StoreFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -63,7 +57,7 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
         })
 
         val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.cart_price)
-        cartViewModel.getTotalCartPrice().observe(viewLifecycleOwner, Observer observe@{ totalCartPrice ->
+        cartViewModel.getSubtotalCartPrice().observe(viewLifecycleOwner, Observer observe@{ totalCartPrice ->
             binding.cartButtonTotalPrice.text = String.format(priceStringFormat, totalCartPrice)
         })
 

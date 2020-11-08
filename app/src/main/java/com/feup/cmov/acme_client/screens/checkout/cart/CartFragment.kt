@@ -14,10 +14,8 @@ import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentCartBinding
-import com.feup.cmov.acme_client.network.Result
 import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 import com.feup.cmov.acme_client.screens.main_menu.MainMenuFragment
-import com.feup.cmov.acme_client.utils.ShowFeedback
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,13 +52,20 @@ class CartFragment() : Fragment(), CartHandler {
         binding.seeMenu.setOnClickListener { activity?.onBackPressed() }
 
         viewModel.getCartListLiveData().observe(viewLifecycleOwner, Observer observe@{ cartList ->
+            if (cartList.isEmpty()) {
+                binding.noCartItemsText.visibility = View.VISIBLE
+                binding.cartItemList.visibility = View.GONE
+            } else {
+                binding.noCartItemsText.visibility = View.GONE
+                binding.cartItemList.visibility = View.VISIBLE
+            }
+
             cartItemAdapter.data = cartList.values.toList()
-        });
+        })
 
         val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.cart_price)
-        viewModel.getTotalCartPrice().observe(viewLifecycleOwner, Observer observe@{ totalCartPrice ->
+        viewModel.getSubtotalCartPrice().observe(viewLifecycleOwner, Observer observe@{ totalCartPrice ->
             binding.subtotalPrice.text = String.format(priceStringFormat, totalCartPrice)
-            binding.totalPriceNextButton.text = String.format(priceStringFormat, totalCartPrice) // isto tem de estar noutro sitio
         })
 
         viewModel.getSelectedVouchers().observe(viewLifecycleOwner, Observer observe@{ vouchersList ->
@@ -84,14 +89,19 @@ class CartFragment() : Fragment(), CartHandler {
                 container!!.findNavController()
                     .navigate(R.id.action_cartFragment_to_orderPlacedFragment)
             }
-        });
+        })
 
-        val totalSavings = viewModel.getTotalSavings()
-        binding.voucherPrice.text = (if(totalSavings > 0) "- " else "") +
-                String.format(priceStringFormat, totalSavings)
+        viewModel.updateTotalSavings()
+        viewModel.getTotalSavings().observe(viewLifecycleOwner, Observer observe@{ totalSavings ->
+            binding.voucherPrice.text = (if(totalSavings > 0) "- " else "") +
+                    String.format(priceStringFormat, totalSavings)
+        })
 
-        val totalPrice = viewModel.getTotalCartPrice().value!! - totalSavings
-        binding.totalPrice.text = String.format(priceStringFormat, totalPrice)
+        viewModel.updateTotalPrice()
+        viewModel.getTotalPrice().observe(viewLifecycleOwner, Observer observe@{ totalPrice ->
+            binding.totalPrice.text = String.format(priceStringFormat, totalPrice)
+            binding.totalPriceNextButton.text = String.format(priceStringFormat, totalPrice)
+        })
 
         return binding.root
     }

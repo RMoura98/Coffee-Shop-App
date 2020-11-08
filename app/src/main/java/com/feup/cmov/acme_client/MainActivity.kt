@@ -6,8 +6,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import androidx.fragment.app.FragmentManager
 import com.feup.cmov.acme_client.databinding.ActivityMainBinding
 import com.feup.cmov.acme_client.screens.checkout.order_placed.OrderPlacedFragment
 import com.feup.cmov.acme_client.utils.Debug
@@ -23,12 +23,15 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var debug: Debug
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         debug.startDebugMode()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         activity = this
+        Companion.fragmentManager = supportFragmentManager
     }
 
     override fun onBackPressed() {
@@ -49,9 +52,14 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private lateinit var activity: Activity
+        private lateinit var fragmentManager: FragmentManager
 
         fun getActivity(): Activity {
             return activity
+        }
+
+        fun getFragmentManager(): FragmentManager {
+            return fragmentManager
         }
     }
 }

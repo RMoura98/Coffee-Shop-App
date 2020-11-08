@@ -95,7 +95,18 @@
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="0dp"
                     android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/no_cart_items_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="10dp"
+                    android:gravity="center"
+                    android:text="Nothing to see here. Add an item!"
+                    android:visibility="visible" />
 
                 <View
                     android:layout_width="match_parent"
