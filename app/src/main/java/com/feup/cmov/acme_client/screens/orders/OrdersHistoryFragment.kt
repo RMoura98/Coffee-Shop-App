@@ -97,9 +97,9 @@ class OrdersHistoryFragment : Fragment(), OrdersHistoryHandler {
             binding.orderTabLayout.getTabAt(1)!!.select()
     }
 
-    override fun viewOrder(v: View, orderId: String) {
+    override fun viewOrder(v: View, order: Order) {
         v.findNavController()
-            .navigate(R.id.action_mainMenuFragment_to_viewOrderFragment, bundleOf("orderId" to orderId))
+            .navigate(R.id.action_mainMenuFragment_to_viewOrderFragment, bundleOf("order" to Order.serialize(order)))
     }
 
     companion object {

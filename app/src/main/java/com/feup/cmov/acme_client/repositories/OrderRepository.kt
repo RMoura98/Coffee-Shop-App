@@ -60,7 +60,7 @@ class OrderRepository
         cartItems: Collection<CartViewModel.CartItem>,
         vouchers: Collection<Voucher>,
         total: Float
-    ) {
+    ): Order {
         return withContext(Dispatchers.IO) {
             val orderId = UUID.randomUUID().toString()
             val order = Order(
@@ -95,7 +95,7 @@ class OrderRepository
                 )
             }
             appDatabaseDao.createOrderItems(orderItems)
-            return@withContext
+            order
         }
     }
 }

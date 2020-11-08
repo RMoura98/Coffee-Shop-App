@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -54,7 +55,7 @@ class OrderPlacedFragment : Fragment(), OrderPlacedHandler {
             OrdersHistoryFragment.nextTabIndex = 1
             MainMenuFragment.hasShownCartAnimation = false
             container!!.findNavController()
-                .navigate(R.id.action_orderPlacedFragment_to_viewOrderFragment)
+                .navigate(R.id.action_orderPlacedFragment_to_viewOrderFragment, bundleOf("order" to requireArguments().getString("order")))
         }
 
         return binding.root

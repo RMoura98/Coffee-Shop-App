@@ -76,7 +76,7 @@
                             android:layout_width="74dp"
                             android:layout_height="74dp"
                             android:layout_gravity="bottom"
-                            app:srcCompat="@drawable/ic_outline_pause_circle_outline_24"
+                            app:srcCompat="@drawable/ic_outline_play_circle_outline_24"
                             app:tint="@color/orange_600" />
 
                         <LinearLayout
@@ -97,7 +97,7 @@
                                 android:id="@+id/orderCompletedCaption"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingLeft="2dp"
+                                android:paddingHorizontal="2dp"
                                 android:text="Please pickup your order at the counter of ACME Coffee Shop."
                                 android:textAppearance="?attr/textAppearanceBody2"
                                 android:textColor="?android:attr/textColorSecondary" />

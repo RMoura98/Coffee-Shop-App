@@ -2,6 +2,7 @@ package com.feup.cmov.acme_client.database.models
 
 import androidx.room.*
 import com.feup.cmov.acme_client.database.type_converters.DateConverter
+import com.google.gson.Gson
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,5 +41,15 @@ data class Order (
     fun formatCompletedDate(): String {
         val df: DateFormat = SimpleDateFormat("dd/MM/YYYY HH:mm")
         return df.format(createdAt)
+    }
+
+    companion object {
+        fun serialize(order: Order): String {
+            return Gson().toJson(order)
+        }
+
+        fun deserialize(order: String): Order {
+            return Gson().fromJson(order, Order::class.java)
+        }
     }
 }

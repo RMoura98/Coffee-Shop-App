@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
+import com.feup.cmov.acme_client.database.models.Order
 import com.feup.cmov.acme_client.databinding.FragmentCartBinding
 import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 import com.feup.cmov.acme_client.screens.main_menu.MainMenuFragment
@@ -81,13 +83,13 @@ class CartFragment() : Fragment(), CartHandler {
             voucherUsedAdapter.data = viewModel.getSavingsForSelectedVouchers()
         })
 
-        viewModel.isOrderPlaced().observe(viewLifecycleOwner, Observer observe@{ isOrderPlaced ->
+        viewModel.getPlacedOrder().observe(viewLifecycleOwner, Observer observe@{ order ->
             if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED)
                 return@observe
 
-            if(isOrderPlaced) {
+            if(order != null) {
                 container!!.findNavController()
-                    .navigate(R.id.action_cartFragment_to_orderPlacedFragment)
+                    .navigate(R.id.action_cartFragment_to_orderPlacedFragment, bundleOf("order" to Order.serialize(order)))
             }
         })
 

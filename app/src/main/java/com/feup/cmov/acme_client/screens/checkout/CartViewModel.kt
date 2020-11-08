@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.feup.cmov.acme_client.database.models.MenuItem
+import com.feup.cmov.acme_client.database.models.Order
 import com.feup.cmov.acme_client.database.models.Voucher
 import com.feup.cmov.acme_client.repositories.MenuRepository
 import com.feup.cmov.acme_client.repositories.OrderRepository
@@ -34,7 +35,7 @@ class CartViewModel @ViewModelInject constructor(
     private var totalCartPrice = MutableLiveData(0f)
     private var totalSavings = MutableLiveData(0f)
     private val cartListLiveData = MutableLiveData<MutableMap<Long, CartItem>>()
-    private val orderPlaced = MutableLiveData<Boolean>()
+    private val placedOrder = MutableLiveData<Order?>()
 
     var isLoading = ObservableField<Boolean>(false)
     private val cartList = mutableMapOf<Long, CartItem>()
@@ -48,7 +49,7 @@ class CartViewModel @ViewModelInject constructor(
     fun getSubtotalCartPrice() : LiveData<Float> = subtotalCartPrice
     fun getTotalSavings() : LiveData<Float>  = totalSavings
 
-    fun isOrderPlaced(): LiveData<Boolean> = orderPlaced
+    fun getPlacedOrder(): LiveData<Order?> = placedOrder
 
 
     data class CartItem(val item: MenuItem, var quantity: Int = 1) {
@@ -168,8 +169,8 @@ class CartViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             isLoading.set(true)
             delay(500)
-            ordersRepository.placeOrder(cartList.values, selectedVouchers.value!!, subtotalCartPrice.value!! - totalSavings.value!!)
-            orderPlaced.postValue(true)
+            val order = ordersRepository.placeOrder(cartList.values, selectedVouchers.value!!, subtotalCartPrice.value!! - totalSavings.value!!)
+            placedOrder.postValue(order)
             isLoading.set(false)
         }
     }
@@ -181,7 +182,7 @@ class CartViewModel @ViewModelInject constructor(
         subtotalCartPrice.postValue(0f)
         cartList.clear()
         cartListLiveData.postValue(cartList)
-        orderPlaced.postValue(false)
+        placedOrder.postValue(null)
     }
 
     fun updateCartItem(cartItem: CartItem, originalQuantity: Int) {
