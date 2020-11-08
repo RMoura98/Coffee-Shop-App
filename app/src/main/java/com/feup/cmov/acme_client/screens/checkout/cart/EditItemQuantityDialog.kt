@@ -2,6 +2,7 @@ package com.feup.cmov.acme_client.screens.checkout.cart
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -20,6 +21,7 @@ class EditItemQuantityDialog(): DialogFragment() {
     private lateinit var inflaterView: View
     private lateinit var cartItem: CartViewModel.CartItem
     private var originalQuantity: Int = 0
+    private var cartUpdated = false
 
     private lateinit var updateCartButton: MaterialButton
     private lateinit var updateCartButtonString: String
@@ -54,11 +56,13 @@ class EditItemQuantityDialog(): DialogFragment() {
 
         updateCartButton.setOnClickListener {
             cartViewModel.updateCartItem(cartItem, originalQuantity)
+            cartUpdated = true
             dismiss()
         }
         removeAllButton.setOnClickListener {
             cartItem.quantity = 0
             cartViewModel.updateCartItem(cartItem, originalQuantity)
+            cartUpdated = true
             dismiss()
         }
     }
@@ -105,7 +109,14 @@ class EditItemQuantityDialog(): DialogFragment() {
         Picasso.get().load(imagePath).into(imageView);
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        if(!cartUpdated)
+            cartItem.quantity = originalQuantity
+    }
+
     fun show(cartItem: CartViewModel.CartItem) {
+        cartUpdated = false
         this.cartItem = cartItem
         this.originalQuantity = cartItem.quantity
         this.show(MainActivity.getFragmentManager(), "Custom Dialog")
