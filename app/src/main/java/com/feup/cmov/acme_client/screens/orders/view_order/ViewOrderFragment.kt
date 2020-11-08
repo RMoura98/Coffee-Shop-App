@@ -8,17 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
-import com.feup.cmov.acme_client.database.models.Order
-import com.feup.cmov.acme_client.databinding.FragmentSettingsBinding
+import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
 import com.feup.cmov.acme_client.databinding.FragmentViewOrderBinding
-import com.feup.cmov.acme_client.screens.settings.SettingsHandler
-import com.feup.cmov.acme_client.screens.settings.SettingsViewModel
-import com.feup.cmov.acme_client.utils.PreferencesUtils
+import com.feup.cmov.acme_client.screens.checkout.CartViewModel
+import com.feup.cmov.acme_client.screens.main_menu.MainMenuViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,6 +25,7 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
 
     private val viewModel : ViewOrderViewModel by viewModels()
     lateinit var binding: FragmentViewOrderBinding
+    lateinit var orderWithItems: OrderWithItems
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +33,7 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
         savedInstanceState: Bundle?
     ): View? {
 
-        val order = Order.deserialize(requireArguments().getString("order")!!)
+        orderWithItems = OrderWithItems.deserialize(requireArguments().getString("order")!!)
 
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(
@@ -44,14 +44,19 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
         binding.viewModel = viewModel
         binding.handler = this
 
-        if(order.completed) {
+        if(orderWithItems.order.completed) {
             with(binding.orderCompletedIcon) {
                 setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
                 setColorFilter(ContextCompat.getColor(AcmeApplication.getAppContext(), R.color.green_600), android.graphics.PorterDuff.Mode.SRC_IN);
             }
-            binding.orderCompletedStatus.text = "Order #${order.order_sequential_id}"
+            binding.orderCompletedStatus.text = "Order #${orderWithItems.order.order_sequential_id}"
             binding.orderCompletedCaption.text = "Let the flavors and aromatics of ACME coffee take you to a new dimension."
-            //binding.orderPlacedOn.text = order.formatCreationDate()
+            binding.orderCompletedOnLayout.visibility = View.VISIBLE
+            binding.orderCompletedOn.text = orderWithItems.order.formatCompletedDate()
+
+            binding.pickUpOrderButton.visibility = View.GONE
+            binding.cancelOrderButton.visibility = View.GONE
+            binding.orderSummarySeparator.visibility = View.VISIBLE
         }
         else {
             with(binding.orderCompletedIcon) {
@@ -60,17 +65,48 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
             }
             binding.orderCompletedStatus.text = "Order Pending"
             binding.orderCompletedCaption.text = "Please pickup your order at the counter of ACME Coffee Shop."
-            binding.orderPlacedOn.text = "€" + order.formatCreationDate()
         }
 
-        binding.orderTotal.text = String.format("%.2f", order.total)
+        binding.orderTotal.text = "€" + String.format("%.2f", orderWithItems.order.total)
+        binding.numberOfItems.text = orderWithItems.getNumberOfItemsBought().toString()
+        binding.orderPlacedOn.text = orderWithItems.order.formatCreationDate()
 
         binding.topAppBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
         binding.topAppBar.setNavigationOnClickListener{
             activity?.onBackPressed();
         }
 
+        viewModel.wasOrderDeleted().observe(viewLifecycleOwner, Observer observe@{ wasOrderDeleted ->
+            if(wasOrderDeleted) {
+                activity?.onBackPressed();
+            }
+        });
+
         return binding.root
     }
 
+    override fun clickPickupOrder(v: View) {
+        TODO("Not yet implemented")
+    }
+
+    override fun clickOrderReceipt(v: View) {
+        TODO("Not yet implemented")
+    }
+
+    override fun clickRemakeOrder(v: View) {
+        val cartViewModel: CartViewModel by activityViewModels()
+        val mainMenuViewModel: MainMenuViewModel by activityViewModels()
+
+        cartViewModel.clearViewModel()
+        for (orderItem in orderWithItems.orderItems){
+            for(i in 0 until orderItem.orderItem.quantity)
+                cartViewModel.addItemToCart(orderItem.menuItem)
+        }
+        mainMenuViewModel.setCurrentAction(R.id.storeAction)
+        v.findNavController().navigate(R.id.action_viewOrderFragment_to_cartFragment)
+    }
+
+    override fun clickDeleteOrder(v: View) {
+        viewModel.removeOrder(orderWithItems)
+    }
 }

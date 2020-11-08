@@ -127,7 +127,6 @@
                             android:textAppearance="?attr/textAppearanceHeadline6" />
 
                         <RelativeLayout
-                            android:id="@+id/subtotal_price_section"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:orientation="horizontal">
@@ -149,6 +148,35 @@
                                 android:layout_marginEnd="15dp"
                                 android:text="10/05/2020 14:40"
                                 android:textColor="@color/black" />
+
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/orderCompletedOnLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="15dp"
+                                android:text="Order completed on"
+                                android:textColor="@color/black" />
+
+                            <TextView
+                                android:id="@+id/orderCompletedOn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="15dp"
+                                android:text="10/05/2020 14:40"
+                                android:textColor="@color/black" />
+
 
                         </RelativeLayout>
 
@@ -214,15 +242,16 @@
                         android:orientation="vertical">
 
                         <RelativeLayout
-                            android:id="@+id/settingsFragment_profile_button"
+                            android:id="@+id/pickUpOrderButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/colorPrimary"
-                            android:elevation="4dp"
+                            android:elevation="2dp"
                             android:foreground="?android:attr/selectableItemBackground"
                             android:orientation="horizontal"
                             android:paddingHorizontal="14dp"
-                            android:paddingVertical="12dp">
+                            android:paddingVertical="12dp"
+                            android:onClick="@{handler::clickPickupOrder}">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -237,10 +266,17 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="8dp"
+                                android:layout_marginEnd="2dp"
                                 android:src="@drawable/ic_baseline_local_cafe_24"
                                 app:tint="@color/white" />
                         </RelativeLayout>
+
+                        <View
+                            android:id="@+id/orderSummarySeparator"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@android:color/darker_gray"
+                            android:visibility="gone" />
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -249,7 +285,8 @@
                             android:elevation="4dp"
                             android:orientation="horizontal"
                             android:paddingHorizontal="14dp"
-                            android:paddingVertical="12dp">
+                            android:paddingVertical="12dp"
+                            android:onClick="@{handler::clickOrderReceipt}">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -263,8 +300,7 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="6dp"
-                                android:src="@drawable/ic_baseline_play_arrow_24"
+                                android:src="@drawable/ic_baseline_receipt_24"
                                 app:tint="@color/brown_800" />
                         </RelativeLayout>
 
@@ -281,7 +317,8 @@
                             android:elevation="4dp"
                             android:orientation="horizontal"
                             android:paddingHorizontal="14dp"
-                            android:paddingVertical="12dp">
+                            android:paddingVertical="12dp"
+                            android:onClick="@{handler::clickRemakeOrder}">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -295,8 +332,7 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="6dp"
-                                android:src="@drawable/ic_baseline_play_arrow_24"
+                                android:src="@drawable/ic_baseline_settings_backup_restore_24"
                                 app:tint="@color/brown_800" />
                         </RelativeLayout>
 
@@ -306,27 +342,29 @@
                             android:background="@color/grey_200" />
 
                         <RelativeLayout
+                            android:id="@+id/cancelOrderButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="?android:attr/selectableItemBackground"
                             android:elevation="4dp"
                             android:orientation="horizontal"
                             android:paddingHorizontal="14dp"
-                            android:paddingVertical="12dp">
+                            android:paddingVertical="12dp"
+                            android:onClick="@{handler::clickDeleteOrder}">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentStart="true"
                                 android:text="Cancel Order"
-                                android:translationY="1dp"
-                                android:textAppearance="?attr/textAppearanceBody1" />
+                                android:textAppearance="?attr/textAppearanceBody1"
+                                android:translationY="1dp" />
 
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="8dp"
+                                android:layout_marginEnd="2dp"
                                 android:src="@drawable/ic_baseline_delete_24"
                                 app:tint="@color/brown_800" />
                         </RelativeLayout>

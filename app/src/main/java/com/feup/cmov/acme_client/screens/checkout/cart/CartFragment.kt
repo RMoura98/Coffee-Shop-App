@@ -15,6 +15,7 @@ import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.Order
+import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
 import com.feup.cmov.acme_client.databinding.FragmentCartBinding
 import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 import com.feup.cmov.acme_client.screens.main_menu.MainMenuFragment
@@ -27,7 +28,6 @@ class CartFragment() : Fragment(), CartHandler {
     lateinit var binding: FragmentCartBinding
     private var cartItemAdapter: CartItemAdapter = CartItemAdapter()
     private var voucherUsedAdapter: VoucherUsedAdapter = VoucherUsedAdapter()
-    private lateinit var mainMenu: MainMenuFragment
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -89,7 +89,7 @@ class CartFragment() : Fragment(), CartHandler {
 
             if(order != null) {
                 container!!.findNavController()
-                    .navigate(R.id.action_cartFragment_to_orderPlacedFragment, bundleOf("order" to Order.serialize(order)))
+                    .navigate(R.id.action_cartFragment_to_orderPlacedFragment, bundleOf("order" to OrderWithItems.serialize(order)))
             }
         })
 

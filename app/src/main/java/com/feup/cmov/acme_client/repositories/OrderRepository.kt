@@ -6,19 +6,16 @@ import com.feup.cmov.acme_client.database.AppDatabaseDao
 import com.feup.cmov.acme_client.database.models.Order
 import com.feup.cmov.acme_client.database.models.OrderItem
 import com.feup.cmov.acme_client.database.models.Voucher
+import com.feup.cmov.acme_client.database.models.composed_models.ItemsWithInfo
 import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
-import com.feup.cmov.acme_client.network.Result
 import com.feup.cmov.acme_client.network.WebService
-import com.feup.cmov.acme_client.network.requests.PlaceOrderRequest
 import com.feup.cmov.acme_client.network.responses.FetchOrdersResponse
-import com.feup.cmov.acme_client.network.responses.PlaceOrderResponse
 import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 import com.feup.cmov.acme_client.utils.ShowFeedback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.IOException
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -60,7 +57,7 @@ class OrderRepository
         cartItems: Collection<CartViewModel.CartItem>,
         vouchers: Collection<Voucher>,
         total: Float
-    ): Order {
+    ): OrderWithItems {
         return withContext(Dispatchers.IO) {
             val orderId = UUID.randomUUID().toString()
             val order = Order(
@@ -74,7 +71,7 @@ class OrderRepository
             )
             appDatabaseDao.createOrder(order)
             // Mark vouchers as used.
-            appDatabaseDao.markVouchersAsUsed(vouchers.map { voucher ->
+            appDatabaseDao.updateVouchers(vouchers.map { voucher ->
                 Voucher(
                     voucherId = voucher.voucherId,
                     userId = voucher.userId,
@@ -95,7 +92,24 @@ class OrderRepository
                 )
             }
             appDatabaseDao.createOrderItems(orderItems)
-            order
+            val orderItemsWithInfo = ArrayList<ItemsWithInfo>()
+            for(item in orderItems) {
+                val menuItem = cartItems.filter { it.item.id == item.item_id }[0].item
+                orderItemsWithInfo.add(
+                    ItemsWithInfo(orderItem = item, menuItem = menuItem)
+                )
+            }
+            OrderWithItems(order=order, orderItems = orderItemsWithInfo, vouchers = ArrayList(vouchers))
+        }
+    }
+
+    suspend fun removeOrder(order: OrderWithItems): Void {
+        return withContext(Dispatchers.IO) {
+            appDatabaseDao.removeOrder(order.order)
+            appDatabaseDao.removeOrderItems(order.orderItems.map { it.orderItem })
+            appDatabaseDao.updateVouchers(order.vouchers.map {voucher ->
+                Voucher(voucherId = voucher.voucherId, userId = voucher.userId, voucherType = voucher.voucherType, used_on_order_id = null)
+            })
         }
     }
 }

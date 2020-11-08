@@ -12,6 +12,7 @@ import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.Order
+import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
 import com.feup.cmov.acme_client.databinding.FragmentOrdersHistoryBinding
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -97,9 +98,9 @@ class OrdersHistoryFragment : Fragment(), OrdersHistoryHandler {
             binding.orderTabLayout.getTabAt(1)!!.select()
     }
 
-    override fun viewOrder(v: View, order: Order) {
+    override fun viewOrder(v: View, order: OrderWithItems) {
         v.findNavController()
-            .navigate(R.id.action_mainMenuFragment_to_viewOrderFragment, bundleOf("order" to Order.serialize(order)))
+            .navigate(R.id.action_mainMenuFragment_to_viewOrderFragment, bundleOf("order" to OrderWithItems.serialize(order)))
     }
 
     companion object {

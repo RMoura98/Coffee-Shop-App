@@ -88,7 +88,7 @@ class OrderItemAdapter(private val ordersHistoryHandler: OrdersHistoryHandler) :
                 orderCompletedIcon.setColorFilter(ContextCompat.getColor(AcmeApplication.getAppContext(), R.color.orange_800), android.graphics.PorterDuff.Mode.SRC_IN);
             }
             container.setOnClickListener {
-                ordersHistoryHandler.viewOrder(itemView, item.order)
+                ordersHistoryHandler.viewOrder(itemView, item)
             }
         }
         companion object {

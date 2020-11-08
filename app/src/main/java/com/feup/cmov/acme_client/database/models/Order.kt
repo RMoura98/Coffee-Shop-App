@@ -42,14 +42,4 @@ data class Order (
         val df: DateFormat = SimpleDateFormat("dd/MM/YYYY HH:mm")
         return df.format(createdAt)
     }
-
-    companion object {
-        fun serialize(order: Order): String {
-            return Gson().toJson(order)
-        }
-
-        fun deserialize(order: String): Order {
-            return Gson().fromJson(order, Order::class.java)
-        }
-    }
 }

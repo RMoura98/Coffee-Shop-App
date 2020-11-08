@@ -99,5 +99,11 @@
         android:id="@+id/viewOrderFragment"
         android:name="com.feup.cmov.acme_client.screens.orders.view_order.ViewOrderFragment"
         android:label="fragment_view_order"
-        tools:layout="@layout/fragment_view_order" />
+        tools:layout="@layout/fragment_view_order" >
+        <action
+            android:id="@+id/action_viewOrderFragment_to_cartFragment"
+            app:destination="@id/cartFragment"
+            app:popUpTo="@id/mainMenuFragment"
+            app:popUpToInclusive="false"  />
+    </fragment>
 </navigation>

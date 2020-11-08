@@ -42,7 +42,7 @@ interface AppDatabaseDao {
     fun createVouchers(vouchers: List<Voucher>): Void
 
     @Update
-    fun markVouchersAsUsed(vouchers: Collection<Voucher>): Void
+    fun updateVouchers(vouchers: Collection<Voucher>): Void
 
     // Orders
     @Transaction
@@ -57,4 +57,10 @@ interface AppDatabaseDao {
 
     @Insert(onConflict = REPLACE)
     fun createOrderItems(vouchers: List<OrderItem>): Void
+
+    @Delete
+    fun removeOrder(order: Order): Void
+
+    @Delete
+    fun removeOrderItems(orderItems: List<OrderItem>): Void
 }
