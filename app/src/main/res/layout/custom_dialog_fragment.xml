@@ -31,12 +31,11 @@
                 android:id="@+id/item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
                 android:layout_marginBottom="5dp"
-                android:text="Product Name"
-                android:width="180dp"
-                android:textStyle="bold"
-                android:paddingHorizontal="5dp" />
+                android:paddingHorizontal="5dp"
+                android:text="Product"
+                android:textSize="25sp"
+                android:textStyle="bold" />
             <TextView
                 android:id="@+id/item_category"
                 android:layout_width="wrap_content"
@@ -50,10 +49,7 @@
             android:id="@+id/item_price"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:gravity="center"
-            android:maxWidth="10dp"
-            android:minWidth="10dp"
+            android:gravity="right|center"
             android:paddingHorizontal="3dp"
             android:text="100,50 €"
             android:textSize="25sp" />
@@ -107,25 +103,20 @@
 
         <TextView
             android:id="@+id/cart_button_number_items"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:paddingStart="9dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="6dp"
-            android:text="11"
+            android:text="110"
             android:textColor="@color/black"
             android:textSize="50sp" />
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_marginHorizontal="15dp"
-        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-10dp">
 
         <TextView
             android:id="@+id/remove_all_button"
@@ -133,6 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:padding="15dp"
+            android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="Remove item from cart"
             android:textColor="@color/red_800" />

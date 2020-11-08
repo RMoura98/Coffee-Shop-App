@@ -81,12 +81,17 @@ class EditItemQuantityDialog(): DialogFragment() {
         numberItems.text = cartItem.quantity.toString()
 
         minusButton.setOnClickListener {
-            if (cartItem.quantity == 0) return@setOnClickListener
+            if (cartItem.quantity == 0)
+                return@setOnClickListener
             cartItem.quantity--
+            if (cartItem.quantity == 0 && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
+                minusButton.setColorFilter(AcmeApplication.getAppContext().getColor(R.color.grey_300))
             numberItems.text = cartItem.quantity.toString()
             updateUpdateButton(view)
         }
         plusButton.setOnClickListener {
+            if (cartItem.quantity == 0 && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
+                minusButton.setColorFilter(AcmeApplication.getAppContext().getColor(R.color.colorPrimary))
             cartItem.quantity++
             numberItems.text = cartItem.quantity.toString()
             updateUpdateButton(view)
