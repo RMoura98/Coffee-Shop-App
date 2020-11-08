@@ -90,6 +90,7 @@
                                 android:id="@+id/orderCompletedStatus"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium"
                                 android:text="Order Pending"
                                 android:textAppearance="?attr/textAppearanceHeadline5" />
 
@@ -123,6 +124,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="4dp"
+                            android:fontFamily="sans-serif"
                             android:text="@string/order_summary"
                             android:textAppearance="?attr/textAppearanceHeadline6" />
 
@@ -137,7 +139,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="15dp"
                                 android:text="Order placed on"
-                                android:textColor="@color/black" />
+                                android:textColor="@color/grey_900" />
 
                             <TextView
                                 android:id="@+id/orderPlacedOn"
@@ -147,7 +149,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="15dp"
                                 android:text="10/05/2020 14:40"
-                                android:textColor="@color/black" />
+                                android:textColor="@color/grey_900" />
 
 
                         </RelativeLayout>
@@ -165,7 +167,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="15dp"
                                 android:text="Order completed on"
-                                android:textColor="@color/black" />
+                                android:textColor="@color/grey_900" />
 
                             <TextView
                                 android:id="@+id/orderCompletedOn"
@@ -175,7 +177,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="15dp"
                                 android:text="10/05/2020 14:40"
-                                android:textColor="@color/black" />
+                                android:textColor="@color/grey_900" />
 
 
                         </RelativeLayout>
@@ -192,7 +194,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="15dp"
                                 android:text="Number of items"
-                                android:textColor="@color/black" />
+                                android:textColor="@color/grey_900" />
 
                             <TextView
                                 android:id="@+id/numberOfItems"
@@ -201,8 +203,8 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="15dp"
-                                android:textColor="@color/black"
-                                android:text="5"/>
+                                android:text="5"
+                                android:textColor="@color/grey_900" />
 
                         </RelativeLayout>
 
@@ -219,7 +221,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="15dp"
                                 android:text="@string/total_text"
-                                android:textColor="@color/black" />
+                                android:textColor="@color/grey_900" />
 
                             <TextView
                                 android:id="@+id/orderTotal"
@@ -228,8 +230,8 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="15dp"
-                                android:textColor="@color/black"
-                                android:text="€10.50"/>
+                                android:text="€10.50"
+                                android:textColor="@color/grey_900" />
 
                         </RelativeLayout>
 

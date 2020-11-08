@@ -16,6 +16,7 @@ import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.databinding.FragmentLoginBinding
 import com.feup.cmov.acme_client.screens.signup.SignupFragment_GeneratedInjector
+import com.feup.cmov.acme_client.utils.PreferencesUtils
 import com.feup.cmov.acme_client.utils.ShowFeedback
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -72,10 +73,25 @@ class LoginFragment : Fragment(), LoginHandler {
             }
         })
 
+        val userName = PreferencesUtils.getLoggedInUser().first
+        if(userName != null) {
+            viewModel.userName = userName
+            viewModel.password = "••••••••"
+            binding.loginFragmentUsernameInput.hint = ""
+            binding.loginFragmentPasswordInput.hint = ""
+            viewModel.isLoading.set(true)
+        }
         // Incase user is already logged in we just redirect him to the main menu.
         viewModel.retrieveLoggedInUser().observe(viewLifecycleOwner, Observer observe@{ result ->
             if(result != null)
                 loginSuccessful(binding.root)
+            else {
+                binding.loginFragmentUsernameInput.hint = ""
+                binding.loginFragmentPasswordInput.hint = ""
+                viewModel.userName = "Username"
+                viewModel.password = "Password"
+                viewModel.isLoading.set(false)
+            }
         })
 
         return binding.root
