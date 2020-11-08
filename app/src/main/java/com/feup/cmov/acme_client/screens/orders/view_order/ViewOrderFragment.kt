@@ -1,13 +1,16 @@
 package com.feup.cmov.acme_client.screens.orders.view_order
 
+import android.app.AlertDialog
+import android.app.AlertDialog.Builder
+import android.app.Dialog
+import android.app.ProgressDialog.show
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -47,7 +50,12 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
         if(orderWithItems.order.completed) {
             with(binding.orderCompletedIcon) {
                 setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
-                setColorFilter(ContextCompat.getColor(AcmeApplication.getAppContext(), R.color.green_600), android.graphics.PorterDuff.Mode.SRC_IN);
+                setColorFilter(
+                    ContextCompat.getColor(
+                        AcmeApplication.getAppContext(),
+                        R.color.green_600
+                    ), android.graphics.PorterDuff.Mode.SRC_IN
+                );
             }
             binding.orderCompletedStatus.text = "Order #${orderWithItems.order.order_sequential_id}"
             binding.orderCompletedCaption.text = "Let the flavors and aromatics of ACME coffee take you to a new dimension."
@@ -61,7 +69,12 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
         else {
             with(binding.orderCompletedIcon) {
                 setImageResource(R.drawable.ic_outline_play_circle_outline_24)
-                setColorFilter(ContextCompat.getColor(AcmeApplication.getAppContext(), R.color.orange_600), android.graphics.PorterDuff.Mode.SRC_IN);
+                setColorFilter(
+                    ContextCompat.getColor(
+                        AcmeApplication.getAppContext(),
+                        R.color.orange_600
+                    ), android.graphics.PorterDuff.Mode.SRC_IN
+                );
             }
             binding.orderCompletedStatus.text = "Order Pending"
             binding.orderCompletedCaption.text = "Please pickup your order at the counter of ACME Coffee Shop."
@@ -76,11 +89,13 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
             activity?.onBackPressed();
         }
 
-        viewModel.wasOrderDeleted().observe(viewLifecycleOwner, Observer observe@{ wasOrderDeleted ->
-            if(wasOrderDeleted) {
-                activity?.onBackPressed();
-            }
-        });
+        viewModel.wasOrderDeleted().observe(
+            viewLifecycleOwner,
+            Observer observe@{ wasOrderDeleted ->
+                if (wasOrderDeleted) {
+                    activity?.onBackPressed();
+                }
+            });
 
         return binding.root
     }
@@ -107,6 +122,14 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
     }
 
     override fun clickDeleteOrder(v: View) {
-        viewModel.removeOrder(orderWithItems)
+        val builder = Builder(context)
+        builder.setTitle("Are you sure?")
+            .setMessage("Are you sure you want to cancel this order?")
+            .setIcon(R.drawable.ic_baseline_error_outline_24)
+            .setPositiveButton("Yes") {_, _ ->
+                viewModel.removeOrder(orderWithItems)
+            }
+            .setNegativeButton("No") {_, _ -> }
+            .show()
     }
 }
