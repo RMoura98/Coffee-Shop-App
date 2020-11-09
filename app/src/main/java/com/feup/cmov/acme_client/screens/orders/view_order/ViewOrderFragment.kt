@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -102,7 +103,8 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
     }
 
     override fun clickPickupOrder(v: View) {
-        TODO("Not yet implemented")
+        v.findNavController()
+            .navigate(R.id.action_viewOrderFragment_to_pickupSuccessFragment, bundleOf("order" to requireArguments().getString("order")))
     }
 
     override fun clickOrderReceipt(v: View) {

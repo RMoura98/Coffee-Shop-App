@@ -105,5 +105,17 @@
             app:destination="@id/cartFragment"
             app:popUpTo="@id/mainMenuFragment"
             app:popUpToInclusive="false"  />
+        <action
+            android:id="@+id/action_viewOrderFragment_to_pickupSuccessFragment"
+            app:destination="@id/pickupSuccessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pickupSuccessFragment"
+        android:name="com.feup.cmov.acme_client.screens.orders.pickup_success.PickupSuccessFragment"
+        android:label="fragment_pickup_success"
+        tools:layout="@layout/fragment_pickup_success" >
+        <action
+            android:id="@+id/action_pickupSuccessFragment_to_viewOrderFragment"
+            app:destination="@id/viewOrderFragment" />
     </fragment>
 </navigation>
