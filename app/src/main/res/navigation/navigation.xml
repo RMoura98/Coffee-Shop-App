@@ -105,5 +105,13 @@
             app:destination="@id/cartFragment"
             app:popUpTo="@id/mainMenuFragment"
             app:popUpToInclusive="false"  />
+        <action
+            android:id="@+id/action_viewOrderFragment_to_orderReceiptFragment"
+            app:destination="@id/orderReceiptFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/orderReceiptFragment"
+        android:name="com.feup.cmov.acme_client.screens.orders.view_order.OrderReceiptFragment"
+        android:label="fragment_order_receipt"
+        tools:layout="@layout/fragment_order_receipt" />
 </navigation>

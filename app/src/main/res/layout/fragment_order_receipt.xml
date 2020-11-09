@@ -2,19 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".screens.checkout.cart.CartFragment">
+    tools:context=".screens.orders.view_order.OrderReceiptFragment">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.feup.cmov.acme_client.screens.checkout.CartViewModel" />
-
-        <variable
-            name="handler"
-            type="com.feup.cmov.acme_client.screens.checkout.cart.CartHandler" />
-
-    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -23,8 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="0dp"
-            android:layout_marginVertical="55dp">
+            android:layout_marginTop="55dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -33,7 +21,128 @@
                 android:clipToPadding="false"
                 android:orientation="vertical">
 
+                <RelativeLayout
+                    android:id="@+id/Information_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+
+                        android:text="@string/information"
+                        android:textAppearance="?attr/textAppearanceHeadline5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/date_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+                        android:text="Order placed on"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/order_date_information"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:text="10/05/2020 14:40"
+                        android:layout_marginEnd="15dp"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/date_completed_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+                        android:text="Order completed on"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/order_completed_date_information"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:text="10/05/2020 14:40"
+                        android:layout_marginEnd="15dp"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/status_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+                        android:text="Status"
+                        android:textColor="@color/black" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="15dp">
+
+                        <ImageView
+                            android:id="@+id/orderCompletedIcon"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_baseline_check_circle_outline_24"/>
+
+                        <TextView
+                            android:id="@+id/orderCompletedStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Completed"
+                            android:textColor="@color/black" />
+
+                    </LinearLayout>
+
+
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@android:color/darker_gray" />
 
                 <RelativeLayout
                     android:id="@+id/cart_button"
@@ -48,22 +157,11 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="15dp"
 
-                        android:text="@string/your_order"
+                        android:text="@string/order_text"
                         android:textAppearance="?attr/textAppearanceHeadline5"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/see_menu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="15dp"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:text="@string/see_menu"
-                        android:textColor="@color/green_800"/>
 
                 </RelativeLayout>
 
@@ -75,18 +173,7 @@
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="0dp"
                     android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/no_cart_items_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:gravity="center"
-                    android:text="Nothing to see here. Add an item!"
-                    android:visibility="visible" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -108,23 +195,12 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="15dp"
 
-                        android:text="@string/your_vouchers"
+                        android:text="@string/vouchers_text"
                         android:textAppearance="?attr/textAppearanceHeadline5"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/add_promo_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="15dp"
-                        android:onClick="@{handler::onAddVoucherClick}"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:text="@string/add_voucher"
-                        android:textColor="@color/green_800" />
 
 
                 </RelativeLayout>
@@ -136,7 +212,6 @@
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="0dp"
                     android:nestedScrollingEnabled="false"
-                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <TextView
@@ -146,7 +221,7 @@
                     android:layout_gravity="center"
                     android:layout_marginVertical="10dp"
                     android:gravity="center"
-                    android:text="Nothing to see here. Add a voucher!"
+                    android:text="No vouchers were used."
                     android:visibility="visible" />
 
                 <View
@@ -197,7 +272,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="15dp"
-                        android:text="€12.50"
+                        android:text="€1.00"
                         android:textColor="@color/black" />
 
                 </RelativeLayout>
@@ -223,6 +298,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="15dp"
+                        android:text="€1.00"
                         android:textColor="@color/black" />
 
                 </RelativeLayout>
@@ -250,44 +326,12 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="15dp"
+                        android:text="€1.00"
                         android:textColor="@color/black" />
 
                 </RelativeLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-
-        <RelativeLayout
-            android:id="@+id/next_button"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="@color/black"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
-            android:onClick="@{handler.placeOrder}"
-            android:foreground="?attr/selectableItemBackground"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/next"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-
-            <TextView
-                android:id="@+id/total_price_next_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:textColor="@color/white"
-                android:text="€10.25"/>
-
-        </RelativeLayout>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -297,33 +341,22 @@
             android:paddingBottom="4dp">
 
             <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/checkoutTopAppBar"
-                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:title="Checkout" />
-
             </com.google.android.material.appbar.AppBarLayout>
 
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_anchor="@+id/appBarLayout"
+                app:layout_anchorGravity="center"
+                app:title="Order Receipt" />
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
-        <ProgressBar
-            android:id="@+id/loginFragment_progressBar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:indeterminateTint="@android:color/white"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_centerInParent="true"
-            android:padding="175dp"
-            android:background="@color/blackOverlay"
-            android:visibility="@{viewModel.isLoading}">
-
-        </ProgressBar>
 
     </RelativeLayout>
 

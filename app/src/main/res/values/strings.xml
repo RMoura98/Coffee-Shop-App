@@ -59,5 +59,8 @@
     <string name="proceed_to_counter">Please proceed to the counter of ACME Coffee Shop.</string>
     <string name="order_placed_success">Order has been successfully placed.</string>
     <string name="update_cart_value">Update Cart • €%.2f</string>
+    <string name="order_text">Order</string>
+    <string name="vouchers_text">Vouchers</string>
+    <string name="information">Information</string>
 
 </resources>
