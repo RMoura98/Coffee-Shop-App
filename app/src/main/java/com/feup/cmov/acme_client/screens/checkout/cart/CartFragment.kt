@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -57,9 +58,15 @@ class CartFragment() : Fragment(), CartHandler {
             if (cartList.isEmpty()) {
                 binding.noCartItemsText.visibility = View.VISIBLE
                 binding.cartItemList.visibility = View.GONE
+                binding.nextButton.isEnabled = false
+                binding.nextButton.isClickable = false
+                binding.nextButton.setBackgroundColor(getColor(AcmeApplication.getAppContext(), R.color.grey_800))
             } else {
                 binding.noCartItemsText.visibility = View.GONE
                 binding.cartItemList.visibility = View.VISIBLE
+                binding.nextButton.isEnabled = true
+                binding.nextButton.isClickable = true
+                binding.nextButton.setBackgroundColor(getColor(AcmeApplication.getAppContext(), R.color.black))
             }
 
             cartItemAdapter.data = cartList.values.toList()
