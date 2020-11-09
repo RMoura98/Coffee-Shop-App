@@ -108,7 +108,8 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
     }
 
     override fun clickOrderReceipt(v: View) {
-        TODO("Not yet implemented")
+        v.findNavController()
+            .navigate(R.id.action_viewOrderFragment_to_orderReceiptFragment, bundleOf("order" to requireArguments().getString("order")))
     }
 
     override fun clickRemakeOrder(v: View) {

@@ -106,6 +106,9 @@
             app:popUpTo="@id/mainMenuFragment"
             app:popUpToInclusive="false"  />
         <action
+            android:id="@+id/action_viewOrderFragment_to_orderReceiptFragment"
+            app:destination="@id/orderReceiptFragment" />
+        <action
             android:id="@+id/action_viewOrderFragment_to_pickupSuccessFragment"
             app:destination="@id/pickupSuccessFragment" />
     </fragment>
