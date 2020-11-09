@@ -77,8 +77,6 @@ class StoreFragment() : Fragment(), StoreHandler {
             else -> "Howdy! "
         }
 
-        binding.greetings.text
-
         return binding.root
     }
 
