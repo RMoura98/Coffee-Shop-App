@@ -121,4 +121,9 @@
             android:id="@+id/action_pickupSuccessFragment_to_viewOrderFragment"
             app:destination="@id/viewOrderFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/orderReceiptFragment"
+        android:name="com.feup.cmov.acme_client.screens.orders.view_order.OrderReceiptFragment"
+        android:label="fragment_order_receipt"
+        tools:layout="@layout/fragment_order_receipt" />
 </navigation>
