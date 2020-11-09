@@ -154,6 +154,7 @@ class CartViewModel @ViewModelInject constructor(
 
     fun updateTotalPrice() {
         totalCartPrice.value = subtotalCartPrice.value?.minus(totalSavings.value!!)
+        if (totalCartPrice.value!! < 0f) totalCartPrice.value = 0f
         totalCartPrice.postValue(totalCartPrice.value)
     }
 
@@ -163,7 +164,8 @@ class CartViewModel @ViewModelInject constructor(
             if(voucher.voucherType == "free_coffee")
                 voucherList.add(VoucherUsedAdapter.VoucherWithSavings(voucher, getCoffePrice()!!))
             else if(voucher.voucherType == "discount") {
-                val savings = (getSubtotalCartPrice().value!! - (getCoffePrice() ?: 0f) * countCoffeVouchersSelected()) * 0.05F
+                var savings = (getSubtotalCartPrice().value!! - (getCoffePrice() ?: 0f) * countCoffeVouchersSelected()) * 0.05F
+                savings = floor(savings * 100) / 100 // round to floor with 2 decimal places
                 voucherList.add(VoucherUsedAdapter.VoucherWithSavings(voucher, savings))
             }
         }
@@ -216,7 +218,6 @@ class CartViewModel @ViewModelInject constructor(
             if (coffeeVouchersInExcess > 0) {
                 for(i in 0 until coffeeVouchersInExcess)
                     selectedVouchers.value!!.remove(coffeeVouchersSelected[i])
-                notifyVoucherChanges()
             }
         }
 
@@ -231,12 +232,16 @@ class CartViewModel @ViewModelInject constructor(
         }
 
         // Update Subtotal Price and Total Number of Items
-        totalCartItems.postValue(totalCartItems.value!! + quantityDifference)
-        subtotalCartPrice.postValue(subtotalCartPrice.value!! + (quantityDifference * cartItem.item.price))
+        totalCartItems.value = totalCartItems.value!! + quantityDifference
+        totalCartItems.postValue(totalCartItems.value)
+        subtotalCartPrice.value = subtotalCartPrice.value!! + (quantityDifference * cartItem.item.price)
+        subtotalCartPrice.postValue(subtotalCartPrice.value)
 
         //Update Total Price and Total Savings
-        updateTotalPrice()
         updateTotalSavings()
+        updateTotalPrice()
+
+        notifyVoucherChanges()
     }
 
 }

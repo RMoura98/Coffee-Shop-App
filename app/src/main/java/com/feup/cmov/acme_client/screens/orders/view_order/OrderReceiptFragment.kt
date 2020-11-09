@@ -16,6 +16,7 @@ import com.feup.cmov.acme_client.screens.checkout.cart.CartItemAdapter
 import com.feup.cmov.acme_client.screens.checkout.cart.VoucherUsedAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.ceil
+import kotlin.math.floor
 
 @AndroidEntryPoint
 class OrderReceiptFragment : Fragment() {
@@ -141,7 +142,8 @@ class OrderReceiptFragment : Fragment() {
             if (voucher.voucherType == "free_coffee")
                 voucherWithSavingsList.add(VoucherUsedAdapter.VoucherWithSavings(voucher,coffeePrice))
             else if (voucher.voucherType == "discount") {
-                val savings = (sumAllItemsPrice - (coffeePrice * countCoffeeVouchers)) * 0.05F
+                var savings = (sumAllItemsPrice - (coffeePrice * countCoffeeVouchers)) * 0.05F
+                savings = floor(savings * 100) / 100 // round to floor with 2 decimal places
                 voucherWithSavingsList.add(VoucherUsedAdapter.VoucherWithSavings(voucher, savings))
             }
         }
