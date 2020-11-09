@@ -1,5 +1,6 @@
 package com.feup.cmov.acme_client.repositories
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.feup.cmov.acme_client.utils.PreferencesUtils
@@ -12,6 +13,8 @@ import com.feup.cmov.acme_client.network.responses.SignupResponse
 import javax.inject.Inject
 import com.feup.cmov.acme_client.network.Result
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.lang.Exception
@@ -112,5 +115,17 @@ class UserRepository
             return MutableLiveData<User>(null)
         else
             return appDatabaseDao.loadUserAsync(userName)
+    }
+
+    fun updateUser(user: User) {
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    appDatabaseDao.updateUser(user)
+                } catch (e: Throwable) {
+                    Log.e("UserRepository", "updateUser: $e")
+                }
+            }
+        }
     }
 }

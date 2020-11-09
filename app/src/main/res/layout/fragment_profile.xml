@@ -70,6 +70,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/userName"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -83,11 +84,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-                        android:enabled="false"
                         android:maxLength="15"
                         android:maxLines="1"
                         android:textColor="@color/grey_900"
-                        android:text="@{viewModel.user.userName}" />
+                        android:text="@={viewModel.user.userName}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -103,7 +103,6 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:enabled="false"
                         android:inputType="textPassword"
                         android:maxLines="1"
                         android:textColor="@color/grey_900"
@@ -150,11 +149,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                        android:enabled="false"
                         android:hint="@string/prompt_name"
                         android:maxLength="25"
                         android:maxLines="1"
-                        android:text="@{viewModel.user.name}"
+                        android:text="@={viewModel.user.name}"
                         android:textColor="@color/grey_900"
                         app:errorEnabled="true" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -173,17 +171,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:digits="0123456789+"
-                        android:enabled="false"
                         android:hint="@string/prompt_phone"
                         android:inputType="phone"
                         android:maxLength="14"
                         android:maxLines="1"
-                        android:text="@{viewModel.user.phone_number}"
+                        android:text="@={viewModel.user.phone_number}"
                         android:textColor="@color/grey_900" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/save_changes"
+            android:onClick="@{handler::onSaveButtonClick}"
+        />
 
     </LinearLayout>
 </layout>

@@ -20,6 +20,9 @@ interface AppDatabaseDao {
     @Insert(onConflict = ABORT)
     fun createUser(user: User): Void
 
+    @Update
+    fun updateUser(user: User): Void
+
     // Menu
     @Query("SELECT * FROM menu_item_table")
     fun getMenu(): LiveData<List<MenuItem>>

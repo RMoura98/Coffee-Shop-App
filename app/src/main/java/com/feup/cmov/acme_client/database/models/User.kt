@@ -17,26 +17,26 @@ data class User(
     val uuid: String,
 
     @ColumnInfo(name = "name")
-    val name: String,
+    var name: String,
 
     @ColumnInfo(name = "password_hashed")
-    val password_hashed: String,
+    var password_hashed: String,
 
     @ColumnInfo(name = "username")
-    val userName: String,
+    var userName: String,
 
     @ColumnInfo(name = "nif")
-    val NIF: String,
+    var NIF: String,
 
     @ColumnInfo(name = "card_number")
-    val card_number: String,
+    var card_number: String,
 
     @ColumnInfo(name = "card_cvc")
-    val card_cvc: String,
+    var card_cvc: String,
 
     @ColumnInfo(name = "card_expiration")
-    val card_expiration: String,
+    var card_expiration: String,
 
     @ColumnInfo(name = "phone_number")
-    val phone_number: String
+    var phone_number: String
 )
