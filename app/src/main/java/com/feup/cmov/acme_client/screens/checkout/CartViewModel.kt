@@ -22,6 +22,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.collections.set
+import kotlin.math.ceil
+import kotlin.math.floor
 import kotlin.math.pow
 
 
@@ -141,7 +143,9 @@ class CartViewModel @ViewModelInject constructor(
             savings += coffee_price!! * free_coffee_vouchers
 
         // Apply discount vouchers.
-        savings += (getSubtotalCartPrice().value!! - savings) - (0.95f).pow(free_item_vouchers) * (getSubtotalCartPrice().value!! - savings)
+        var discountSavings = (getSubtotalCartPrice().value!! - savings) - (0.95f).pow(free_item_vouchers) * (getSubtotalCartPrice().value!! - savings)
+        discountSavings = floor(discountSavings * 100) / 100 // round to floor with 2 decimal places
+        savings += discountSavings
         totalSavings.value = savings
         totalSavings.postValue(savings)
         Log.e("totalSavings", totalSavings.value!!.toString())

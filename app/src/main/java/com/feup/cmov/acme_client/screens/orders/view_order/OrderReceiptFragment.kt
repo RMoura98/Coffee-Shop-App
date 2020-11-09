@@ -15,13 +15,14 @@ import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 import com.feup.cmov.acme_client.screens.checkout.cart.CartItemAdapter
 import com.feup.cmov.acme_client.screens.checkout.cart.VoucherUsedAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.ceil
 
 @AndroidEntryPoint
 class OrderReceiptFragment : Fragment() {
 
     private lateinit var binding: FragmentOrderReceiptBinding
     private lateinit var orderWithItems: OrderWithItems
-    private var cartItemAdapter: CartItemAdapter = CartItemAdapter()
+    private var cartItemAdapter: CartItemAdapter = CartItemAdapter(false)
     private var voucherUsedAdapter: VoucherUsedAdapter = VoucherUsedAdapter()
 
     override fun onCreateView(
@@ -78,7 +79,7 @@ class OrderReceiptFragment : Fragment() {
             binding.noVoucherText.visibility = View.GONE
             voucherUsedAdapter.data = voucherItems
         }
-        
+
         inflateOrderSummary(sumAllItemsPrice, totalPrice)
     }
 
