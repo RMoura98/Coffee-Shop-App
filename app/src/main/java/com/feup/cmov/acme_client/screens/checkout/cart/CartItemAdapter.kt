@@ -9,7 +9,7 @@ import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.screens.checkout.CartViewModel
 
-class CartItemAdapter() : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
+class CartItemAdapter(private var rowClickable: Boolean = true) : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
 
     private val dialog = EditItemQuantityDialog()
 
@@ -23,7 +23,7 @@ class CartItemAdapter() : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.bind(item, dialog)
+        holder.bind(item, rowClickable, dialog)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,13 +38,15 @@ class CartItemAdapter() : RecyclerView.Adapter<CartItemAdapter.ViewHolder>() {
         private val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.cart_price)
 
 
-        fun bind(cartItem: CartViewModel.CartItem, dialog: EditItemQuantityDialog) {
+        fun bind(cartItem: CartViewModel.CartItem, rowClickable: Boolean, dialog: EditItemQuantityDialog) {
             name.text = cartItem.item.name
             price.text = String.format(priceStringFormat, cartItem.item.price)
             quantity.text = cartItem.quantity.toString()
 
-            itemView.setOnClickListener {
-                dialog.show(cartItem)
+            if (rowClickable) {
+                itemView.setOnClickListener {
+                    dialog.show(cartItem)
+                }
             }
         }
 

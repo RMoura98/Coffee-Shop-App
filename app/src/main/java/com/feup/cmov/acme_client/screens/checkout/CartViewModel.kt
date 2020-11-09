@@ -22,6 +22,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.collections.set
+import kotlin.math.ceil
+import kotlin.math.floor
 import kotlin.math.pow
 
 
@@ -141,7 +143,9 @@ class CartViewModel @ViewModelInject constructor(
             savings += coffee_price!! * free_coffee_vouchers
 
         // Apply discount vouchers.
-        savings += (getSubtotalCartPrice().value!! - savings) - (0.95f).pow(free_item_vouchers) * (getSubtotalCartPrice().value!! - savings)
+        var discountSavings = (getSubtotalCartPrice().value!! - savings) - (0.95f).pow(free_item_vouchers) * (getSubtotalCartPrice().value!! - savings)
+        discountSavings = floor(discountSavings * 100) / 100 // round to floor with 2 decimal places
+        savings += discountSavings
         totalSavings.value = savings
         totalSavings.postValue(savings)
         Log.e("totalSavings", totalSavings.value!!.toString())
@@ -150,6 +154,7 @@ class CartViewModel @ViewModelInject constructor(
 
     fun updateTotalPrice() {
         totalCartPrice.value = subtotalCartPrice.value?.minus(totalSavings.value!!)
+        if (totalCartPrice.value!! < 0f) totalCartPrice.value = 0f
         totalCartPrice.postValue(totalCartPrice.value)
     }
 
@@ -159,7 +164,8 @@ class CartViewModel @ViewModelInject constructor(
             if(voucher.voucherType == "free_coffee")
                 voucherList.add(VoucherUsedAdapter.VoucherWithSavings(voucher, getCoffePrice()!!))
             else if(voucher.voucherType == "discount") {
-                val savings = (getSubtotalCartPrice().value!! - (getCoffePrice() ?: 0f) * countCoffeVouchersSelected()) * 0.05F
+                var savings = (getSubtotalCartPrice().value!! - (getCoffePrice() ?: 0f) * countCoffeVouchersSelected()) * 0.05F
+                savings = floor(savings * 100) / 100 // round to floor with 2 decimal places
                 voucherList.add(VoucherUsedAdapter.VoucherWithSavings(voucher, savings))
             }
         }
@@ -168,6 +174,9 @@ class CartViewModel @ViewModelInject constructor(
 
     // Returns `true` if order was successfully placed; false otherwise.
     fun placeOrder() {
+        // Prevent user from pacing empty order
+        if(cartList.isEmpty())
+            return
         // Prevent user from clicking button multiple times.
         if(isLoading.get()!!)
             return
@@ -212,7 +221,6 @@ class CartViewModel @ViewModelInject constructor(
             if (coffeeVouchersInExcess > 0) {
                 for(i in 0 until coffeeVouchersInExcess)
                     selectedVouchers.value!!.remove(coffeeVouchersSelected[i])
-                notifyVoucherChanges()
             }
         }
 
@@ -227,12 +235,16 @@ class CartViewModel @ViewModelInject constructor(
         }
 
         // Update Subtotal Price and Total Number of Items
-        totalCartItems.postValue(totalCartItems.value!! + quantityDifference)
-        subtotalCartPrice.postValue(subtotalCartPrice.value!! + (quantityDifference * cartItem.item.price))
+        totalCartItems.value = totalCartItems.value!! + quantityDifference
+        totalCartItems.postValue(totalCartItems.value)
+        subtotalCartPrice.value = subtotalCartPrice.value!! + (quantityDifference * cartItem.item.price)
+        subtotalCartPrice.postValue(subtotalCartPrice.value)
 
         //Update Total Price and Total Savings
-        updateTotalPrice()
         updateTotalSavings()
+        updateTotalPrice()
+
+        notifyVoucherChanges()
     }
 
 }

@@ -17,6 +17,7 @@ import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
 
 class EditItemQuantityDialog(): DialogFragment() {
+    private var showing: Boolean = false
     private val cartViewModel: CartViewModel by activityViewModels()
     private lateinit var inflaterView: View
     private lateinit var cartItem: CartViewModel.CartItem
@@ -118,9 +119,12 @@ class EditItemQuantityDialog(): DialogFragment() {
         super.onDismiss(dialog)
         if(!cartUpdated)
             cartItem.quantity = originalQuantity
+        showing = false
     }
 
     fun show(cartItem: CartViewModel.CartItem) {
+        if (showing) return
+        showing = true
         cartUpdated = false
         this.cartItem = cartItem
         this.originalQuantity = cartItem.quantity
