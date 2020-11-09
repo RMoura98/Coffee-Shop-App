@@ -10,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.fragment.app.FragmentManager
 import com.feup.cmov.acme_client.databinding.ActivityMainBinding
 import com.feup.cmov.acme_client.screens.checkout.order_placed.OrderPlacedFragment
+import com.feup.cmov.acme_client.screens.orders.pickup_success.PickupSuccessFragment
 import com.feup.cmov.acme_client.utils.Debug
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Exception
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             val navHostFragment: NavHostFragment =
                 supportFragmentManager.findFragmentById(R.id.acmeNavHostFragment) as NavHostFragment
             navHostFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
-                if (fragment !is OrderPlacedFragment)
+                if (fragment !is OrderPlacedFragment && fragment !is PickupSuccessFragment)
                     super.onBackPressed()
             }
         }

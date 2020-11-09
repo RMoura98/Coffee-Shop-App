@@ -104,7 +104,7 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
 
     override fun clickPickupOrder(v: View) {
         v.findNavController()
-            .navigate(R.id.action_viewOrderFragment_to_pickupSuccessFragment, bundleOf("order" to requireArguments().getString("order")))
+            .navigate(R.id.action_viewOrderFragment_to_orderPickupFragment, bundleOf("order" to requireArguments().getString("order")))
     }
 
     override fun clickOrderReceipt(v: View) {

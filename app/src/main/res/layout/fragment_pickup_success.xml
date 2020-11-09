@@ -15,12 +15,12 @@
             android:id="@+id/imageView4"
             android:layout_width="249dp"
             android:layout_height="210dp"
+            android:src="@drawable/giftest"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.195"
-            android:src="@drawable/giftest" />
+            app:layout_constraintVertical_bias="0.153" />
 
         <TextView
             android:id="@+id/textView"
@@ -35,10 +35,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView4"
-            app:layout_constraintVertical_bias="0.067" />
+            app:layout_constraintVertical_bias="0.032" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -51,11 +51,29 @@
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:layout_constraintVertical_bias="0.031" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/voucherList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="40dp"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/caption"
+            app:layout_constraintVertical_bias="0.0"
+            tools:listitem="@layout/voucher_row" />
+
         <ProgressBar
             android:id="@+id/progressBar"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="345dp"
             android:layout_height="17dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="56dp"
             android:backgroundTint="?attr/colorPrimary"
             android:indeterminate="false"
             android:max="100"
@@ -63,8 +81,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintVertical_bias="0.181" />
+            app:layout_constraintTop_toBottomOf="@+id/voucherList"
+            app:layout_constraintVertical_bias="0.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

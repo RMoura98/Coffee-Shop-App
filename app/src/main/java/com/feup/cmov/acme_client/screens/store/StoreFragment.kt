@@ -1,14 +1,16 @@
 package com.feup.cmov.acme_client.screens.store
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.feup.cmov.acme_client.R
@@ -20,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.concurrent.ThreadLocalRandom
 
 @AndroidEntryPoint
 class StoreFragment() : Fragment(), StoreHandler {
@@ -85,10 +88,39 @@ class StoreFragment() : Fragment(), StoreHandler {
 //        Log.e("minus", (binding.wrapperLayout.height.toFloat() - y).toString())
 
         val howFarAway = (binding.wrapperLayout.height.toFloat() - y * 0.69) / (binding.wrapperLayout.height.toFloat())
-        with(imageView.animate()){
-            translationY(binding.wrapperLayout.height.toFloat() * 2)
-            setDuration(1000)
-        }
+
+        val up_y = ThreadLocalRandom.current().nextInt(50, 250)
+        val translate_x = ThreadLocalRandom.current().nextInt(-250, 500)
+
+//        val go_up_y = ObjectAnimator
+//            .ofFloat(imageView, View.TRANSLATION_Y, 0f, -up_y.toFloat())
+//            .setDuration(500);
+//
+//        val go_some_pos_x = ObjectAnimator
+//            .ofFloat(imageView, View.TRANSLATION_X, 0f, translate_x.toFloat())
+//            .setDuration(500);
+//
+//        imageView.pivotX = imageView.width / 2f;
+//        imageView.pivotY = imageView.height / 2f;
+//
+//        val rotate = ObjectAnimator
+//            .ofFloat(imageView, View.ROTATION, 0f, 720f)
+//            .setDuration(1000);
+
+        val go_down = ObjectAnimator
+            .ofFloat(imageView, View.TRANSLATION_Y, 0f, binding.wrapperLayout.height.toFloat() * 2)
+            .setDuration(1000);
+
+        val animatorSet = AnimatorSet()
+        animatorSet.playTogether(
+            go_down
+        );
+        animatorSet.start()
+
+//        with(imageView.animate()){
+//            translationY(binding.wrapperLayout.height.toFloat() * 2)
+//            setDuration(1000)
+//        }
 
         GlobalScope.launch(Dispatchers.Main) {
             delay((1000 * howFarAway).toLong() - 150)
