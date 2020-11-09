@@ -9,5 +9,13 @@
         android:id="@+id/scannerFragment"
         android:name="com.feup.cmov.acme_terminal.screens.scanner.ScannerFragment"
         android:label="fragment_scanner"
-        tools:layout="@layout/fragment_scanner" />
+        tools:layout="@layout/fragment_scanner" >
+        <action
+            android:id="@+id/action_scannerFragment_to_orderDetailsFragment"
+            app:destination="@id/orderDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailsFragment"
+        android:name="com.feup.cmov.acme_terminal.screens.order_details.OrderDetailsFragment"
+        android:label="OrderDetailsFragment" />
 </navigation>
