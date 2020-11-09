@@ -56,7 +56,6 @@ class MainMenuFragment : Fragment(), MainMenuHandler {
                 return@observe
             lastTotalCartItems = totalCartItems
             if(totalCartItems >= 1) {
-                Log.e("yea", hasShownCartAnimation.toString())
                 with(binding.cartButton.animate()){
                     translationY(0f)
                     setDuration(if(!hasShownCartAnimation) 300 else 0)

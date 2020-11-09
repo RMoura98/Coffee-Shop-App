@@ -60,6 +60,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-medium"
                         android:paddingHorizontal="5dp"
+                        android:translationY="-2dp"
                         android:text="5.67€"
                         android:textAppearance="?attr/textAppearanceCaption"
                         android:textColor="@color/grey_800" />

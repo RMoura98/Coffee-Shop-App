@@ -125,7 +125,7 @@ class ViewOrderFragment : Fragment(), ViewOrderHandler {
 
     override fun clickDeleteOrder(v: View) {
         val builder = Builder(context)
-        builder.setTitle("Are you sure?")
+        builder.setTitle("Cancel order")
             .setMessage("Are you sure you want to cancel this order?")
             .setIcon(R.drawable.ic_baseline_error_outline_24)
             .setPositiveButton("Yes") {_, _ ->

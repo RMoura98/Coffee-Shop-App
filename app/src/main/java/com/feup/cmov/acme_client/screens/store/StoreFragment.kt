@@ -39,7 +39,21 @@ class StoreFragment() : Fragment(), StoreHandler {
         )
 
         cartViewModel.getMenuItems().observe(viewLifecycleOwner, Observer observe@{ menuItems ->
-            adapter.data = menuItems
+            val itemsList = ArrayList<MenuItemAdapter.MenuItemData>()
+            menuItems.sortedBy { it.category }
+            var lastCategory = ""
+            for(menuItem in menuItems) {
+                if(menuItem.category != lastCategory) {
+                    itemsList.add(MenuItemAdapter.MenuItemData.Header(menuItem.category))
+                    itemsList.add(MenuItemAdapter.MenuItemData.MenuItemWrapper(menuItem))
+                    lastCategory = menuItem.category
+                }
+                else
+                    itemsList.add(MenuItemAdapter.MenuItemData.MenuItemWrapper(menuItem))
+
+            }
+
+            adapter.data = itemsList
         });
 
         return binding.root
