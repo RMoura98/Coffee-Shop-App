@@ -1,5 +1,6 @@
 package com.feup.cmov.acme_client.screens.login
 
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.User
@@ -21,6 +23,9 @@ import com.feup.cmov.acme_client.utils.ShowFeedback
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
@@ -73,28 +78,26 @@ class LoginFragment : Fragment(), LoginHandler {
             }
         })
 
-        val userName = PreferencesUtils.getLoggedInUser().first
-        if(userName != null) {
-            viewModel.userName = userName
-            viewModel.password = "••••••••"
-            binding.loginFragmentUsernameInput.hint = ""
-            binding.loginFragmentPasswordInput.hint = ""
-            viewModel.isLoading.set(true)
-        }
         // Incase user is already logged in we just redirect him to the main menu.
         viewModel.retrieveLoggedInUser().observe(viewLifecycleOwner, Observer observe@{ result ->
-            if(result != null)
-                loginSuccessful(binding.root)
-            else {
-                binding.loginFragmentUsernameInput.hint = ""
-                binding.loginFragmentPasswordInput.hint = ""
-                viewModel.userName = "Username"
-                viewModel.password = "Password"
-                viewModel.isLoading.set(false)
+            if(result != null) {
+                GlobalScope.launch {
+                    delay(1000)
+                    loginSuccessful(binding.root)
+                }
             }
+
         })
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val userName = PreferencesUtils.getLoggedInUser().first
+
+        if(userName == null)
+            binding.splashScreen.visibility = View.GONE
     }
 
     override fun onLoginButtonClick(v: View) {
