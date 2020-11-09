@@ -64,6 +64,7 @@ class MenuItemAdapter(private val storeHandler: StoreHandler) : RecyclerView.Ada
         private val price: TextView = itemView.findViewById(R.id.item_price)
         private val imageView: ImageView =  itemView.findViewById(R.id.item_image)
         private val linearLayout: View = itemView.findViewById(R.id.store_row_layout)
+        private val description: TextView = itemView.findViewById(R.id.description)
 
         private val assetPath: String = AcmeApplication.getAppContext().getString(R.string.serverURL) + "/assets/"
         private val priceStringFormat: String = AcmeApplication.getAppContext().getString(R.string.item_price)
@@ -72,6 +73,7 @@ class MenuItemAdapter(private val storeHandler: StoreHandler) : RecyclerView.Ada
         fun bind(item: MenuItem, storeHandler: StoreHandler) {
             name.text = item.name
             price.text = String.format(priceStringFormat, item.price)
+            description.text = item.description
 
             val imagePath = assetPath + item.imageName
             Picasso.get().load(imagePath).into(imageView);

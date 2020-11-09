@@ -159,7 +159,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Made with " />
+                    android:text="Made with "
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textColor="@color/grey_700" />
 
                 <ImageView
                     android:layout_width="18dp"
@@ -167,12 +169,14 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="2dp"
                     android:src="@drawable/ic_baseline_favorite_24"
-                    android:tint="@color/red_800" />
+                    app:tint="@color/red_800" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="at FEUP" />
+                    android:text="at FEUP"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textColor="@color/grey_700"/>
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,9 @@ data class MenuItem (
     @ColumnInfo(name = "name")
     val name: String,
 
+    @ColumnInfo(name = "description")
+    val description: String,
+
     @ColumnInfo(name = "imageName")
     val imageName: String,
 

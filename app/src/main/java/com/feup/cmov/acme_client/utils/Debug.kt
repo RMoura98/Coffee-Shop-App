@@ -26,7 +26,7 @@ class Debug @Inject constructor(
             val user = User(
                 1000,
                 "95850c47-bfa2-4254-84a8-36b587dfeb27",
-                "Fabio Oliveira",
+                "Fábio Oliveira",
                 "\$2a\$10\$MCjNS3rC2QJ11IK89nXF8evJ02Aurfeti6oI0oW1KP6.WC2WENYMi",
                 "panda",
                 "249720955",
