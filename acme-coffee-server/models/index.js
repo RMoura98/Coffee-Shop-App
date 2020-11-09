@@ -15,7 +15,7 @@ models.Voucher.belongsTo(models.Order, {
   {
     name: 'used_on_order_id',
     alowNull: true,
-    defaultValue: null
+    defaultValue: null,
   },
 });
 

@@ -38,7 +38,7 @@ module.exports = {
           userId: '95850c47-bfa2-4254-84a8-36b587dfeb27',
           createdAt: new Date(),
           updatedAt: new Date(),
-        }
+        },
       ], { validate: true });
   },
 
