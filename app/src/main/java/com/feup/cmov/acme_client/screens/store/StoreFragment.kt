@@ -22,7 +22,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.*
 import java.util.concurrent.ThreadLocalRandom
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class StoreFragment() : Fragment(), StoreHandler {
@@ -41,27 +43,41 @@ class StoreFragment() : Fragment(), StoreHandler {
             R.layout.fragment_store, container, false
         )
 
-        cartViewModel.getMenuItems().observe(viewLifecycleOwner, Observer observe@{ menuItems: List<MenuItem> ->
-            val itemsList = ArrayList<MenuItemAdapter.MenuItemData>()
-            val sortedItems = menuItems.sortedWith(compareBy({ it.category }, { it.name }))
-            var lastCategory = ""
-            for(menuItem in sortedItems) {
-                if(menuItem.category != lastCategory) {
-                    itemsList.add(MenuItemAdapter.MenuItemData.Header(menuItem.category))
-                    itemsList.add(MenuItemAdapter.MenuItemData.MenuItemWrapper(menuItem))
-                    lastCategory = menuItem.category
+        cartViewModel.getMenuItems().observe(
+            viewLifecycleOwner,
+            Observer observe@{ menuItems: List<MenuItem> ->
+                val itemsList = ArrayList<MenuItemAdapter.MenuItemData>()
+                val sortedItems = menuItems.sortedWith(compareBy({ it.category }, { it.name }))
+                var lastCategory = ""
+                for (menuItem in sortedItems) {
+                    if (menuItem.category != lastCategory) {
+                        itemsList.add(MenuItemAdapter.MenuItemData.Header(menuItem.category))
+                        itemsList.add(MenuItemAdapter.MenuItemData.MenuItemWrapper(menuItem))
+                        lastCategory = menuItem.category
+                    } else
+                        itemsList.add(MenuItemAdapter.MenuItemData.MenuItemWrapper(menuItem))
+
                 }
-                else
-                    itemsList.add(MenuItemAdapter.MenuItemData.MenuItemWrapper(menuItem))
 
-            }
-
-            adapter.data = itemsList
-        });
+                adapter.data = itemsList
+            });
 
         cartViewModel.getLoggedInUser().observe(viewLifecycleOwner, Observer observe@{ user ->
             binding.loggedInUserName.text = user?.name
         })
+
+        val c: Calendar = Calendar.getInstance()
+        val timeOfDay: Int = c.get(Calendar.HOUR_OF_DAY)
+
+        binding.greetings.text = when (timeOfDay) {
+            in 0..11  -> "Good Morning, "
+            in 12..15 -> "Good Afternoon, "
+            in 16..20 -> "Good Evening, "
+            in 21..23 -> "Good Night, "
+            else -> "Howdy! "
+        }
+
+        binding.greetings.text
 
         return binding.root
     }
@@ -78,7 +94,12 @@ class StoreFragment() : Fragment(), StoreHandler {
 
         val imageView = ImageView(this.context)
         imageView.layoutParams = LinearLayout.LayoutParams(120, 120) // value is in pixels
-        (imageView.layoutParams as LinearLayout.LayoutParams).setMargins(x.toInt() - 120 / 2, y.toInt() - 120, 0, 0);
+        (imageView.layoutParams as LinearLayout.LayoutParams).setMargins(
+            x.toInt() - 120 / 2,
+            y.toInt() - 120,
+            0,
+            0
+        );
 
         imageView.setImageDrawable(drawable)
         binding.newImageLayout.addView(imageView)
