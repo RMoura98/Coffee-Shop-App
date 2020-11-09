@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const UniqueFieldError = require('../errors/UniqueFieldError');
+const NotFoundError = require('../errors/NotFoundError');
 const userService = require('../services/userService');
 const ErrorMessage = require('../utils/ErrorMessage');
 
@@ -32,7 +33,21 @@ async function getUser(req, res) {
   }
 }
 
+async function updateUser(req, res) {
+  const uuid = req.params.user;
+
+  try {
+    const updatedUser = await userService.updateUser(uuid, req.body);
+    return res.status(200).json(updatedUser);
+  } catch (err) {
+    if (err instanceof NotFoundError) return res.status(404).json(new ErrorMessage(err.toString()));
+
+    return res.status(500).json(new ErrorMessage(err.toString()));
+  }
+}
+
 module.exports = {
   createUser,
   getUser,
+  updateUser,
 };

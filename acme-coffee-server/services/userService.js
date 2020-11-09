@@ -1,3 +1,4 @@
+const { HostNotFoundError } = require('sequelize');
 const Sequelize = require('sequelize');
 const UniqueFieldError = require('../errors/UniqueFieldError');
 const User = require('../models/user');
@@ -21,7 +22,25 @@ async function getUser({ uuid }) {
   return user;
 }
 
+async function updateUser(uuid, newData) {
+  const user = await User.findByPk(uuid);
+
+  if (user == null) throw new HostNotFoundError('No User found');
+
+  user.name = newData.name;
+  user.NIF = newData.NIF;
+  user.card_number = newData.card_number;
+  user.card_cvc = newData.card_cvc;
+  user.card_expiration = newData.card_expiration;
+  user.phone_number = newData.phone_number;
+
+  await user.save();
+
+  return user;
+}
+
 module.exports = {
   createUser,
   getUser,
+  updateUser,
 };
