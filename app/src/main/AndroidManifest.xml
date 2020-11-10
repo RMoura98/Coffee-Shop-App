@@ -26,7 +26,7 @@
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="application/com.feup.cmov.acme_client"/>
+                <data android:mimeType="text/plain"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.nfc.action.TAG_DISCOVERED" />

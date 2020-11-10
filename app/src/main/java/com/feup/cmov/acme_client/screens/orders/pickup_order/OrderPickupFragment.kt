@@ -25,6 +25,7 @@ import com.feup.cmov.acme_client.utils.ShowFeedback
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import dagger.hilt.android.AndroidEntryPoint
 import net.glxn.qrgen.android.QRCode
+import java.nio.charset.Charset
 
 
 @AndroidEntryPoint
@@ -110,7 +111,7 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
             ShowFeedback.makeSnackbar("NFC is not supported. Bye!")
         }
         else {
-            nfcAdapter!!.setNdefPushMessage(createNdefMessage(null), MainActivity.getActivity())
+            //nfcAdapter!!.setNdefPushMessage(createNdefMessage(null), MainActivity.getActivity())
 
             //nfcAdapter.enableForegroundNdefPush(MainActivity.getActivity())
             //nfcAdapter!!.setNdefPushMessageCallback(this, MainActivity.getActivity())
@@ -163,10 +164,22 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
     override fun createNdefMessage(event: NfcEvent?): NdefMessage {
         ShowFeedback.makeSnackbar("Message created")
 
-        val outString = "Teste!!! :)"
+        val outString = "Teste YAP"
+//        val ndefRecord = NdefRecord.createTextRecord("en", outString)
+//
+//        return NdefMessage(ndefRecord)
 
-        val ndefRecord = NdefRecord.createMime("application/com.feup.cmov.acme_client", outString.toByteArray())
-        return NdefMessage(ndefRecord)
+        val langBytes = "en".toByteArray(Charset.forName("US-ASCII"))
+        val utfEncoding = Charset.forName("UTF-8")
+        val textBytes = outString.toByteArray(utfEncoding)
+        val utfBit = 0
+        val status = (utfBit + langBytes.size).toChar()
+        val data = ByteArray(1 + langBytes.size + textBytes.size)
+        data[0] = status.toByte()
+        System.arraycopy(langBytes, 0, data, 1, langBytes.size)
+        System.arraycopy(textBytes, 0, data, 1 + langBytes.size, textBytes.size)
+        return NdefMessage(NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, ByteArray(0), data))
+
     }
 
     override fun onNdefPushComplete(event: NfcEvent?) {
