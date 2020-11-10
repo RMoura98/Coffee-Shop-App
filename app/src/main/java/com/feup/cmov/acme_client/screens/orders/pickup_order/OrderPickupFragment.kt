@@ -15,7 +15,6 @@ import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import com.feup.cmov.acme_client.AcmeApplication
 import com.feup.cmov.acme_client.MainActivity
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.comm.Packet
@@ -26,8 +25,6 @@ import com.feup.cmov.acme_client.utils.ShowFeedback
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import dagger.hilt.android.AndroidEntryPoint
 import net.glxn.qrgen.android.QRCode
-import okhttp3.internal.Util
-import java.nio.charset.Charset
 
 
 @AndroidEntryPoint
@@ -168,11 +165,8 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
 
         val outString = "Teste!!! :)"
 
-        with(outString) {
-            val outBytes = this.toByteArray()
-            val outRecord = NdefRecord.createMime("text/plain", outBytes)
-            return NdefMessage(outRecord)
-        }
+        val ndefRecord = NdefRecord.createMime("application/com.feup.cmov.acme_client", outString.toByteArray())
+        return NdefMessage(ndefRecord)
     }
 
     override fun onNdefPushComplete(event: NfcEvent?) {

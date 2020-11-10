@@ -88,6 +88,17 @@ class MainActivity : AppCompatActivity() {
                 ShowFeedback.makeSnackbar(inMessage)
             }
         }
+        if (NfcAdapter.ACTION_TAG_DISCOVERED == action) {
+            val parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)!!
+            with(parcelables) {
+                val inNdefMessage = this[0] as NdefMessage
+                val inNdefRecords = inNdefMessage.records
+                val ndefRecord_0 = inNdefRecords[0]
+
+                val inMessage = String(ndefRecord_0.payload)
+                ShowFeedback.makeSnackbar(inMessage)
+            }
+        }
     }
 
     private fun enableForegroundDispatch(activity: AppCompatActivity, adapter: NfcAdapter?) {
