@@ -61,4 +61,8 @@
     <string name="update_cart_value">Update Cart • €%.2f</string>
     <string name="save_changes">Save</string>
 
+    <string name="order_text">Order</string>
+    <string name="vouchers_text">Vouchers</string>
+    <string name="information">Information</string>
+
 </resources>

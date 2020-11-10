@@ -38,11 +38,11 @@ class StoreFragment() : Fragment(), StoreHandler {
             R.layout.fragment_store, container, false
         )
 
-        cartViewModel.getMenuItems().observe(viewLifecycleOwner, Observer observe@{ menuItems ->
+        cartViewModel.getMenuItems().observe(viewLifecycleOwner, Observer observe@{ menuItems: List<MenuItem> ->
             val itemsList = ArrayList<MenuItemAdapter.MenuItemData>()
-            menuItems.sortedBy { it.category }
+            val sortedItems = menuItems.sortedWith(compareBy({ it.category }, { it.name }))
             var lastCategory = ""
-            for(menuItem in menuItems) {
+            for(menuItem in sortedItems) {
                 if(menuItem.category != lastCategory) {
                     itemsList.add(MenuItemAdapter.MenuItemData.Header(menuItem.category))
                     itemsList.add(MenuItemAdapter.MenuItemData.MenuItemWrapper(menuItem))
@@ -55,6 +55,10 @@ class StoreFragment() : Fragment(), StoreHandler {
 
             adapter.data = itemsList
         });
+
+        cartViewModel.getLoggedInUser().observe(viewLifecycleOwner, Observer observe@{ user ->
+            binding.loggedInUserName.text = user?.name
+        })
 
         return binding.root
     }

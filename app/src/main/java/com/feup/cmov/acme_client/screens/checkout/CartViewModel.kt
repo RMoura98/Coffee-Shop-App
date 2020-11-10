@@ -9,10 +9,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.database.models.Order
+import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.database.models.Voucher
 import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
 import com.feup.cmov.acme_client.repositories.MenuRepository
 import com.feup.cmov.acme_client.repositories.OrderRepository
+import com.feup.cmov.acme_client.repositories.UserRepository
 import com.feup.cmov.acme_client.repositories.VoucherRepository
 import com.feup.cmov.acme_client.screens.checkout.cart.VoucherUsedAdapter
 import kotlinx.coroutines.Dispatchers
@@ -20,10 +22,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.collections.set
+import kotlin.math.ceil
+import kotlin.math.floor
 import kotlin.math.pow
 
 
 class CartViewModel @ViewModelInject constructor(
+    userRepository: UserRepository,
     menuRepository: MenuRepository,
     private val vouchersRepository: VoucherRepository,
     private val ordersRepository: OrderRepository
@@ -39,6 +44,7 @@ class CartViewModel @ViewModelInject constructor(
     private var totalSavings = MutableLiveData(0f)
     private val cartListLiveData = MutableLiveData<MutableMap<Long, CartItem>>()
     private val placedOrder = MutableLiveData<OrderWithItems?>()
+    private val loggedInUser = userRepository.getLoggedInUser()
 
     var isLoading = ObservableField<Boolean>(false)
     private val cartList = mutableMapOf<Long, CartItem>()
@@ -51,6 +57,7 @@ class CartViewModel @ViewModelInject constructor(
     fun getTotalPrice() : LiveData<Float>  = totalCartPrice
     fun getSubtotalCartPrice() : LiveData<Float> = subtotalCartPrice
     fun getTotalSavings() : LiveData<Float>  = totalSavings
+    fun getLoggedInUser(): LiveData<User> = loggedInUser
 
     fun getPlacedOrder(): LiveData<OrderWithItems?> = placedOrder
 
@@ -71,16 +78,10 @@ class CartViewModel @ViewModelInject constructor(
         // Log.e("CartViewModel", "Posted value")
         cartListLiveData.postValue(cartList)
 
-        Log.d("Added to cart ID: ", item.id.toString())
-
         totalCartItems.value = totalCartItems.value!! + 1
         totalCartItems.postValue(totalCartItems.value!!)
         subtotalCartPrice.value = subtotalCartPrice.value!! + item.price
         subtotalCartPrice.postValue(subtotalCartPrice.value!!)
-
-        Log.d("Cart List: ", cartList.toString())
-        Log.d("totalCartItems: ", totalCartItems.toString())
-        Log.d("totalCartPrice: ", subtotalCartPrice.toString())
     }
 
     fun selectVoucher(voucher: Voucher) {
@@ -142,13 +143,18 @@ class CartViewModel @ViewModelInject constructor(
             savings += coffee_price!! * free_coffee_vouchers
 
         // Apply discount vouchers.
-        savings += (getSubtotalCartPrice().value!! - savings) - (0.95f).pow(free_item_vouchers) * (getSubtotalCartPrice().value!! - savings)
+        var discountSavings = (getSubtotalCartPrice().value!! - savings) - (0.95f).pow(free_item_vouchers) * (getSubtotalCartPrice().value!! - savings)
+        discountSavings = floor(discountSavings * 100) / 100 // round to floor with 2 decimal places
+        savings += discountSavings
         totalSavings.value = savings
         totalSavings.postValue(savings)
+        Log.e("totalSavings", totalSavings.value!!.toString())
+        Log.e("free_item_vouchers", free_item_vouchers.toString())
     }
 
     fun updateTotalPrice() {
         totalCartPrice.value = subtotalCartPrice.value?.minus(totalSavings.value!!)
+        if (totalCartPrice.value!! < 0f) totalCartPrice.value = 0f
         totalCartPrice.postValue(totalCartPrice.value)
     }
 
@@ -158,7 +164,8 @@ class CartViewModel @ViewModelInject constructor(
             if(voucher.voucherType == "free_coffee")
                 voucherList.add(VoucherUsedAdapter.VoucherWithSavings(voucher, getCoffePrice()!!))
             else if(voucher.voucherType == "discount") {
-                val savings = (getSubtotalCartPrice().value!! - (getCoffePrice() ?: 0f) * countCoffeVouchersSelected()) * 0.05F
+                var savings = (getSubtotalCartPrice().value!! - (getCoffePrice() ?: 0f) * countCoffeVouchersSelected()) * 0.05F
+                savings = floor(savings * 100) / 100 // round to floor with 2 decimal places
                 voucherList.add(VoucherUsedAdapter.VoucherWithSavings(voucher, savings))
             }
         }
@@ -211,7 +218,6 @@ class CartViewModel @ViewModelInject constructor(
             if (coffeeVouchersInExcess > 0) {
                 for(i in 0 until coffeeVouchersInExcess)
                     selectedVouchers.value!!.remove(coffeeVouchersSelected[i])
-                notifyVoucherChanges()
             }
         }
 
@@ -220,13 +226,22 @@ class CartViewModel @ViewModelInject constructor(
             cartList.remove(id)
         cartListLiveData.postValue(cartList)
 
+        if(cartList.isEmpty()) {
+            selectedVouchers.value = ArrayList()
+            selectedVouchers.postValue(selectedVouchers.value)
+        }
+
         // Update Subtotal Price and Total Number of Items
-        totalCartItems.postValue(totalCartItems.value!! + quantityDifference)
-        subtotalCartPrice.postValue(subtotalCartPrice.value!! + (quantityDifference * cartItem.item.price))
+        totalCartItems.value = totalCartItems.value!! + quantityDifference
+        totalCartItems.postValue(totalCartItems.value)
+        subtotalCartPrice.value = subtotalCartPrice.value!! + (quantityDifference * cartItem.item.price)
+        subtotalCartPrice.postValue(subtotalCartPrice.value)
 
         //Update Total Price and Total Savings
-        updateTotalPrice()
         updateTotalSavings()
+        updateTotalPrice()
+
+        notifyVoucherChanges()
     }
 
 }
