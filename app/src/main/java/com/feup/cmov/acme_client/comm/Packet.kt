@@ -44,7 +44,7 @@ class Packet (orderWithItems: OrderWithItems?) {
         fun deserialize(packet: String): Packet {
             val (signature, payloadString) = packet.split(",".toRegex(), 2)
             val payload =  Gson().fromJson(payloadString, Payload::class.java)
-            return Packet(payload, signature, signature)
+            return Packet(payload, packet, signature)
         }
     }
 }
