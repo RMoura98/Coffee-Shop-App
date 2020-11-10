@@ -1,7 +1,14 @@
 package com.feup.cmov.acme_client.screens.orders.pickup_order
 
+import android.app.Activity
 import android.graphics.*
+import android.nfc.NdefMessage
+import android.nfc.NdefRecord
+import android.nfc.NdefRecord.createMime
+import android.nfc.NfcAdapter
+import android.nfc.NfcEvent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,24 +16,32 @@ import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import com.feup.cmov.acme_client.AcmeApplication
+import com.feup.cmov.acme_client.MainActivity
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.comm.Packet
 import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
 import com.feup.cmov.acme_client.databinding.FragmentOrderPickupBinding
 import com.feup.cmov.acme_client.utils.Measurements
+import com.feup.cmov.acme_client.utils.ShowFeedback
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.glxn.qrgen.android.QRCode
+import okhttp3.internal.Util
+import java.nio.charset.Charset
 
 
 @AndroidEntryPoint
-class OrderPickupFragment : Fragment() {
+class OrderPickupFragment : Fragment(), OutcomingNfcManager.NfcActivity {
 
+    private lateinit var nfcManager: OutcomingNfcManager
+    private var nfcAdapter: NfcAdapter? = null
     lateinit var binding: FragmentOrderPickupBinding
     private val viewModel: OrderPickupViewModel by viewModels()
 
@@ -51,7 +66,10 @@ class OrderPickupFragment : Fragment() {
             ).withErrorCorrection(
                 ErrorCorrectionLevel.Q
             ).bitmap()
-        val merge = mergeBitmaps(BitmapFactory.decodeResource(resources, R.drawable.coffee_trimmed), qrCode)
+        val merge = mergeBitmaps(
+            BitmapFactory.decodeResource(resources, R.drawable.coffee_trimmed),
+            qrCode
+        )
         binding.qrCode.setImageBitmap(merge)
 
         binding.topAppBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
@@ -71,7 +89,31 @@ class OrderPickupFragment : Fragment() {
             }
         })
 
+        fuckWithNfc()
+
         return binding.root
+    }
+
+    private fun fuckWithNfc() {
+        var context = AcmeApplication.getAppContext()
+        nfcAdapter = NfcAdapter.getDefaultAdapter(context)
+        Log.e("NFC supported", (nfcAdapter != null).toString())
+        Log.e("NFC enabled", (nfcAdapter?.isEnabled).toString())
+
+        // NFC not supported
+        if (nfcAdapter == null) {
+            binding.otherPaymentMethod.visibility = View.GONE
+            // NFC not enabled
+            if(nfcAdapter?.isEnabled!!) {
+
+            } else {
+
+            }
+        }
+
+        nfcManager = OutcomingNfcManager(this)
+        nfcAdapter?.setOnNdefPushCompleteCallback(nfcManager, MainActivity.getActivity())
+        nfcAdapter?.setNdefPushMessageCallback(nfcManager, MainActivity.getActivity())
     }
 
     companion object {
@@ -107,5 +149,13 @@ class OrderPickupFragment : Fragment() {
             return bmpGrayscale
         }
 
+    }
+
+    override fun getOutcomingMessage(): String {
+        return "OLA isto e um teste!"
+    }
+
+    override fun signalResult() {
+        ShowFeedback.makeSnackbar("NFC WOW")
     }
 }
