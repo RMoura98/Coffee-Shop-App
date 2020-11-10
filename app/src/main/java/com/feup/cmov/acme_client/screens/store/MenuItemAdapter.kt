@@ -76,8 +76,7 @@ class MenuItemAdapter(private val storeHandler: StoreHandler) : RecyclerView.Ada
             description.text = item.description
 
             val imagePath = assetPath + item.imageName
-            Picasso.get().load(imagePath).into(imageView);
-
+            Picasso.get().load(imagePath).placeholder(R.drawable.coffee_trimmed).into(imageView)
             var lastX = 0f
             var lastY = 0f
             linearLayout.setOnClickListener { storeHandler.addToCartOnClick(item, lastX, lastY, imageView.drawable) }
