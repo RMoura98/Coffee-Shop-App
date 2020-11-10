@@ -59,8 +59,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        // foreground dispatch should be enabled here, as onResume is the guaranteed place where app
-        // is in the foreground
         enableForegroundDispatch(this, this.nfcAdapter)
         receiveMessageFromDevice(intent)
     }
@@ -71,8 +69,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onNewIntent(intent: Intent) {
-        receiveMessageFromDevice(intent)
         super.onNewIntent(intent)
+        setIntent(intent)
+        //receiveMessageFromDevice(intent)
     }
 
     private fun receiveMessageFromDevice(intent: Intent) {
@@ -88,16 +87,9 @@ class MainActivity : AppCompatActivity() {
                 ShowFeedback.makeSnackbar(inMessage)
             }
         }
-        if (NfcAdapter.ACTION_TAG_DISCOVERED == action) {
-            ShowFeedback.makeSnackbar("ACTION_TAG_DISCOVERED")
-        }
     }
 
     private fun enableForegroundDispatch(activity: AppCompatActivity, adapter: NfcAdapter?) {
-
-        // here we are setting up receiving activity for a foreground dispatch
-        // thus if activity is already started it will take precedence over any other activity or app
-        // with the same intent filters
 
         val intent = Intent(activity.applicationContext, activity.javaClass)
         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
