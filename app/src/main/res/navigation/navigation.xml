@@ -109,8 +109,8 @@
             android:id="@+id/action_viewOrderFragment_to_orderReceiptFragment"
             app:destination="@id/orderReceiptFragment" />
         <action
-            android:id="@+id/action_viewOrderFragment_to_pickupSuccessFragment"
-            app:destination="@id/pickupSuccessFragment" />
+            android:id="@+id/action_viewOrderFragment_to_orderPickupFragment"
+            app:destination="@id/orderPickupFragment" />
     </fragment>
     <fragment
         android:id="@+id/pickupSuccessFragment"
@@ -119,11 +119,21 @@
         tools:layout="@layout/fragment_pickup_success" >
         <action
             android:id="@+id/action_pickupSuccessFragment_to_viewOrderFragment"
-            app:destination="@id/viewOrderFragment" />
+            app:destination="@id/viewOrderFragment"
+            app:popUpTo="@id/viewOrderFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/orderReceiptFragment"
         android:name="com.feup.cmov.acme_client.screens.orders.view_order.OrderReceiptFragment"
         android:label="fragment_order_receipt"
         tools:layout="@layout/fragment_order_receipt" />
+    <fragment
+        android:id="@+id/orderPickupFragment"
+        android:name="com.feup.cmov.acme_client.screens.orders.pickup_order.OrderPickupFragment"
+        android:label="OrderPickupFragment" >
+        <action
+            android:id="@+id/action_orderPickupFragment_to_pickupSuccessFragment"
+            app:destination="@id/pickupSuccessFragment" />
+    </fragment>
 </navigation>

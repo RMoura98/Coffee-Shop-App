@@ -54,6 +54,7 @@ class OrderPlacedFragment : Fragment(), OrderPlacedHandler {
             mainMenuViewModel.setCurrentAction(R.id.historyAction)
             OrdersHistoryFragment.nextTabIndex = 1
             MainMenuFragment.hasShownCartAnimation = false
+            delay(50)
             container!!.findNavController()
                 .navigate(R.id.action_orderPlacedFragment_to_viewOrderFragment, bundleOf("order" to requireArguments().getString("order")))
         }

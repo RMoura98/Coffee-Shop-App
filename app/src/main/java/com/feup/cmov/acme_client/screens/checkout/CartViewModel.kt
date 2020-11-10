@@ -174,6 +174,9 @@ class CartViewModel @ViewModelInject constructor(
 
     // Returns `true` if order was successfully placed; false otherwise.
     fun placeOrder() {
+        // Prevent user from pacing empty order
+        if(cartList.isEmpty())
+            return
         // Prevent user from clicking button multiple times.
         if(isLoading.get()!!)
             return

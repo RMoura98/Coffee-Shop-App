@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
+import com.feup.cmov.acme_client.database.models.Voucher
+import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
 import com.feup.cmov.acme_client.databinding.FragmentOrderPlacedBinding
 import com.feup.cmov.acme_client.databinding.FragmentPickupSuccessBinding
 import com.feup.cmov.acme_client.screens.checkout.CartViewModel
@@ -17,6 +19,8 @@ import com.feup.cmov.acme_client.screens.checkout.order_placed.OrderPlacedHandle
 import com.feup.cmov.acme_client.screens.main_menu.MainMenuFragment
 import com.feup.cmov.acme_client.screens.main_menu.MainMenuViewModel
 import com.feup.cmov.acme_client.screens.orders.OrdersHistoryFragment
+import com.feup.cmov.acme_client.screens.settings.vouchers.VoucherAdapter
+import com.feup.cmov.acme_client.utils.PreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -38,6 +42,25 @@ class PickupSuccessFragment : Fragment() {
             R.layout.fragment_pickup_success, container, false
         )
 
+        val orderWithItems = OrderWithItems.deserialize(requireArguments().getString("order")!!)
+
+        val vouchers = ArrayList<Voucher>()
+        vouchers.add(Voucher( "123", orderWithItems.order.order_id, "free_coffee", orderWithItems.order.order_id))
+        vouchers.add(Voucher( "124", orderWithItems.order.order_id, "discount", orderWithItems.order.order_id))
+
+        if(vouchers.isEmpty()) {
+            binding.caption.text = "Enjoy your coffee while it's hot!"
+        }
+        else {
+            if(vouchers.size == 1)
+                binding.caption.text = "Congratulations! You have received a voucher!"
+            else
+                binding.caption.text = "Congratulations! You have received some vouchers!"
+            val adapter = ReceivedVoucherAdapter()
+            adapter.data = vouchers
+            binding.voucherList.adapter = adapter
+        }
+
         val progressBar = binding.progressBar
 
         GlobalScope.launch {
@@ -46,12 +69,11 @@ class PickupSuccessFragment : Fragment() {
                 delay( (animationTime / 100).toLong() )
                 progressBar.progress = i
             }
-//            cartViewModel.clearViewModel()
-//            mainMenuViewModel.setCurrentAction(R.id.historyAction)
-//            OrdersHistoryFragment.nextTabIndex = 1
-//            MainMenuFragment.hasShownCartAnimation = false
-//            container!!.findNavController()
-//                .navigate(R.id.viewOrderFragment, bundleOf("order" to requireArguments().getString("order")))
+
+            delay(150)
+            container!!.findNavController()
+                .navigate(R.id.action_pickupSuccessFragment_to_viewOrderFragment, bundleOf("order" to requireArguments().getString("order")))
+
         }
 
         return binding.root
