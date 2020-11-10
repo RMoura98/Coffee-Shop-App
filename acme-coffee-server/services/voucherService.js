@@ -40,7 +40,20 @@ async function getUnusedVouchersByIDs(userId, vouchersIds) {
   return vouchers;
 }
 
+async function getVouchersReceivedFromOrder(order_id) {
+  const vouchers = await Voucher.findAll({
+    where: {
+      [Op.and]: [
+        { received_from_order_id: order_id },
+      ],
+    },
+  });
+
+  return vouchers;
+}
+
 module.exports = {
   getVouchers,
   getUnusedVouchersByIDs,
+  getVouchersReceivedFromOrder,
 };

@@ -19,6 +19,10 @@ models.Voucher.belongsTo(models.Order, {
   },
 });
 
+models.Voucher.belongsTo(models.Order, {
+  foreignKey: 'received_from_order_id',
+});
+
 // Orders Relations
 models.Order.belongsTo(models.User, { foreignKey: 'userId' });
 models.User.hasMany(models.Order, { foreignKey: 'userId' });

@@ -2,12 +2,13 @@ const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('Vouchers',
+    const orderId = await queryInterface.bulkInsert('Vouchers',
       [
         {
           voucherId: uuidv4(),
           voucherType: 'free_coffee',
           userId: '95850c47-bfa2-4254-84a8-36b587dfeb27',
+          received_from_order_id: '95850c47-bfa2-4254-84a8-36b587dfeb25',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -15,6 +16,7 @@ module.exports = {
           voucherId: uuidv4(),
           voucherType: 'free_coffee',
           userId: '95850c47-bfa2-4254-84a8-36b587dfeb27',
+          received_from_order_id: '95850c47-bfa2-4254-84a8-36b587dfeb25',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -22,6 +24,7 @@ module.exports = {
           voucherId: uuidv4(),
           voucherType: 'discount',
           userId: '95850c47-bfa2-4254-84a8-36b587dfeb27',
+          received_from_order_id: '95850c47-bfa2-4254-84a8-36b587dfeb25',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -29,6 +32,7 @@ module.exports = {
           voucherId: uuidv4(),
           voucherType: 'discount',
           userId: '95850c47-bfa2-4254-84a8-36b587dfeb27',
+          received_from_order_id: '95850c47-bfa2-4254-84a8-36b587dfeb25',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -36,6 +40,7 @@ module.exports = {
           voucherId: uuidv4(),
           voucherType: 'free_coffee',
           userId: '95850c47-bfa2-4254-84a8-36b587dfeb27',
+          received_from_order_id: '95850c47-bfa2-4254-84a8-36b587dfeb25',
           createdAt: new Date(),
           updatedAt: new Date(),
         },

@@ -82,7 +82,23 @@ async function placeOrder(req, res) {
   }
 }
 
+async function getOrderStatus(req, res) {
+  const { uuid } = res.locals;
+  const { order_id } = req.params;
+  const order = await orderService.getOrder(order_id, uuid).dataValues;
+  if (order != null) {
+    const vouchers = voucherService.getVouchersReceivedFromOrder(order_id).map((e) => e.dataValues);
+    return res.json({
+      order_sequential_id: order.order_sequential_id,
+      vouchers,
+    }).end();
+  }
+
+  return res.status(404).end();
+}
+
 module.exports = {
   getOrders,
   placeOrder,
+  getOrderStatus,
 };

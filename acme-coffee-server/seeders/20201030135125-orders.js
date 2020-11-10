@@ -14,7 +14,7 @@ module.exports = {
           total: _.random(1, 10, true),
         },
         {
-          order_id: uuidv4(),
+          order_id: '95850c47-bfa2-4254-84a8-36b587dfeb25',
           userId: '95850c47-bfa2-4254-84a8-36b587dfeb27',
           createdAt: new Date(),
           updatedAt: new Date(),
