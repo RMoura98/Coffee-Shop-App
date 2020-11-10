@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -76,7 +77,8 @@ class OrderRepository
                     voucherId = voucher.voucherId,
                     userId = voucher.userId,
                     voucherType = voucher.voucherType,
-                    used_on_order_id = orderId
+                    used_on_order_id = orderId,
+                    received_from_order_id = voucher.received_from_order_id
                 )
             })
             val orderItems = ArrayList<OrderItem>()
@@ -108,8 +110,23 @@ class OrderRepository
             appDatabaseDao.removeOrder(order.order)
             appDatabaseDao.removeOrderItems(order.orderItems.map { it.orderItem })
             appDatabaseDao.updateVouchers(order.vouchers.map {voucher ->
-                Voucher(voucherId = voucher.voucherId, userId = voucher.userId, voucherType = voucher.voucherType, used_on_order_id = null)
+                Voucher(voucherId = voucher.voucherId, userId = voucher.userId, voucherType = voucher.voucherType, used_on_order_id = null, received_from_order_id = voucher.received_from_order_id)
             })
+        }
+    }
+
+    suspend fun hasOrderBeenPickedUp(order: Order): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                val orderStatus = webService.getOrderStatus(order.order_id)
+                appDatabaseDao.createVouchers(orderStatus.vouchers_received)
+                var updatedOrder = Order(order_id = order.order_id, userId = order.userId, order_sequential_id = orderStatus.order_sequential_id, createdAt = order.createdAt, updatedAt = order.updatedAt, completed = true, total = order.total)
+                appDatabaseDao.updateOrder(updatedOrder)
+                true
+            }
+            catch (e: HttpException) {
+                false
+            }
         }
     }
 }

@@ -61,6 +61,9 @@ interface AppDatabaseDao {
     @Insert(onConflict = REPLACE)
     fun createOrderItems(vouchers: List<OrderItem>): Void
 
+    @Update
+    fun updateOrder(order: Order): Void
+
     @Delete
     fun removeOrder(order: Order): Void
 

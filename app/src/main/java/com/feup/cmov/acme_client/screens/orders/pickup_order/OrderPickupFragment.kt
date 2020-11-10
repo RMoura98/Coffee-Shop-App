@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.comm.Packet
@@ -26,6 +28,7 @@ import net.glxn.qrgen.android.QRCode
 class OrderPickupFragment : Fragment() {
 
     lateinit var binding: FragmentOrderPickupBinding
+    private val viewModel: OrderPickupViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,18 +54,22 @@ class OrderPickupFragment : Fragment() {
         val merge = mergeBitmaps(BitmapFactory.decodeResource(resources, R.drawable.coffee_trimmed), qrCode)
         binding.qrCode.setImageBitmap(merge)
 
-        GlobalScope.launch {
-            delay(75000)
-            container!!.findNavController().navigate(
-                R.id.action_orderPickupFragment_to_pickupSuccessFragment,
-                bundleOf("order" to requireArguments().getString("order"))
-            )
-        }
-
         binding.topAppBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
         binding.topAppBar.setNavigationOnClickListener {
             activity?.onBackPressed();
         }
+
+        viewModel.startRefresh(orderWithItems.order)
+        viewModel.isOrderComplete().addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(obs: Observable?, propertyId: Int) {
+                if(viewModel.isOrderComplete().get()!!) {
+                    container!!.findNavController().navigate(
+                        R.id.action_orderPickupFragment_to_pickupSuccessFragment,
+                        bundleOf("order" to requireArguments().getString("order"))
+                    )
+                }
+            }
+        })
 
         return binding.root
     }

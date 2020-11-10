@@ -45,8 +45,8 @@ class PickupSuccessFragment : Fragment() {
         val orderWithItems = OrderWithItems.deserialize(requireArguments().getString("order")!!)
 
         val vouchers = ArrayList<Voucher>()
-        vouchers.add(Voucher( "123", orderWithItems.order.order_id, "free_coffee", orderWithItems.order.order_id))
-        vouchers.add(Voucher( "124", orderWithItems.order.order_id, "discount", orderWithItems.order.order_id))
+//        vouchers.add(Voucher( "123", orderWithItems.order.order_id, "free_coffee", orderWithItems.order.order_id))
+//        vouchers.add(Voucher( "124", orderWithItems.order.order_id, "discount", orderWithItems.order.order_id))
 
         if(vouchers.isEmpty()) {
             binding.caption.text = "Enjoy your coffee while it's hot!"
