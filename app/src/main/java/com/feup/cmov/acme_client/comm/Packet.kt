@@ -24,7 +24,7 @@ class Packet (orderWithItems: OrderWithItems?) {
                 uuid = PreferencesUtils.getLoggedInUser().second!!,
                 order_id = orderWithItems.order.order_id,
                 orderItems = orderWithItems.orderItems.associateBy({it.orderItem.item_id}, {it.orderItem.quantity}),
-                vouchers = orderWithItems.vouchers
+                vouchers = orderWithItems.vouchers.map { it.voucherId }
             )
             payloadString = Gson().toJson(payload)
             // calculate signature
@@ -49,4 +49,4 @@ class Packet (orderWithItems: OrderWithItems?) {
     }
 }
 
-data class Payload(val uuid: String, val order_id: String, val orderItems: Map<Long, Long>, val vouchers: List<Voucher>)
+data class Payload(val uuid: String, val order_id: String, val orderItems: Map<Long, Long>, val vouchers: List<String>)
