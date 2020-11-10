@@ -70,6 +70,11 @@ class MainActivity : AppCompatActivity() {
         disableForegroundDispatch(this, this.nfcAdapter)
     }
 
+    override fun onNewIntent(intent: Intent) {
+        receiveMessageFromDevice(intent)
+        super.onNewIntent(intent)
+    }
+
     private fun receiveMessageFromDevice(intent: Intent) {
         val action = intent.action
         if (NfcAdapter.ACTION_NDEF_DISCOVERED == action) {
