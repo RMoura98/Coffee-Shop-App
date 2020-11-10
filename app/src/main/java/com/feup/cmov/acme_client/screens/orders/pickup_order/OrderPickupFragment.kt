@@ -108,7 +108,7 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
 //        nfcAdapter?.setOnNdefPushCompleteCallback(nfcManager, MainActivity.getActivity())
 //        nfcAdapter?.setNdefPushMessageCallback(nfcManager, MainActivity.getActivity())
 
-        if(nfcAdapter == null || nfcAdapter.isEnabled) {
+        if(nfcAdapter == null || !nfcAdapter.isEnabled) {
             // NFC Not supported
             ShowFeedback.makeSnackbar("NFC is not supported. Bye!")
         }
