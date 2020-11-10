@@ -33,7 +33,7 @@ import java.nio.charset.Charset
 @AndroidEntryPoint
 class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, NfcAdapter.OnNdefPushCompleteCallback {
 
-    private val nfcAdapter: NfcAdapter? = NfcAdapter.getDefaultAdapter(AcmeApplication.getAppContext())
+    private val nfcAdapter: NfcAdapter? = NfcAdapter.getDefaultAdapter(MainActivity.getActivity())
     lateinit var binding: FragmentOrderPickupBinding
     private val viewModel: OrderPickupViewModel by viewModels()
 
@@ -108,13 +108,16 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
 //        nfcAdapter?.setOnNdefPushCompleteCallback(nfcManager, MainActivity.getActivity())
 //        nfcAdapter?.setNdefPushMessageCallback(nfcManager, MainActivity.getActivity())
 
-        if(nfcAdapter != null && nfcAdapter.isEnabled) {
+        if(nfcAdapter == null || nfcAdapter.isEnabled) {
             // NFC Not supported
             ShowFeedback.makeSnackbar("NFC is not supported. Bye!")
         }
         else {
-            nfcAdapter!!.setNdefPushMessageCallback(this, MainActivity.getActivity())
-            nfcAdapter!!.setOnNdefPushCompleteCallback(this, MainActivity.getActivity())
+            nfcAdapter!!.setNdefPushMessage(createNdefMessage(null), MainActivity.getActivity())
+
+            //nfcAdapter.enableForegroundNdefPush(MainActivity.getActivity())
+            //nfcAdapter!!.setNdefPushMessageCallback(this, MainActivity.getActivity())
+            //nfcAdapter!!.setOnNdefPushCompleteCallback(this, MainActivity.getActivity())
         }
     }
 
@@ -159,14 +162,6 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
         }
 
     }
-
-//    override fun getOutcomingMessage(): String {
-//        return "OLA isto e um teste!"
-//    }
-//
-//    override fun signalResult() {
-//        ShowFeedback.makeSnackbar("NFC WOW")
-//    }
 
     override fun createNdefMessage(event: NfcEvent?): NdefMessage {
         ShowFeedback.makeSnackbar("Message created")
