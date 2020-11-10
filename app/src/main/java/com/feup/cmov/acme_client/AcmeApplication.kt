@@ -19,7 +19,7 @@ class AcmeApplication : Application() {
         private lateinit var preferences: SharedPreferences
 
         fun getAppContext(): Context {
-            return AcmeApplication.context
+            return context
         }
 
         fun getPreferences(): SharedPreferences {

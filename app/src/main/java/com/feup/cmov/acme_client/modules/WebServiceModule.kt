@@ -92,6 +92,7 @@ object WebServiceModule {
                     .addHeader("Authorization", authHeader)
                     .addHeader("Date", dateHeader)
                     .build()
+
                 return chain.proceed(newRequest)
             }
             return chain.proceed(request)

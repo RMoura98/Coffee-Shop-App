@@ -1,14 +1,11 @@
 package com.feup.cmov.acme_client.screens.orders.pickup_order
 
-import android.app.Activity
 import android.graphics.*
 import android.nfc.NdefMessage
 import android.nfc.NdefRecord
-import android.nfc.NdefRecord.createMime
 import android.nfc.NfcAdapter
 import android.nfc.NfcEvent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +13,6 @@ import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.AcmeApplication
@@ -29,19 +25,15 @@ import com.feup.cmov.acme_client.utils.Measurements
 import com.feup.cmov.acme_client.utils.ShowFeedback
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import net.glxn.qrgen.android.QRCode
 import okhttp3.internal.Util
 import java.nio.charset.Charset
 
 
 @AndroidEntryPoint
-class OrderPickupFragment : Fragment(), OutcomingNfcManager.NfcActivity {
+class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, NfcAdapter.OnNdefPushCompleteCallback {
 
-    private lateinit var nfcManager: OutcomingNfcManager
-    private var nfcAdapter: NfcAdapter? = null
+    private val nfcAdapter: NfcAdapter? = NfcAdapter.getDefaultAdapter(AcmeApplication.getAppContext())
     lateinit var binding: FragmentOrderPickupBinding
     private val viewModel: OrderPickupViewModel by viewModels()
 
@@ -95,25 +87,42 @@ class OrderPickupFragment : Fragment(), OutcomingNfcManager.NfcActivity {
     }
 
     private fun fuckWithNfc() {
-        var context = AcmeApplication.getAppContext()
-        nfcAdapter = NfcAdapter.getDefaultAdapter(context)
-        Log.e("NFC supported", (nfcAdapter != null).toString())
-        Log.e("NFC enabled", (nfcAdapter?.isEnabled).toString())
+//        var context = AcmeApplication.getAppContext()
+//        nfcAdapter = NfcAdapter.getDefaultAdapter(context)
+//        Log.e("NFC supported", (nfcAdapter != null).toString())
+//        Log.e("NFC enabled", (nfcAdapter?.isEnabled).toString())
+//
+//        // NFC not supported
+//        if (nfcAdapter == null) {
+//            binding.otherPaymentMethod.visibility = View.GONE
+//            if(nfcAdapter?.isEnabled != null || nfcAdapter?.isEnabled!!) {
+//                // NFC not enabled
+//
+//            } else {
+//                // NFC enabled
+//
+//            }
+//        }
+//
+//        nfcManager = OutcomingNfcManager(this)
+//        nfcAdapter?.setOnNdefPushCompleteCallback(nfcManager, MainActivity.getActivity())
+//        nfcAdapter?.setNdefPushMessageCallback(nfcManager, MainActivity.getActivity())
 
-        // NFC not supported
-        if (nfcAdapter == null) {
-            binding.otherPaymentMethod.visibility = View.GONE
-            // NFC not enabled
-            if(nfcAdapter?.isEnabled!!) {
-
-            } else {
-
-            }
+        if(nfcAdapter != null && nfcAdapter.isEnabled) {
+            // NFC Not supported
+            ShowFeedback.makeSnackbar("NFC is not supported. Bye!")
         }
+        else {
+            nfcAdapter!!.setNdefPushMessageCallback(this, MainActivity.getActivity())
+            nfcAdapter!!.setOnNdefPushCompleteCallback(this, MainActivity.getActivity())
+        }
+    }
 
-        nfcManager = OutcomingNfcManager(this)
-        nfcAdapter?.setOnNdefPushCompleteCallback(nfcManager, MainActivity.getActivity())
-        nfcAdapter?.setNdefPushMessageCallback(nfcManager, MainActivity.getActivity())
+    override fun onDestroy() {
+        super.onDestroy()
+
+        nfcAdapter!!.setNdefPushMessageCallback(null, MainActivity.getActivity())
+        nfcAdapter!!.setOnNdefPushCompleteCallback(null, MainActivity.getActivity())
     }
 
     companion object {
@@ -151,11 +160,27 @@ class OrderPickupFragment : Fragment(), OutcomingNfcManager.NfcActivity {
 
     }
 
-    override fun getOutcomingMessage(): String {
-        return "OLA isto e um teste!"
+//    override fun getOutcomingMessage(): String {
+//        return "OLA isto e um teste!"
+//    }
+//
+//    override fun signalResult() {
+//        ShowFeedback.makeSnackbar("NFC WOW")
+//    }
+
+    override fun createNdefMessage(event: NfcEvent?): NdefMessage {
+        ShowFeedback.makeSnackbar("Message created")
+
+        val outString = "Teste!!! :)"
+
+        with(outString) {
+            val outBytes = this.toByteArray()
+            val outRecord = NdefRecord.createMime("text/plain", outBytes)
+            return NdefMessage(outRecord)
+        }
     }
 
-    override fun signalResult() {
-        ShowFeedback.makeSnackbar("NFC WOW")
+    override fun onNdefPushComplete(event: NfcEvent?) {
+        ShowFeedback.makeSnackbar("Message transmitted")
     }
 }
