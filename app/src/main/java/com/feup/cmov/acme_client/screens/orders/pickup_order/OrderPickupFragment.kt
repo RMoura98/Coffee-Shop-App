@@ -125,8 +125,10 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
     override fun onDestroy() {
         super.onDestroy()
 
-        nfcAdapter!!.setNdefPushMessageCallback(null, MainActivity.getActivity())
-        nfcAdapter!!.setOnNdefPushCompleteCallback(null, MainActivity.getActivity())
+        if(nfcAdapter != null) {
+            nfcAdapter.setNdefPushMessageCallback(null, MainActivity.getActivity())
+            nfcAdapter.setOnNdefPushCompleteCallback(null, MainActivity.getActivity())
+        }
     }
 
     companion object {
