@@ -91,6 +91,7 @@ async function getOrderStatus(req, res) {
   const order = await orderService.getOrder(order_id, uuid).dataValues;
   if (order != null) {
     const vouchers = voucherService.getVouchersReceivedFromOrder(order_id).map((e) => e.dataValues);
+    const vouchers = (await voucherService.getVouchersReceivedFromOrder(order_id)).map((e) => e.dataValues);
     return res.json({
       order_sequential_id: order.order_sequential_id,
       vouchers,
