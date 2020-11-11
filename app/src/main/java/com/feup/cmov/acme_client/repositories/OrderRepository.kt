@@ -47,8 +47,7 @@ class OrderRepository
                 appDatabaseDao.createOrders(orders)
                 appDatabaseDao.createOrderItems(orderItems)
             } catch (e: Exception) {
-                ShowFeedback.makeSnackbar(e.toString())
-                throw e;
+                ShowFeedback.makeSnackbar("Failed to refresh orders.")
             }
         }
     }
@@ -125,6 +124,8 @@ class OrderRepository
                 true
             }
             catch (e: HttpException) {
+                if(e.code() != 404)
+                    ShowFeedback.makeSnackbar("Failed to refresh order.")
                 false
             }
         }

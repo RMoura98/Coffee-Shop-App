@@ -17,6 +17,7 @@ import com.feup.cmov.acme_client.repositories.OrderRepository
 import com.feup.cmov.acme_client.repositories.UserRepository
 import com.feup.cmov.acme_client.repositories.VoucherRepository
 import com.feup.cmov.acme_client.screens.checkout.cart.VoucherUsedAdapter
+import com.feup.cmov.acme_client.utils.ShowFeedback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -183,9 +184,19 @@ class CartViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             isLoading.set(true)
             delay(500)
-            val order = ordersRepository.placeOrder(cartList.values, selectedVouchers.value!!, subtotalCartPrice.value!! - totalSavings.value!!)
-            placedOrder.postValue(order)
-            isLoading.set(false)
+            try {
+                val order = ordersRepository.placeOrder(
+                    cartList.values,
+                    selectedVouchers.value!!,
+                    subtotalCartPrice.value!! - totalSavings.value!!
+                )
+                placedOrder.postValue(order)
+                isLoading.set(false)
+            }
+            catch(e: Exception) {
+                ShowFeedback.makeSnackbar("Failed to place order.")
+                isLoading.set(false)
+            }
         }
     }
 

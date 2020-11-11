@@ -10,8 +10,10 @@ import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
 import com.feup.cmov.acme_client.repositories.OrderRepository
 import com.feup.cmov.acme_client.repositories.UserRepository
+import com.feup.cmov.acme_client.utils.ShowFeedback
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 
 class OrderPickupViewModel @ViewModelInject constructor(

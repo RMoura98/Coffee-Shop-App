@@ -8,6 +8,7 @@ import com.feup.cmov.acme_client.database.AppDatabaseDao
 import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.network.WebService
 import com.feup.cmov.acme_client.network.requests.SignupRequest
+import com.feup.cmov.acme_client.utils.ShowFeedback
 import kotlinx.coroutines.*
 import retrofit2.await
 import javax.inject.Inject
@@ -38,7 +39,7 @@ class MenuRepository
                     val menuItems = webService.fetchMenu()
                     appDatabaseDao.createMenuItem(menuItems)
                 } catch (e: Throwable) {
-                    Log.e("MenuRepository", "refreshMenu: $e")
+                    ShowFeedback.makeSnackbar("Failed to refresh menu items.")
                 }
             }
         }

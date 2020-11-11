@@ -29,7 +29,7 @@ object Security {
         val spec = KeyPairGeneratorSpec
             .Builder(AcmeApplication.getAppContext())
             .setAlias(userName)
-            .setKeySize(2048)
+            .setKeySize(512)
             .setSubject(X500Principal("CN=AcmeExperience, O=AcmeExperience Inc., C=PT"))
             .setSerialNumber(BigInteger.ONE)
             .setStartDate(start.time).setEndDate(end.time)

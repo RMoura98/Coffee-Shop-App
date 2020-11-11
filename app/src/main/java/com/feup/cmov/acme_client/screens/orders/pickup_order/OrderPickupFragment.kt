@@ -6,6 +6,7 @@ import android.nfc.NdefRecord
 import android.nfc.NfcAdapter
 import android.nfc.NfcEvent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,8 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
         val orderWithItems = OrderWithItems.deserialize(requireArguments().getString("order")!!)
 
         val packet = Packet(orderWithItems)
+
+        Log.e("here", "${packet.signature},${packet.payloadString}".length.toString())
 
         val qrCode: Bitmap =
             QRCode.from("${packet.signature},${packet.payloadString}").withSize(
