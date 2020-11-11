@@ -1,4 +1,5 @@
 const { Op, Sequelize } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 const db = require('../db');
 const { Order, OrderItem } = require('../models');
 
@@ -52,7 +53,7 @@ async function getOrderItems(orderIDs) {
   return orders;
 }
 
-async function createOrder(orderId, userId, cartItems, voucherItems, total) {
+async function createOrder(orderId, userId, orderItems, orderItemsQuantities, vouchers, total) {
   const result = await db.transaction(async (t) => {
     const order = await Order.create({
       order_id: orderId,
@@ -61,7 +62,20 @@ async function createOrder(orderId, userId, cartItems, voucherItems, total) {
       completed: true,
     }, { transaction: t });
 
-    // TODO: create orderitems and use vouchers
+    for (let i = 0; i < orderItems.length; i += 1) {
+      const item = orderItems[i];
+      const quantity = orderItemsQuantities[i];
+
+      await OrderItem.create({
+        order_item_id: uuidv4(),
+        item_id: item.id,
+        order_id: orderId,
+        price: item.price * quantity,
+        quantity,
+      }, { transaction: t });
+    }
+
+    // TODO: use vouchers
 
     return order;
   });

@@ -76,7 +76,7 @@ async function placeOrder(req, res) {
     );
 
     const order = await orderService.createOrder(
-      order_id, uuid, cartItemsObjects, voucherObjects, total,
+      order_id, uuid, cartItemsObjects, cartItemsQuantities, voucherObjects, total,
     );
 
     return res.status(201).json(order);
