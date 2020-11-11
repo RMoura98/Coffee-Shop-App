@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
+import com.feup.cmov.acme_terminal.AcmeApplication
 import com.feup.cmov.acme_terminal.R
 import com.feup.cmov.acme_terminal.database.models.Order
 import com.feup.cmov.acme_terminal.databinding.FragmentScannerBinding
@@ -48,10 +49,14 @@ class ScannerFragment : Fragment(), ScannerHandler {
         if (result != null && result.contents != null) {
             println(result.contents)
 
-            val gson = Gson()
-            val order: Order = gson.fromJson(result.contents, Order::class.java)
+            val splitContents = result.contents.split(",", limit = 2);
+            val signature = splitContents[0]
+            val orderJson = splitContents[1]
 
-            viewModel.order.postValue(order)
+            val gson = Gson()
+            val order: Order = gson.fromJson(orderJson, Order::class.java)
+
+            viewModel.placeOrder(order, signature)
 
             requireView().findNavController().navigate(R.id.action_scannerFragment_to_orderDetailsFragment);
         }
