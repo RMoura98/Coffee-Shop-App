@@ -2,6 +2,7 @@ const { Op, Sequelize } = require('sequelize');
 const { v4: uuidv4 } = require('uuid');
 const db = require('../db');
 const { Order, OrderItem } = require('../models');
+const voucherService = require('./voucherService');
 
 /**
  * Returns all orders of a given user.
@@ -75,7 +76,9 @@ async function createOrder(orderId, userId, orderItems, orderItemsQuantities, vo
       }, { transaction: t });
     }
 
-    // TODO: use vouchers
+    for (const voucher of vouchers) {
+      await voucherService.useVoucher(voucher.voucherId, orderId, t);
+    }
 
     return order;
   });

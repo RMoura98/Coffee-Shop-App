@@ -1,5 +1,6 @@
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const { Voucher } = require('../models');
+const NotFoundError = require('../errors/NotFoundError');
 
 /**
  * Returns all vouchers of a given user.
@@ -48,8 +49,25 @@ async function getVouchersReceivedFromOrder(order_id) {
   return vouchers;
 }
 
+/**
+ * Marks a voucher as used on the given order
+ * @param {String} voucherId the voucher's ID
+ * @param {String} orderId the order's ID
+ * @param {Sequelize.Transaction} transaction the transaction in which this operation takes place
+ */
+async function useVoucher(voucherId, orderId, transaction) {
+  const voucher = await Voucher.findByPk(voucherId);
+
+  if (voucher == null) throw new NotFoundError("Voucher doesn't exist");
+
+  voucher.used_on_order_id = orderId;
+
+  await voucher.save({ transaction });
+}
+
 module.exports = {
   getVouchers,
   getUnusedVouchersByIDs,
   getVouchersReceivedFromOrder,
+  useVoucher,
 };
