@@ -1,4 +1,5 @@
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
+const db = require('../db');
 const { Order, OrderItem } = require('../models');
 
 /**
@@ -51,8 +52,26 @@ async function getOrderItems(orderIDs) {
   return orders;
 }
 
+async function createOrder(orderId, userId, cartItems, voucherItems, total) {
+  const result = await db.transaction(async (t) => {
+    const order = await Order.create({
+      order_id: orderId,
+      userId,
+      total,
+      completed: true,
+    }, { transaction: t });
+
+    // TODO: create orderitems and use vouchers
+
+    return order;
+  });
+
+  return result;
+}
+
 module.exports = {
   getOrders,
   getOrderItems,
   getOrder,
+  createOrder,
 };

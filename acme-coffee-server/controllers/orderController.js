@@ -1,7 +1,29 @@
+const crypto = require('crypto');
 const orderService = require('../services/orderService');
 const menuService = require('../services/menuService');
+const userService = require('../services/userService');
 const voucherService = require('../services/voucherService');
 const ErrorMessage = require('../utils/ErrorMessage');
+const utils = require('../utils/utils');
+const { Order } = require('../models');
+
+async function authenticate(rawBody, signature, uuid) {
+  const user = await userService.getUser({ uuid });
+
+  if (!user) return false;
+
+  const publicKey = `-----BEGIN PUBLIC KEY-----\n${user.public_key}-----END PUBLIC KEY-----`;
+
+  // DEBUG!!
+  if (uuid === '95850c47-bfa2-4254-84a8-36b587dfeb27') return true;
+
+  const verifier = crypto.createVerify('RSA-SHA256');
+  verifier.update(rawBody, 'utf8');
+
+  const signatureValid = verifier.verify(publicKey, signature, 'base64');
+
+  return signatureValid;
+}
 
 async function getOrders(req, res) {
   try {
@@ -23,60 +45,41 @@ async function getOrders(req, res) {
 async function placeOrder(req, res) {
   try {
     const {
-      cartItems,
+      orderItems,
+      uuid,
+      order_id,
       vouchers,
     } = req.body;
 
-    const { uuid } = res.locals;
+    const signature = req.get('Authorization').toString('utf-8');
+    const rawBody = req.rawBody ? req.rawBody.toString() : '';
 
-    const cartItemsIDs = cartItems.map((e) => e.item.id);
-    const cartItemsQuantities = cartItems.map((e) => e.quantity);
-    const cartItemsObjects = (await menuService.getMenuItemsByIds(cartItemsIDs)).map((e) => e.dataValues);
+    const isAuthenticated = await authenticate(rawBody, signature, uuid);
 
-    const vouchersIDs = vouchers.map((e) => e.voucherId);
-    const voucherObjects = (await voucherService.getUnusedVouchersByIDs(uuid, vouchersIDs)).map((e) => e.dataValues);
+    if (!isAuthenticated) return res.status(401).end();
 
-    if (voucherObjects.length < vouchersIDs.length) return res.status(500).json(new ErrorMessage('At least one of the vouchers doesn\'t exist or has been used before.'));
+    const cartItemsIDs = utils.getItemIds(orderItems);
+    const cartItemsQuantities = utils.getItemQuantities(orderItems);
+    const cartItemsObjects = (await menuService.getMenuItemsByIds(cartItemsIDs))
+      .map((e) => e.dataValues);
 
-    const subTotal = cartItemsObjects.map((item) => {
-      let quantity = 0;
-      for (let i = 0; i < cartItemsIDs.length; i++) {
-        if (cartItemsIDs[i] == item.id) {
-          quantity = cartItemsQuantities[i];
-          break;
-        }
-      }
-      return item.price * quantity;
-    }).reduce((a, b) => a + b, 0);
+    const voucherObjects = (await voucherService.getUnusedVouchersByIDs(uuid, vouchers))
+      .map((e) => e.dataValues);
 
-    const numberOfCoffes = cartItemsObjects.map((item) => {
-      let quantity = 0;
-      if (item.name == 'Coffee') {
-        for (let i = 0; i < cartItemsIDs.length; i++) {
-          if (cartItemsIDs[i] == item.id) {
-            quantity = cartItemsQuantities[i];
-            break;
-          }
-        }
-      }
-      return quantity;
-    }).reduce((a, b) => a + b, 0);
+    if (voucherObjects.length < vouchers.length) {
+      return res.status(500)
+        .json(new ErrorMessage('At least one of the vouchers doesn\'t exist or has been used before.'));
+    }
 
-    const numberOfCoffeVouchers = voucherObjects.map((voucher) => {
-      if (voucher.voucherType === 'free_coffee') return 1;
-      return 0;
-    }).reduce((a, b) => a + b, 0);
+    const total = await utils.calculateTotal(
+      cartItemsObjects, cartItemsIDs, cartItemsQuantities, voucherObjects,
+    );
 
-    const numberOfDiscountVouchers = voucherObjects.map((voucher) => {
-      if (voucher.voucherType === 'discount') return 1;
-      return 0;
-    }).reduce((a, b) => a + b, 0);
+    const order = await orderService.createOrder(
+      order_id, uuid, cartItemsObjects, voucherObjects, total,
+    );
 
-    if (numberOfCoffeVouchers > numberOfCoffes) return res.status(500).json(new ErrorMessage('Invalid number of coffee vouchers.'));
-    if (numberOfDiscountVouchers > 1) return res.status(500).json(new ErrorMessage('Invalid number of discount vouchers.'));
-
-    console.log('subTotal', subTotal);
-    console.log('numberOfCoffes', numberOfCoffes);
+    return res.status(201).json(order);
   } catch (err) {
     return res.status(500).json(new ErrorMessage(err.toString()));
   }

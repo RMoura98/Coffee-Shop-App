@@ -17,7 +17,16 @@ async function getMenuItemsByIds(itemIDs) {
   return items;
 }
 
+async function getCoffeePrice() {
+  const coffee = await MenuItem.findOne({
+    where: { name: 'Coffee' },
+  });
+
+  return coffee.price;
+}
+
 module.exports = {
   getMenuItems,
   getMenuItemsByIds,
+  getCoffeePrice,
 };
