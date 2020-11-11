@@ -27,12 +27,8 @@ async function getUnusedVouchersByIDs(userId, vouchersIds) {
     where: {
       [Op.and]: [
         { userId },
-      ],
-      [Op.and]: [
-        { used: false },
-      ],
-      [Op.or]: [
-        { voucherId: vouchersIds },
+        { used_on_order_id: { [Op.is]: null } },
+        { voucherId: { [Op.in]: vouchersIds } },
       ],
     },
   });
