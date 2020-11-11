@@ -91,7 +91,19 @@ async function createOrder(orderId, userId, orderItems, orderItemsQuantities, vo
     return order;
   });
 
-  return result;
+  let completeOrderItems = await result.getOrderItems();
+  completeOrderItems = completeOrderItems.map((orderItem) => orderItem.dataValues);
+  const user = await userService.getUser({ uuid: userId });
+  const orderWithItems = {
+    ...result.dataValues,
+    orderItems: completeOrderItems,
+    user: user.name,
+    vouchers,
+  };
+
+  console.log(orderWithItems);
+
+  return orderWithItems;
 }
 
 module.exports = {
