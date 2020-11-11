@@ -101,8 +101,6 @@ async function createOrder(orderId, userId, orderItems, orderItemsQuantities, vo
     vouchers,
   };
 
-  console.log(orderWithItems);
-
   return orderWithItems;
 }
 

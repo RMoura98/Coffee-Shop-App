@@ -88,14 +88,20 @@ async function placeOrder(req, res) {
 async function getOrderStatus(req, res) {
   const { uuid } = res.locals;
   const { order_id } = req.params;
-  const order = await orderService.getOrder(order_id, uuid).dataValues;
+  const order = await orderService.getOrder(order_id, uuid);
+
+  console.log(order);
+
   if (order != null) {
-    const vouchers = voucherService.getVouchersReceivedFromOrder(order_id).map((e) => e.dataValues);
-    const vouchers = (await voucherService.getVouchersReceivedFromOrder(order_id)).map((e) => e.dataValues);
-    return res.json({
+    const vouchers = await voucherService.getVouchersReceivedFromOrder(order_id);
+    const vouchersData = vouchers.map((voucher) => voucher.dataValues);
+
+    console.log(vouchersData);
+
+    return res.status(200).json({
       order_sequential_id: order.order_sequential_id,
-      vouchers,
-    }).end();
+      vouchers_received: vouchersData,
+    });
   }
 
   return res.status(404).end();
