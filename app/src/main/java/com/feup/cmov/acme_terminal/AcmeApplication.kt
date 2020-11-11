@@ -17,6 +17,8 @@ class AcmeApplication: Application() {
     companion object {
         private lateinit var context: Context
         private lateinit var preferences: SharedPreferences
+        lateinit var userSignature: String
+        lateinit var userId: String
 
         fun getAppContext(): Context {
             return context
