@@ -35,6 +35,7 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
     private val nfcAdapter: NfcAdapter? = NfcAdapter.getDefaultAdapter(MainActivity.getActivity())
     lateinit var binding: FragmentOrderPickupBinding
     private val viewModel: OrderPickupViewModel by viewModels()
+    lateinit var toTransmitString: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,13 +48,11 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
         )
 
         val orderWithItems = OrderWithItems.deserialize(requireArguments().getString("order")!!)
-
         val packet = Packet(orderWithItems)
-
-        Log.e("here", "${packet.signature},${packet.payloadString}".length.toString())
+        toTransmitString = "${packet.signature},${packet.payloadString}"
 
         val qrCode: Bitmap =
-            QRCode.from("${packet.signature},${packet.payloadString}").withSize(
+            QRCode.from(toTransmitString).withSize(
                 Measurements.convertDptoPx(360).toInt(),
                 Measurements.convertDptoPx(360).toInt()
             ).withErrorCorrection(
@@ -82,44 +81,15 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
             }
         })
 
-        fuckWithNfc()
-
-        return binding.root
-    }
-
-    private fun fuckWithNfc() {
-//        var context = AcmeApplication.getAppContext()
-//        nfcAdapter = NfcAdapter.getDefaultAdapter(context)
-//        Log.e("NFC supported", (nfcAdapter != null).toString())
-//        Log.e("NFC enabled", (nfcAdapter?.isEnabled).toString())
-//
-//        // NFC not supported
-//        if (nfcAdapter == null) {
-//            binding.otherPaymentMethod.visibility = View.GONE
-//            if(nfcAdapter?.isEnabled != null || nfcAdapter?.isEnabled!!) {
-//                // NFC not enabled
-//
-//            } else {
-//                // NFC enabled
-//
-//            }
-//        }
-//
-//        nfcManager = OutcomingNfcManager(this)
-//        nfcAdapter?.setOnNdefPushCompleteCallback(nfcManager, MainActivity.getActivity())
-//        nfcAdapter?.setNdefPushMessageCallback(nfcManager, MainActivity.getActivity())
-
         if(nfcAdapter == null || !nfcAdapter.isEnabled) {
             // NFC Not supported
-            ShowFeedback.makeSnackbar("NFC is not supported. Bye!")
         }
         else {
-            //nfcAdapter!!.setNdefPushMessage(createNdefMessage(null), MainActivity.getActivity())
-
-            //nfcAdapter.enableForegroundNdefPush(MainActivity.getActivity())
-            //nfcAdapter!!.setNdefPushMessageCallback(this, MainActivity.getActivity())
-            //nfcAdapter!!.setOnNdefPushCompleteCallback(this, MainActivity.getActivity())
+            nfcAdapter!!.setNdefPushMessageCallback(this, MainActivity.getActivity())
+            nfcAdapter!!.setOnNdefPushCompleteCallback(this, MainActivity.getActivity())
         }
+
+        return binding.root
     }
 
     override fun onDestroy() {
@@ -169,22 +139,8 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
     override fun createNdefMessage(event: NfcEvent?): NdefMessage {
         ShowFeedback.makeSnackbar("Message created")
 
-        val outString = "Teste YAP"
-//        val ndefRecord = NdefRecord.createTextRecord("en", outString)
-//
-//        return NdefMessage(ndefRecord)
-
-        val langBytes = "en".toByteArray(Charset.forName("US-ASCII"))
-        val utfEncoding = Charset.forName("UTF-8")
-        val textBytes = outString.toByteArray(utfEncoding)
-        val utfBit = 0
-        val status = (utfBit + langBytes.size).toChar()
-        val data = ByteArray(1 + langBytes.size + textBytes.size)
-        data[0] = status.toByte()
-        System.arraycopy(langBytes, 0, data, 1, langBytes.size)
-        System.arraycopy(textBytes, 0, data, 1 + langBytes.size, textBytes.size)
-        return NdefMessage(NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, ByteArray(0), data))
-
+        val ndefRecord = NdefRecord.createMime("application/com.feup.cmov.acme_client", toTransmitString.toByteArray())
+        return NdefMessage(ndefRecord)
     }
 
     override fun onNdefPushComplete(event: NfcEvent?) {
