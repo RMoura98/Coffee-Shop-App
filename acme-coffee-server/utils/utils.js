@@ -82,8 +82,29 @@ async function calculateTotal(cartItems, cartItemsIDs, cartItemsQuantities, vouc
   return total;
 }
 
+/**
+ * Counts the number of coffees that the customer payed for in an order
+ * @param {OrderItem} orderItems the order items
+ * @param {array} orderItemsQuantities the quantities of the order items
+ * @param {array} vouchers applied vouchers
+ */
+function countPayedCoffees(orderItems, orderItemsQuantities, vouchers) {
+  let coffees = 0;
+  const coffeeVouchers = countVouchersOfType(vouchers, 'free_coffee');
+
+  for (let i = 0; i < orderItems.length; i += 1) {
+    const item = orderItems[i];
+    const quantity = orderItemsQuantities[i];
+
+    if (item.name === 'Coffee') coffees += quantity;
+  }
+
+  return coffees - coffeeVouchers;
+}
+
 module.exports = {
   getItemIds,
   getItemQuantities,
   calculateTotal,
+  countPayedCoffees,
 };

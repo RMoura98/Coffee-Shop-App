@@ -39,8 +39,24 @@ async function updateUser(uuid, newData) {
   return user;
 }
 
+/**
+ * Increments a given user's total_coffees and total_spent fields
+ * @param {String} userId user ID
+ * @param {Number} numberOfCoffees number of Coffees to add
+ * @param {Number} orderTotal value to add to total_spent
+ */
+async function updateUserTotals(userId, numberOfCoffees, orderTotal) {
+  const user = await User.findByPk(userId);
+
+  user.total_coffees += numberOfCoffees;
+  user.total_spent += orderTotal;
+
+  await user.save();
+}
+
 module.exports = {
   createUser,
   getUser,
   updateUser,
+  updateUserTotals,
 };

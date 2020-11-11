@@ -3,6 +3,8 @@ const { v4: uuidv4 } = require('uuid');
 const db = require('../db');
 const { Order, OrderItem } = require('../models');
 const voucherService = require('./voucherService');
+const userService = require('./userService');
+const utils = require('../utils/utils');
 
 /**
  * Returns all orders of a given user.
@@ -79,6 +81,12 @@ async function createOrder(orderId, userId, orderItems, orderItemsQuantities, vo
     for (const voucher of vouchers) {
       await voucherService.useVoucher(voucher.voucherId, orderId, t);
     }
+
+    const payedCoffees = utils.countPayedCoffees(orderItems, orderItemsQuantities, vouchers);
+
+    await voucherService.emitVouchers(userId, orderId, payedCoffees, total, t);
+
+    await userService.updateUserTotals(userId, payedCoffees, total);
 
     return order;
   });

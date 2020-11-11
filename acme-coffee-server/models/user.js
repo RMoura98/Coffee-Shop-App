@@ -30,6 +30,16 @@ const User = db.define('User', {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  total_coffees: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  total_spent: {
+    type: Sequelize.FLOAT,
+    allowNull: false,
+    defaultValue: 0,
+  },
   public_key: {
     type: Sequelize.TEXT,
     allowNull: false,

@@ -1,6 +1,8 @@
-const { Op, Sequelize } = require('sequelize');
+const { Op } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 const { Voucher } = require('../models');
 const NotFoundError = require('../errors/NotFoundError');
+const userService = require('./userService');
 
 /**
  * Returns all vouchers of a given user.
@@ -65,9 +67,48 @@ async function useVoucher(voucherId, orderId, transaction) {
   await voucher.save({ transaction });
 }
 
+/**
+ * Emits vouchers after an order
+ * @param {String} userId the customer who made the order
+ * @param {String} orderId the order in which the vouchers should be emitted
+ * @param {Number} payedCoffees the number of coffees the customer payed for in the order
+ * @param {Number} orderTotal the order total (discounts included)
+ * @param {Sequelize.Transacton} transaction the transaction in which this operation takes place
+ */
+async function emitVouchers(userId, orderId, payedCoffees, orderTotal, transaction) {
+  const user = await userService.getUser({ uuid: userId });
+
+  const newTotalCoffees = user.total_coffees + payedCoffees;
+
+  for (let coffees = user.total_coffees + 1; coffees <= newTotalCoffees; coffees += 1) {
+    if (coffees % 3 === 0) {
+      await Voucher.create({
+        voucherId: uuidv4(),
+        voucherType: 'free_coffee',
+        userId,
+        received_from_order_id: orderId,
+      }, { transaction });
+    }
+  }
+
+  // const numberOfDiscountVouchers =
+  // Math.floor(newTotalSpent / 100) - Math.floor(user.total_spent / 100);
+  const numberOfDiscountVouchers = Math.floor((orderTotal + (user.total_spent % 100)) / 100);
+
+  for (let i = 0; i < numberOfDiscountVouchers; i += 1) {
+    await Voucher.create({
+      voucherId: uuidv4(),
+      voucherType: 'discount',
+      userId,
+      received_from_order_id: orderId,
+    }, { transaction });
+  }
+}
+
 module.exports = {
   getVouchers,
   getUnusedVouchersByIDs,
   getVouchersReceivedFromOrder,
   useVoucher,
+  emitVouchers,
 };
