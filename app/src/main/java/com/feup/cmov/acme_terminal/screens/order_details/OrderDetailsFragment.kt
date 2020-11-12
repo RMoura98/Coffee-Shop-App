@@ -14,6 +14,7 @@ import com.feup.cmov.acme_terminal.R
 import com.feup.cmov.acme_terminal.database.models.OrderWithItems
 import com.feup.cmov.acme_terminal.databinding.FragmentOrderDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.ceil
 import kotlin.math.floor
 
 @AndroidEntryPoint
@@ -109,14 +110,15 @@ class OrderDetailsFragment: Fragment(), OrderDetailsHandler {
         }
     }
 
-    private fun inflateOrderSummary(subTotalPrice: Float, totalPrice: Float) {
+    private fun inflateOrderSummary(subTotal: Float, totalPrice: Float) {
         val priceStringFormat: String =
                 AcmeApplication.getAppContext().getString(R.string.cart_price)
-        val savings = subTotalPrice - totalPrice
+        var total = ceil(totalPrice * 100) / 100
+        val savings = subTotal - total
 
-        binding.subtotalPrice.text = priceStringFormat.format(subTotalPrice)
+        binding.subtotalPrice.text = priceStringFormat.format(subTotal)
         binding.voucherPrice.text = priceStringFormat.format(savings)
-        binding.totalPrice.text = priceStringFormat.format(totalPrice)
+        binding.totalPrice.text = priceStringFormat.format(total)
     }
 
     private fun getData(): Triple<Float ,MutableMap<Long, CartItemAdapter.CartItem>,  ArrayList<VoucherUsedAdapter.VoucherWithSavings>> {
