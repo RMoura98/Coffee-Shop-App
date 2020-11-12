@@ -95,12 +95,14 @@ async function getOrderStatus(req, res) {
   if (order != null) {
     const vouchers = await voucherService.getVouchersReceivedFromOrder(order_id);
     const vouchersData = vouchers.map((voucher) => voucher.dataValues);
+    const orderItems = await orderService.getOrderItems([order_id]);
 
     console.log(vouchersData);
 
     return res.status(200).json({
       order_sequential_id: order.order_sequential_id,
       vouchers_received: vouchersData,
+      order_items: orderItems
     });
   }
 
