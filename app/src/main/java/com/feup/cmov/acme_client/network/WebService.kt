@@ -4,10 +4,8 @@ import com.feup.cmov.acme_client.database.models.MenuItem
 import com.feup.cmov.acme_client.database.models.Voucher
 import com.feup.cmov.acme_client.network.requests.PlaceOrderRequest
 import com.feup.cmov.acme_client.network.requests.SignupRequest
-import com.feup.cmov.acme_client.network.responses.FetchOrdersResponse
-import com.feup.cmov.acme_client.network.responses.LoginResponse
-import com.feup.cmov.acme_client.network.responses.OrderStatusResponse
-import com.feup.cmov.acme_client.network.responses.SignupResponse
+import com.feup.cmov.acme_client.network.requests.UpdateUserRequest
+import com.feup.cmov.acme_client.network.responses.*
 import retrofit2.http.*
 
 
@@ -18,6 +16,9 @@ interface WebService {
 
     @GET("users/{uuid}")
     suspend fun fetchUser(@Path("uuid") uuid: String): LoginResponse
+
+    @PUT("users/{uuid}")
+    suspend fun updateUser(@Path("uuid") uuid: String, @Body req: UpdateUserRequest): UpdateUserResponse
 
     @AuthenticatedRequest
     @GET("menu")

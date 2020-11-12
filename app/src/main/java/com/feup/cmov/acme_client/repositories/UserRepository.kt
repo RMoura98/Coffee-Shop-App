@@ -12,6 +12,7 @@ import com.feup.cmov.acme_client.network.requests.SignupRequest
 import com.feup.cmov.acme_client.network.responses.SignupResponse
 import javax.inject.Inject
 import com.feup.cmov.acme_client.network.Result
+import com.feup.cmov.acme_client.network.requests.UpdateUserRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -122,6 +123,11 @@ class UserRepository
             withContext(Dispatchers.IO) {
                 try {
                     appDatabaseDao.updateUser(user)
+
+                    val req = UpdateUserRequest(
+                        user.name, user.phone_number, user.NIF, user.card_number, user.card_expiration, user.card_cvc
+                    )
+                    webService.updateUser(user.uuid, req)
                 } catch (e: Throwable) {
                     Log.e("UserRepository", "updateUser: $e")
                 }
