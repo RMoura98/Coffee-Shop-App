@@ -16,6 +16,7 @@ import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.MainActivity
@@ -76,9 +77,9 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
 
         var hasNavigated = false
 
-        viewModel.getCompleteOrder().observeOnce(viewLifecycleOwner, Observer observe@{ orderWithItem ->
-            var earnedVouchersJson = Gson().toJson(viewModel.getEarnedVouchers())
+        viewModel.getCompleteOrder().observe(viewLifecycleOwner, Observer observe@{ orderWithItem ->
             if(orderWithItem != null && !hasNavigated) {
+                var earnedVouchersJson = Gson().toJson(viewModel.getEarnedVouchers())
                 container!!.findNavController().navigate(
                     R.id.action_orderPickupFragment_to_pickupSuccessFragment,
                     bundleOf(
@@ -157,14 +158,4 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
     override fun onNdefPushComplete(event: NfcEvent?) {
         ShowFeedback.makeSnackbar("Message transmitted")
     }
-}
-
-private fun <T> MutableLiveData<T>.observeOnce(viewLifecycleOwner: LifecycleOwner, observer: Observer<T>) {
-    observe(viewLifecycleOwner, object : Observer<T> {
-        override fun onChanged(t: T?) {
-            println("onChanged")
-            observer.onChanged(t)
-            removeObserver(this)
-        }
-    })
 }
