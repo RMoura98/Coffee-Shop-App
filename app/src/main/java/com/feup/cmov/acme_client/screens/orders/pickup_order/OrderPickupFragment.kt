@@ -38,6 +38,7 @@ import com.google.gson.Gson
 @AndroidEntryPoint
 class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, NfcAdapter.OnNdefPushCompleteCallback {
 
+    private var hasNavigated: Boolean = false
     private val nfcAdapter: NfcAdapter? = NfcAdapter.getDefaultAdapter(MainActivity.getActivity())
     lateinit var binding: FragmentOrderPickupBinding
     private val viewModel: OrderPickupViewModel by viewModels()
@@ -74,8 +75,6 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
         binding.topAppBar.setNavigationOnClickListener {
             activity?.onBackPressed();
         }
-
-        var hasNavigated = false
 
         viewModel.getCompleteOrder().observe(viewLifecycleOwner, Observer observe@{ orderWithItem ->
             if(orderWithItem != null && !hasNavigated) {
