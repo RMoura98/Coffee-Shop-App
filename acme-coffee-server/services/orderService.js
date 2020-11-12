@@ -85,29 +85,32 @@ async function createOrder(orderId, userId, orderItems, orderItemsQuantities, vo
 
     const payedCoffees = utils.countPayedCoffees(orderItems, orderItemsQuantities, vouchers);
 
-    await voucherService.emitVouchers(userId, orderId, payedCoffees, total, t);
+    const earnedVouchers = await voucherService.emitVouchers(
+      userId, orderId, payedCoffees, total, t,
+    );
 
     await userService.updateUserTotals(userId, payedCoffees, total);
 
-    return order;
+    return { order, earnedVouchers };
   });
 
-  let completeOrderItems = await result.getOrderItems();
+  let completeOrderItems = await result.order.getOrderItems();
   completeOrderItems = completeOrderItems.map((orderItem) => orderItem.dataValues);
 
   const itemsWithInfo = [];
 
   for (const orderItem of completeOrderItems) {
     const menuItem = await menuService.getMenuItemById(orderItem.item_id);
-    itemsWithInfo.push({orderItem, menuItem:menuItem.dataValues});
+    itemsWithInfo.push({ orderItem, menuItem: menuItem.dataValues });
   }
 
   const user = await userService.getUser({ uuid: userId });
   const orderWithItems = {
-    ...result.dataValues,
+    ...result.order.dataValues,
     orderItems: itemsWithInfo,
     user: user.name,
     vouchers,
+    earnedVouchers: result.earnedVouchers,
   };
 
   return orderWithItems;

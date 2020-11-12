@@ -80,14 +80,18 @@ async function emitVouchers(userId, orderId, payedCoffees, orderTotal, transacti
 
   const newTotalCoffees = user.total_coffees + payedCoffees;
 
+  const emittedVouchers = [];
+
   for (let coffees = user.total_coffees + 1; coffees <= newTotalCoffees; coffees += 1) {
     if (coffees % 3 === 0) {
-      await Voucher.create({
+      const voucher = await Voucher.create({
         voucherId: uuidv4(),
         voucherType: 'free_coffee',
         userId,
         received_from_order_id: orderId,
       }, { transaction });
+
+      emittedVouchers.push(voucher.dataValues);
     }
   }
 
@@ -96,13 +100,17 @@ async function emitVouchers(userId, orderId, payedCoffees, orderTotal, transacti
   const numberOfDiscountVouchers = Math.floor((orderTotal + (user.total_spent % 100)) / 100);
 
   for (let i = 0; i < numberOfDiscountVouchers; i += 1) {
-    await Voucher.create({
+    const voucher = await Voucher.create({
       voucherId: uuidv4(),
       voucherType: 'discount',
       userId,
       received_from_order_id: orderId,
     }, { transaction });
+
+    emittedVouchers.push(voucher.dataValues);
   }
+
+  return emittedVouchers;
 }
 
 module.exports = {
