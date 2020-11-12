@@ -35,6 +35,7 @@ import com.google.gson.Gson
 @AndroidEntryPoint
 class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, NfcAdapter.OnNdefPushCompleteCallback {
 
+    private var hasNavigated: Boolean = false
     private val nfcAdapter: NfcAdapter? = NfcAdapter.getDefaultAdapter(MainActivity.getActivity())
     lateinit var binding: FragmentOrderPickupBinding
     private val viewModel: OrderPickupViewModel by viewModels()
