@@ -71,16 +71,6 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
         }
 
         viewModel.startRefresh(orderWithItems)
-//        viewModel.getCompleteOrder().addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-//            override fun onPropertyChanged(obs: Observable?, propertyId: Int) {
-//                if(viewModel.isOrderComplete().get()!!) {
-//                    container!!.findNavController().navigate(
-//                        R.id.action_orderPickupFragment_to_pickupSuccessFragment,
-//                        bundleOf("order" to requireArguments().getString("order"))
-//                    )
-//                }
-//            }
-//        })
 
         viewModel.getCompleteOrder().observe(viewLifecycleOwner, Observer observe@{ orderWithItem ->
             if(orderWithItem != null) {
