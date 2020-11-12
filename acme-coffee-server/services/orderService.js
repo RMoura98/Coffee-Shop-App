@@ -4,6 +4,7 @@ const db = require('../db');
 const { Order, OrderItem } = require('../models');
 const voucherService = require('./voucherService');
 const userService = require('./userService');
+const menuService = require('./menuService');
 const utils = require('../utils/utils');
 
 /**
@@ -73,7 +74,7 @@ async function createOrder(orderId, userId, orderItems, orderItemsQuantities, vo
         order_item_id: uuidv4(),
         item_id: item.id,
         order_id: orderId,
-        price: item.price * quantity,
+        price: item.price,
         quantity,
       }, { transaction: t });
     }
@@ -93,10 +94,18 @@ async function createOrder(orderId, userId, orderItems, orderItemsQuantities, vo
 
   let completeOrderItems = await result.getOrderItems();
   completeOrderItems = completeOrderItems.map((orderItem) => orderItem.dataValues);
+
+  const itemsWithInfo = [];
+
+  for (const orderItem of completeOrderItems) {
+    const menuItem = await menuService.getMenuItemById(orderItem.item_id);
+    itemsWithInfo.push({orderItem, menuItem:menuItem.dataValues});
+  }
+
   const user = await userService.getUser({ uuid: userId });
   const orderWithItems = {
     ...result.dataValues,
-    orderItems: completeOrderItems,
+    orderItems: itemsWithInfo,
     user: user.name,
     vouchers,
   };

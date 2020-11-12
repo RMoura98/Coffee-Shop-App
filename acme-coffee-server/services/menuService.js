@@ -1,4 +1,5 @@
 const { Op } = require('sequelize');
+const { Order } = require('../models');
 const MenuItem = require('../models/menu_item');
 
 async function getMenuItems() {
@@ -25,8 +26,15 @@ async function getCoffeePrice() {
   return coffee.price;
 }
 
+async function getMenuItemById(itemID) {
+    const item = await MenuItem.findByPk(itemID)
+  
+    return item;
+}
+
 module.exports = {
   getMenuItems,
   getMenuItemsByIds,
   getCoffeePrice,
+  getMenuItemById,
 };
