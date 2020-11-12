@@ -113,7 +113,7 @@ class OrderDetailsFragment: Fragment(), OrderDetailsHandler {
     private fun inflateOrderSummary(subTotal: Float, totalPrice: Float) {
         val priceStringFormat: String =
                 AcmeApplication.getAppContext().getString(R.string.cart_price)
-        var total = ceil(totalPrice * 100) / 100
+        var total = floor(totalPrice * 100) / 100
         val savings = subTotal - total
 
         binding.subtotalPrice.text = priceStringFormat.format(subTotal)
