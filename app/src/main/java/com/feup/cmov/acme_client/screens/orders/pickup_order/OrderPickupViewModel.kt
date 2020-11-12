@@ -31,11 +31,11 @@ class OrderPickupViewModel @ViewModelInject constructor(
     fun startRefresh(order: OrderWithItems) {
         viewModelScope.launch {
             while(true) {
-                println(orderRepository.hasOrderBeenPickedUp(order.order).toString())
-                var response = orderRepository.hasOrderBeenPickedUp(order.order)
+                val response = orderRepository.hasOrderBeenPickedUp(order)
                 if(response?.first != null) {
                     earnedVouchers = response.second
                     completeOrder.postValue(response.first)
+                    break
                 }
                 delay(1000)
             }

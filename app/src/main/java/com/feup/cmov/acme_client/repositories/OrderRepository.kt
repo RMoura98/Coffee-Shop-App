@@ -84,7 +84,7 @@ class OrderRepository
             for (item in cartItems) {
                 orderItems.add(
                     OrderItem(
-                        order_item_id = orderId,
+                        order_item_id = UUID.randomUUID().toString(),
                         order_id = order.order_id,
                         quantity = item.quantity.toLong(),
                         price = item.item.price,
@@ -114,14 +114,16 @@ class OrderRepository
         }
     }
 
-    suspend fun hasOrderBeenPickedUp(order: Order): Pair<OrderWithItems, List<Voucher>>? {
+    suspend fun hasOrderBeenPickedUp(orderWithItems: OrderWithItems): Pair<OrderWithItems, List<Voucher>>? {
         return withContext(Dispatchers.IO) {
             try {
-                val orderStatus = webService.getOrderStatus(order.order_id)
+                val orderStatus = webService.getOrderStatus(orderWithItems.order.order_id)
                 appDatabaseDao.createVouchers(orderStatus.vouchers_received)
-                val updatedOrder = Order(order_id = order.order_id, userId = order.userId, order_sequential_id = orderStatus.order_sequential_id, createdAt = order.createdAt, updatedAt = order.updatedAt, completed = true, total = order.total)
+                val updatedOrder = Order(order_id = orderWithItems.order.order_id, userId = orderWithItems.order.userId, order_sequential_id = orderStatus.order_sequential_id, createdAt = orderWithItems.order.createdAt, updatedAt = Date(), completed = true, total = orderWithItems.order.total)
                 appDatabaseDao.updateOrder(updatedOrder)
-                var orderWithItems = appDatabaseDao.getOrderWithItem(order.order_id)
+                appDatabaseDao.removeOrderItems(orderWithItems.orderItems.map { it.orderItem })
+                appDatabaseDao.createOrderItems(orderStatus.order_items)
+                var orderWithItems = appDatabaseDao.getOrderWithItem(orderWithItems.order.order_id)
                 Pair(orderWithItems, orderStatus.vouchers_received)
             } catch (e: HttpException) {
                 if(e.code() != 404)
