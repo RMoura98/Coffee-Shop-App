@@ -1,9 +1,13 @@
 package com.feup.cmov.acme_client.screens.settings.payment_method
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -37,7 +41,7 @@ class PaymentMethodFragment : Fragment(), PaymentMethodHandler {
 
         viewModel.getUser().observe(viewLifecycleOwner, Observer {
             // Format fields
-            viewModel.updateFormatFields()
+            //viewModel.updateFormatFields()
             // Force bindings to update
             binding.invalidateAll()
         })
@@ -50,5 +54,49 @@ class PaymentMethodFragment : Fragment(), PaymentMethodHandler {
         }
 
         return binding.root
+    }
+
+    override fun onSaveButtonClick(v: View) {
+        viewModel.saveChanges()
+    }
+
+    override fun afterTextChangedCardNumber(s: Editable) {
+        val space = ' '
+
+        // Remove spacing char
+        if (s.isNotEmpty() && s.length % 5 === 0) {
+            val c: Char = s[s.length - 1]
+            if (space == c) {
+                s.delete(s.length - 1, s.length)
+            }
+        }
+
+        // Insert char where needed.
+        if (s.isNotEmpty() && s.length % 5 === 0) {
+            val c: Char = s[s.length - 1]
+            // Only if its a digit where there should be a space we insert a space
+            if (Character.isDigit(c) && TextUtils.split(
+                    s.toString(),
+                    space.toString()
+                ).count() <= 3
+            ) {
+                s.insert(s.length - 1, space.toString())
+            }
+        }
+    }
+
+    override fun afterTextChangedCardExpiration(s: Editable) {
+        if (s.isNotEmpty() && s.length % 3 === 0) {
+            val c: Char = s[s.length - 1]
+            if ('/' == c) {
+                s.delete(s.length - 1, s.length)
+            }
+        }
+        if (s.isNotEmpty() && s.length % 3 === 0) {
+            val c: Char = s[s.length - 1]
+            if (Character.isDigit(c) && TextUtils.split(s.toString(), "/").count() <= 2) {
+                s.insert(s.length - 1, "/")
+            }
+        }
     }
 }

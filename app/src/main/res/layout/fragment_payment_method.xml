@@ -13,6 +13,9 @@
         <variable
             name="handler"
             type="com.feup.cmov.acme_client.screens.settings.payment_method.PaymentMethodHandler" />
+
+        <import type="com.feup.cmov.acme_client.screens.settings.payment_method.Converter" />
+
     </data>
 
     <LinearLayout
@@ -84,12 +87,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:digits="01234 56789"
-                        android:enabled="false"
                         android:hint="@string/prompt_card_number"
                         android:inputType="phone"
                         android:maxLength="19"
                         android:maxLines="1"
-                        android:text="@{viewModel.creditCardFormatted}"
+                        android:text="@={Converter.formatCardNumber(viewModel.user.card_number)}"
+                        android:afterTextChanged="@{handler.afterTextChangedCardNumber}"
                         android:textColor="@color/grey_900" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -115,13 +118,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:digits="0123456789/"
-                            android:enabled="false"
                             android:hint="@string/prompt_card_expiration"
                             android:inputType="phone"
                             android:maxLength="5"
                             android:maxLines="1"
-                            android:text="@{viewModel.user.card_expiration}"
-                            android:textColor="@color/grey_900" />
+                            android:text="@={viewModel.user.card_expiration}"
+                            android:afterTextChanged="@{handler.afterTextChangedCardExpiration}"/>
+                        android:textColor="@color/grey_900" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -141,12 +144,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:digits="0123456789"
-                            android:enabled="false"
                             android:hint="@string/prompt_card_cvc"
                             android:inputType="phone"
                             android:maxLength="3"
                             android:maxLines="1"
-                            android:text="@{viewModel.user.card_cvc}"
+                            android:text="@={viewModel.user.card_cvc}"
                             android:textColor="@color/grey_900" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -167,35 +169,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:digits="0123456789"
-                        android:enabled="false"
                         android:hint="@string/prompt_nif"
                         android:inputType="phone"
                         android:maxLength="9"
                         android:maxLines="1"
-                        android:text="@{viewModel.user.NIF}"
+                        android:text="@={viewModel.user.NIF}"
                         android:textColor="@color/grey_900" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Button
+                    android:id="@+id/saveBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="@string/save_changes"
+                    android:onClick="@{handler::onSaveButtonClick}" />
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
-        <RelativeLayout
-            android:id="@+id/settingsFragment_profile_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:text="Make Changes" />
-        </RelativeLayout>
 
     </LinearLayout>
 </layout>

@@ -87,7 +87,8 @@
                         android:maxLength="15"
                         android:maxLines="1"
                         android:textColor="@color/grey_900"
-                        android:text="@={viewModel.user.userName}" />
+                        android:enabled="false"
+                        android:text="@{viewModel.user.userName}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -106,6 +107,7 @@
                         android:inputType="textPassword"
                         android:maxLines="1"
                         android:textColor="@color/grey_900"
+                        android:enabled="false"
                         android:text="••••••••••" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -179,18 +181,18 @@
                         android:textColor="@color/grey_900" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Button
+                    android:id="@+id/saveBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="@string/save_changes"
+                    android:onClick="@{handler::onSaveButtonClick}" />
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
-        <Button
-            android:id="@+id/saveBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/save_changes"
-            android:onClick="@{handler::onSaveButtonClick}"
-        />
 
     </LinearLayout>
 </layout>
