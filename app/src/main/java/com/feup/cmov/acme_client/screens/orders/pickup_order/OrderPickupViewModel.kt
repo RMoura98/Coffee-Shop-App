@@ -3,6 +3,7 @@ package com.feup.cmov.acme_client.screens.orders.pickup_order
 import androidx.databinding.ObservableField
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.feup.cmov.acme_client.database.models.Order
@@ -20,13 +21,13 @@ class OrderPickupViewModel @ViewModelInject constructor(
     private val orderRepository: OrderRepository
 ) : ViewModel() {
 
-    private val isOrderComplete = ObservableField(false)
-    fun isOrderComplete() = isOrderComplete
+    private val completeOrder = MutableLiveData<OrderWithItems>(null)
+    fun getCompleteOrder() = completeOrder
 
-    fun startRefresh(order: Order) {
+    fun startRefresh(order: OrderWithItems) {
         viewModelScope.launch {
             while(true) {
-                isOrderComplete.set(orderRepository.hasOrderBeenPickedUp(order))
+                completeOrder.postValue(orderRepository.hasOrderBeenPickedUp(order.order))
                 delay(1000)
             }
         }

@@ -27,6 +27,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import dagger.hilt.android.AndroidEntryPoint
 import net.glxn.qrgen.android.QRCode
 import java.nio.charset.Charset
+import androidx.lifecycle.Observer
 
 
 @AndroidEntryPoint
@@ -69,15 +70,24 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
             activity?.onBackPressed();
         }
 
-        viewModel.startRefresh(orderWithItems.order)
-        viewModel.isOrderComplete().addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(obs: Observable?, propertyId: Int) {
-                if(viewModel.isOrderComplete().get()!!) {
-                    container!!.findNavController().navigate(
+        viewModel.startRefresh(orderWithItems)
+//        viewModel.getCompleteOrder().addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+//            override fun onPropertyChanged(obs: Observable?, propertyId: Int) {
+//                if(viewModel.isOrderComplete().get()!!) {
+//                    container!!.findNavController().navigate(
+//                        R.id.action_orderPickupFragment_to_pickupSuccessFragment,
+//                        bundleOf("order" to requireArguments().getString("order"))
+//                    )
+//                }
+//            }
+//        })
+
+        viewModel.getCompleteOrder().observe(viewLifecycleOwner, Observer observe@{ orderWithItem ->
+            if(orderWithItem != null) {
+                container!!.findNavController().navigate(
                         R.id.action_orderPickupFragment_to_pickupSuccessFragment,
-                        bundleOf("order" to requireArguments().getString("order"))
+                        bundleOf("order" to OrderWithItems.serialize(orderWithItem))
                     )
-                }
             }
         })
 

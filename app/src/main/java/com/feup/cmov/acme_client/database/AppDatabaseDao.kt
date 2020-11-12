@@ -52,6 +52,10 @@ interface AppDatabaseDao {
     @Query("SELECT * FROM order_table WHERE userId = :userId ORDER BY updatedAt DESC")
     fun getOrdersWithItems(userId: String): LiveData<List<OrderWithItems>>
 
+    @Transaction
+    @Query("SELECT * FROM order_table WHERE order_id = :order_id ORDER BY updatedAt DESC")
+    fun getOrderWithItem(order_id: String): OrderWithItems
+
     @Insert(onConflict = REPLACE)
     fun createOrders(vouchers: List<Order>): Void
 
