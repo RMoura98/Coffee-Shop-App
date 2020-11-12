@@ -1,5 +1,6 @@
 package com.feup.cmov.acme_terminal.screens.order_details
 
+import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.feup.cmov.acme_terminal.database.models.OrderData
 import com.feup.cmov.acme_terminal.database.models.OrderWithItems
 import com.feup.cmov.acme_terminal.network.responses.PlaceOrderResponse
 import com.feup.cmov.acme_terminal.repositories.OrderRepository
+import com.feup.cmov.acme_terminal.utils.ShowFeedback
 import kotlinx.coroutines.launch
 
 class OrderDetailsViewModel @ViewModelInject constructor(
@@ -21,23 +23,26 @@ class OrderDetailsViewModel @ViewModelInject constructor(
 
 
         viewModelScope.launch {
-            val orderResponse: PlaceOrderResponse = orderRepository.placeOrder(orderData, signature)!!
-            var orderData: Order = Order(
-                orderResponse.order_id,
-                orderResponse.userId,
-                orderResponse.user,
-                orderResponse.order_sequential_id,
-                orderResponse.createdAt,
-                orderResponse.updatedAt,
-                orderResponse.completed,
-                orderResponse.total
-            )
+            try {
+                val orderResponse: PlaceOrderResponse = orderRepository.placeOrder(orderData, signature)!!
+                val orderData = Order(
+                        orderResponse.order_id,
+                        orderResponse.userId,
+                        orderResponse.user,
+                        orderResponse.order_sequential_id,
+                        orderResponse.createdAt,
+                        orderResponse.updatedAt,
+                        orderResponse.completed,
+                        orderResponse.total
+                )
 
-            var orderWithItems = OrderWithItems(orderData,  orderResponse.orderItems, orderResponse.vouchers)
+                val orderWithItems = OrderWithItems(orderData,  orderResponse.orderItems, orderResponse.vouchers)
 
-
-            order.value = orderWithItems
-            order.postValue(orderWithItems)
+                order.value = orderWithItems
+                order.postValue(orderWithItems)
+            } catch (e: Throwable) {
+                ShowFeedback.makeSnackbar("Failed to place order.")
+            }
         }
     }
 }

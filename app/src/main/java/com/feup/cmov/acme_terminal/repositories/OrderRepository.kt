@@ -21,7 +21,6 @@ class OrderRepository
             response
         } catch (e: Throwable) {
             Log.e("OrderRepository", "placeOrder: $e")
-            ShowFeedback.makeSnackbar("Failed to place order.")
             null
         }
 
