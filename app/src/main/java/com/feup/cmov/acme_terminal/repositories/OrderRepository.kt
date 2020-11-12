@@ -7,6 +7,7 @@ import com.feup.cmov.acme_terminal.database.models.OrderWithItems
 import com.feup.cmov.acme_terminal.network.WebService
 import com.feup.cmov.acme_terminal.network.requests.PlaceOrderRequest
 import com.feup.cmov.acme_terminal.network.responses.PlaceOrderResponse
+import com.feup.cmov.acme_terminal.utils.ShowFeedback
 import javax.inject.Inject
 
 class OrderRepository
@@ -14,13 +15,15 @@ class OrderRepository
     private val webService: WebService
 ) {
     suspend fun placeOrder(order: OrderData, signature: String): PlaceOrderResponse? {
-        try {
+        return try {
             val request = PlaceOrderRequest(order.orderItems, order.uuid, order.order_id, order.vouchers)
             val response = webService.placeOrder(request, signature)
-         return response
+            response
         } catch (e: Throwable) {
             Log.e("OrderRepository", "placeOrder: $e")
+            ShowFeedback.makeSnackbar("Failed to place order.")
+            null
         }
-        return null
+
     }
 }

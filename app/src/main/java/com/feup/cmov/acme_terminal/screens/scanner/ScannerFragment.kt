@@ -20,6 +20,7 @@ import com.feup.cmov.acme_terminal.database.models.OrderData
 import com.feup.cmov.acme_terminal.database.models.OrderWithItems
 import com.feup.cmov.acme_terminal.databinding.FragmentScannerBinding
 import com.feup.cmov.acme_terminal.screens.order_details.OrderDetailsViewModel
+import com.feup.cmov.acme_terminal.utils.ShowFeedback
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.zxing.integration.android.IntentIntegrator
@@ -66,6 +67,8 @@ class ScannerFragment : Fragment(), ScannerHandler {
             viewModel.order.observe(viewLifecycleOwner, Observer {
                 requireView().findNavController().navigate(R.id.action_scannerFragment_to_orderDetailsFragment);
             })
+        } else {
+            ShowFeedback.makeSnackbar("Failed to read the QR code. Try again!")
         }
 
     }
