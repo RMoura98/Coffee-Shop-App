@@ -3,4 +3,17 @@
     <string name="serverURL">http://192.168.1.67:3001</string>
     <string name="scan_order">Scan Order</string>
     <string name="welcome">Welcome to the ACME Coffee experience!</string>
+
+    <string name="order_text">Order</string>
+    <string name="vouchers_text">Vouchers</string>
+    <string name="information">Information</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="total_text">Total</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="cart_price">€%.2f</string>
+    <!--Vouchers-->
+    <string name="free_item">Free Item</string>
+    <string name="free_item_coffee">Coffee</string>
+    <string name="discount">Discount</string>
+    <string name="discount_5">5% Off</string>
 </resources>

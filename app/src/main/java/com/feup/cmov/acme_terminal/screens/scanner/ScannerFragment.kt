@@ -3,16 +3,21 @@ package com.feup.cmov.acme_terminal.screens.scanner
 import android.content.Intent
 import android.content.Intent.getIntent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_terminal.AcmeApplication
 import com.feup.cmov.acme_terminal.R
 import com.feup.cmov.acme_terminal.database.models.Order
+import com.feup.cmov.acme_terminal.database.models.OrderData
+import com.feup.cmov.acme_terminal.database.models.OrderWithItems
 import com.feup.cmov.acme_terminal.databinding.FragmentScannerBinding
 import com.feup.cmov.acme_terminal.screens.order_details.OrderDetailsViewModel
 import com.google.gson.Gson
@@ -45,8 +50,8 @@ class ScannerFragment : Fragment(), ScannerHandler {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-
-        if (result != null && result.contents != null) {
+        Log.e("result", result.toString())
+        if (result != null && result.contents != null && result.formatName == "QR_CODE") {
             println(result.contents)
 
             val splitContents = result.contents.split(",", limit = 2);
@@ -54,12 +59,15 @@ class ScannerFragment : Fragment(), ScannerHandler {
             val orderJson = splitContents[1]
 
             val gson = Gson()
-            val order: Order = gson.fromJson(orderJson, Order::class.java)
+            val order: OrderData = gson.fromJson(orderJson, OrderData::class.java)
 
             viewModel.placeOrder(order, signature)
 
-            requireView().findNavController().navigate(R.id.action_scannerFragment_to_orderDetailsFragment);
+            viewModel.order.observe(viewLifecycleOwner, Observer {
+                requireView().findNavController().navigate(R.id.action_scannerFragment_to_orderDetailsFragment);
+            })
         }
+
     }
 
     override fun onScanOrderButtonClick(v: View) {
