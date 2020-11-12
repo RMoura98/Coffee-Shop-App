@@ -7,20 +7,13 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.Voucher
 import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
-import com.feup.cmov.acme_client.databinding.FragmentOrderPlacedBinding
 import com.feup.cmov.acme_client.databinding.FragmentPickupSuccessBinding
-import com.feup.cmov.acme_client.screens.checkout.CartViewModel
-import com.feup.cmov.acme_client.screens.checkout.order_placed.OrderPlacedHandler
-import com.feup.cmov.acme_client.screens.main_menu.MainMenuFragment
-import com.feup.cmov.acme_client.screens.main_menu.MainMenuViewModel
-import com.feup.cmov.acme_client.screens.orders.OrdersHistoryFragment
-import com.feup.cmov.acme_client.screens.settings.vouchers.VoucherAdapter
-import com.feup.cmov.acme_client.utils.PreferencesUtils
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -43,10 +36,15 @@ class PickupSuccessFragment : Fragment() {
         )
 
         val orderWithItems = OrderWithItems.deserialize(requireArguments().getString("order")!!)
+        val voucherListType = object : TypeToken<List<Voucher>>() {}.type
+        val earnedVouchers = Gson().fromJson<List<Voucher>>(requireArguments().getString("earnedVouchers"), voucherListType)
 
         val vouchers = ArrayList<Voucher>()
-//        vouchers.add(Voucher( "123", orderWithItems.order.order_id, "free_coffee", orderWithItems.order.order_id))
-//        vouchers.add(Voucher( "124", orderWithItems.order.order_id, "discount", orderWithItems.order.order_id))
+
+        for(earnedVoucher: Voucher in earnedVouchers){
+            vouchers.add(earnedVoucher)
+            println(vouchers)
+        }
 
         if(vouchers.isEmpty()) {
             binding.caption.text = "Enjoy your coffee while it's hot!"
@@ -66,13 +64,19 @@ class PickupSuccessFragment : Fragment() {
         GlobalScope.launch {
             val animationTime = 3700 // milliseconds
             for (i in 1..100) {
-                delay( (animationTime / 100).toLong() )
+                delay((animationTime / 100).toLong())
                 progressBar.progress = i
             }
 
             delay(150)
             container!!.findNavController()
-                .navigate(R.id.action_pickupSuccessFragment_to_viewOrderFragment, bundleOf("order" to requireArguments().getString("order")))
+                .navigate(
+                    R.id.action_pickupSuccessFragment_to_viewOrderFragment, bundleOf(
+                        "order" to requireArguments().getString(
+                            "order"
+                        )
+                    )
+                )
 
         }
 

@@ -114,16 +114,16 @@ class OrderRepository
         }
     }
 
-    suspend fun hasOrderBeenPickedUp(order: Order): OrderWithItems? {
+    suspend fun hasOrderBeenPickedUp(order: Order): Pair<OrderWithItems, List<Voucher>>? {
         return withContext(Dispatchers.IO) {
             try {
                 val orderStatus = webService.getOrderStatus(order.order_id)
                 appDatabaseDao.createVouchers(orderStatus.vouchers_received)
                 val updatedOrder = Order(order_id = order.order_id, userId = order.userId, order_sequential_id = orderStatus.order_sequential_id, createdAt = order.createdAt, updatedAt = order.updatedAt, completed = true, total = order.total)
                 appDatabaseDao.updateOrder(updatedOrder)
-                appDatabaseDao.getOrderWithItem(order.order_id)
-            }
-            catch (e: HttpException) {
+                var orderWithItems = appDatabaseDao.getOrderWithItem(order.order_id)
+                Pair(orderWithItems, orderStatus.vouchers_received)
+            } catch (e: HttpException) {
                 if(e.code() != 404)
                     ShowFeedback.makeSnackbar("Failed to refresh order.")
                 null
