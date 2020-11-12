@@ -35,7 +35,6 @@ import com.google.gson.Gson
 @AndroidEntryPoint
 class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, NfcAdapter.OnNdefPushCompleteCallback {
 
-    private var hasNavigated: Boolean = false
     private val nfcAdapter: NfcAdapter? = NfcAdapter.getDefaultAdapter(MainActivity.getActivity())
     lateinit var binding: FragmentOrderPickupBinding
     private val viewModel: OrderPickupViewModel by viewModels()
@@ -78,7 +77,7 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
                 return@observe
 
             if(orderWithItem != null) {
-                var earnedVouchersJson = Gson().toJson(viewModel.getEarnedVouchers())
+                val earnedVouchersJson = Gson().toJson(viewModel.getEarnedVouchers())
                 container!!.findNavController().navigate(
                     R.id.action_orderPickupFragment_to_pickupSuccessFragment,
                     bundleOf(
