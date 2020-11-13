@@ -23,20 +23,29 @@ async function getUser({ uuid }) {
 }
 
 async function updateUser(uuid, newData) {
-  const user = await User.findByPk(uuid);
+  try {
+    const user = await User.findByPk(uuid);
 
-  if (user == null) throw new HostNotFoundError('No User found');
+    if (user == null) throw new HostNotFoundError('No User found');
 
-  user.name = newData.name;
-  user.NIF = newData.NIF;
-  user.card_number = newData.card_number;
-  user.card_cvc = newData.card_cvc;
-  user.card_expiration = newData.card_expiration;
-  user.phone_number = newData.phone_number;
+    user.name = newData.name ? newData.name : user.name;
+    user.NIF = newData.NIF ? newData.NIF : user.NIF;
+    user.card_number = newData.card_number ? newData.card_number : user.card_number;
+    user.card_cvc = newData.card_cvc ? newData.card_cvc : user.card_cvc;
+    user.card_expiration = newData.card_expiration ? newData.card_expiration : user.card_expiration;
+    user.phone_number = newData.phone_number ? newData.phone_number : user.phone_number;
 
-  await user.save();
+    await user.save();
 
-  return user;
+    return user.dataValues;
+  } catch (err) {
+    if (err instanceof Sequelize.UniqueConstraintError) {
+      for (const field in err.fields) {
+        if (Object.prototype.hasOwnProperty.call(err.fields, field)) throw new UniqueFieldError(`${field} is already taken.`);
+      }
+    }
+    throw err;
+  }
 }
 
 /**
