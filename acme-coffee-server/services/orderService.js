@@ -135,9 +135,12 @@ async function allOrders() {
     let earnedVouchers = await voucherService.getVouchersReceivedFromOrder(order.order_id);
     earnedVouchers = earnedVouchers.map((voucher) => voucher.dataValues);
 
+    const user = await userService.getUser({ uuid: order.userId });
+
     return {
       ...order.dataValues,
       orderItems: itemsWithInfo,
+      user: user.name,
       vouchers,
       earnedVouchers,
     };
