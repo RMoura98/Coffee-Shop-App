@@ -4,4 +4,5 @@ import android.view.View
 
 interface ScannerHandler {
     fun onScanOrderButtonClick(v: View)
+    fun onPreviousOrdersButtonClick(v: View)
 }

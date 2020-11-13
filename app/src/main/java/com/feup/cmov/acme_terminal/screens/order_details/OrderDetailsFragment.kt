@@ -21,7 +21,6 @@ import kotlin.math.max
 @AndroidEntryPoint
 class OrderDetailsFragment: Fragment(), OrderDetailsHandler {
 
-    private val viewModel: OrderDetailsViewModel by activityViewModels()
     lateinit var binding: FragmentOrderDetailsBinding
     private lateinit var orderWithItems: OrderWithItems
     private var cartItemAdapter: CartItemAdapter = CartItemAdapter()
@@ -34,11 +33,7 @@ class OrderDetailsFragment: Fragment(), OrderDetailsHandler {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_details, container, false)
 
-//        viewModel.order.observe(viewLifecycleOwner, Observer {
-//            println("Order: $it")
-//        })
-
-        orderWithItems = viewModel.order.value!!
+        orderWithItems = OrderWithItems.deserialize(requireArguments().getString("order")!!)
 
         val toolbar = binding.topAppBar
 

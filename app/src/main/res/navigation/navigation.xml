@@ -13,9 +13,21 @@
         <action
             android:id="@+id/action_scannerFragment_to_orderDetailsFragment"
             app:destination="@id/orderDetailsFragment" />
+        <action
+            android:id="@+id/action_scannerFragment_to_orderHistoryFragment"
+            app:destination="@id/orderHistoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderDetailsFragment"
         android:name="com.feup.cmov.acme_terminal.screens.order_details.OrderDetailsFragment"
         android:label="OrderDetailsFragment" />
+    <fragment
+        android:id="@+id/orderHistoryFragment"
+        android:name="com.feup.cmov.acme_terminal.screens.order_history.OrdersHistoryFragment"
+        android:label="fragment_orders_history"
+        tools:layout="@layout/fragment_orders_history" >
+        <action
+            android:id="@+id/action_orderHistoryFragment_to_orderDetailsFragment"
+            app:destination="@id/orderDetailsFragment" />
+    </fragment>
 </navigation>

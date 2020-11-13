@@ -7,7 +7,6 @@ import com.feup.cmov.acme_terminal.database.models.OrderWithItems
 import com.feup.cmov.acme_terminal.network.WebService
 import com.feup.cmov.acme_terminal.network.requests.PlaceOrderRequest
 import com.feup.cmov.acme_terminal.network.responses.PlaceOrderResponse
-import com.feup.cmov.acme_terminal.utils.ShowFeedback
 import javax.inject.Inject
 
 class OrderRepository
@@ -25,4 +24,21 @@ class OrderRepository
         }
 
     }
+
+    suspend fun getAllOrders(): List<OrderWithItems>? {
+        return try {
+            val response = webService.getAllOrders()
+
+            var orderWithItems = response.map {
+                OrderWithItems(Order(order_id=it.order_id, userId=it.userId, user=it.user, order_sequential_id=it.order_sequential_id,
+                    createdAt=it.createdAt, updatedAt=it.updatedAt, completed=it.completed, total=it.total), it.orderItems, it.vouchers)
+            }
+            orderWithItems
+        } catch (e: Throwable) {
+            Log.e("OrderRepository", "getAllOrders: $e")
+            null
+        }
+
+    }
+
 }

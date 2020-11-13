@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -68,7 +69,12 @@ class ScannerFragment : Fragment(), ScannerHandler {
             viewModel.order.observe(viewLifecycleOwner, Observer observe@{
                 if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED)
                     return@observe
-                requireView().findNavController().navigate(R.id.action_scannerFragment_to_orderDetailsFragment);
+
+                requireView().findNavController()
+                    .navigate(
+                        R.id.action_scannerFragment_to_orderDetailsFragment,
+                        bundleOf("order" to OrderWithItems.serialize(it))
+                    )
             })
         } else {
             ShowFeedback.makeSnackbar("Failed to read the QR code. Try again!")
@@ -78,5 +84,12 @@ class ScannerFragment : Fragment(), ScannerHandler {
 
     override fun onScanOrderButtonClick(v: View) {
         integrator.initiateScan()
+    }
+
+    override fun onPreviousOrdersButtonClick(v: View) {
+        v.findNavController().
+            navigate(
+                    R.id.action_scannerFragment_to_orderHistoryFragment
+            )
     }
 }
