@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.*
 import androidx.navigation.findNavController
 import com.feup.cmov.acme_client.MainActivity
 import com.feup.cmov.acme_client.R
@@ -27,7 +28,8 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import dagger.hilt.android.AndroidEntryPoint
 import net.glxn.qrgen.android.QRCode
 import java.nio.charset.Charset
-import androidx.lifecycle.Observer
+import com.feup.cmov.acme_client.database.models.Voucher
+import com.google.gson.Gson
 
 
 @AndroidEntryPoint
@@ -70,16 +72,23 @@ class OrderPickupFragment : Fragment(), NfcAdapter.CreateNdefMessageCallback, Nf
             activity?.onBackPressed();
         }
 
-        viewModel.startRefresh(orderWithItems)
-
         viewModel.getCompleteOrder().observe(viewLifecycleOwner, Observer observe@{ orderWithItem ->
+            if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED)
+                return@observe
+
             if(orderWithItem != null) {
+                val earnedVouchersJson = Gson().toJson(viewModel.getEarnedVouchers())
                 container!!.findNavController().navigate(
-                        R.id.action_orderPickupFragment_to_pickupSuccessFragment,
-                        bundleOf("order" to OrderWithItems.serialize(orderWithItem))
+                    R.id.action_orderPickupFragment_to_pickupSuccessFragment,
+                    bundleOf(
+                        "order" to OrderWithItems.serialize(orderWithItem),
+                        "earnedVouchers" to earnedVouchersJson
                     )
+                )
             }
         })
+
+        viewModel.startRefresh(orderWithItems)
 
         if(nfcAdapter == null || !nfcAdapter.isEnabled) {
             // NFC Not supported

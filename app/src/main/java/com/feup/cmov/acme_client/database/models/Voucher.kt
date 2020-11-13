@@ -3,6 +3,8 @@ package com.feup.cmov.acme_client.database.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
+import com.google.gson.Gson
 
 @Entity(
     tableName = "voucher_table"
@@ -25,5 +27,15 @@ data class Voucher(
 ) {
     fun hasBeenUsed(): Boolean {
         return used_on_order_id != null
+    }
+
+    companion object {
+        fun serialize(voucher: Voucher): String {
+            return Gson().toJson(voucher)
+        }
+
+        fun deserialize(voucher: String): Voucher {
+            return Gson().fromJson(voucher, Voucher::class.java)
+        }
     }
 }

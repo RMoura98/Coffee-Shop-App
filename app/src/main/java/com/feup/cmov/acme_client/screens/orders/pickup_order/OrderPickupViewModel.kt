@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.feup.cmov.acme_client.database.models.Order
 import com.feup.cmov.acme_client.database.models.User
+import com.feup.cmov.acme_client.database.models.Voucher
 import com.feup.cmov.acme_client.database.models.composed_models.OrderWithItems
 import com.feup.cmov.acme_client.repositories.OrderRepository
 import com.feup.cmov.acme_client.repositories.UserRepository
@@ -21,13 +22,21 @@ class OrderPickupViewModel @ViewModelInject constructor(
     private val orderRepository: OrderRepository
 ) : ViewModel() {
 
-    private val completeOrder = MutableLiveData<OrderWithItems>(null)
+    private val completeOrder = MutableLiveData<OrderWithItems>()
+    private var earnedVouchers: List<Voucher> = listOf()
+
     fun getCompleteOrder() = completeOrder
+    fun getEarnedVouchers() = earnedVouchers
 
     fun startRefresh(order: OrderWithItems) {
         viewModelScope.launch {
             while(true) {
-                completeOrder.postValue(orderRepository.hasOrderBeenPickedUp(order.order))
+                val response = orderRepository.hasOrderBeenPickedUp(order)
+                if(response?.first != null) {
+                    earnedVouchers = response.second
+                    completeOrder.postValue(response.first)
+                    break
+                }
                 delay(1000)
             }
         }
