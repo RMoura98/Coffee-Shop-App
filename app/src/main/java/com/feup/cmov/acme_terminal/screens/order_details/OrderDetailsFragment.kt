@@ -110,15 +110,14 @@ class OrderDetailsFragment: Fragment(), OrderDetailsHandler {
         }
     }
 
-    private fun inflateOrderSummary(subTotal: Float, totalPrice: Float) {
+    private fun inflateOrderSummary(subTotalPrice: Float, totalPrice: Float) {
         val priceStringFormat: String =
                 AcmeApplication.getAppContext().getString(R.string.cart_price)
-        var total = floor(totalPrice * 100) / 100
-        val savings = subTotal - total
+        val savings = subTotalPrice - totalPrice
 
-        binding.subtotalPrice.text = priceStringFormat.format(subTotal)
+        binding.subtotalPrice.text = priceStringFormat.format(subTotalPrice)
         binding.voucherPrice.text = priceStringFormat.format(savings)
-        binding.totalPrice.text = priceStringFormat.format(total)
+        binding.totalPrice.text = priceStringFormat.format(totalPrice)
     }
 
     private fun getData(): Triple<Float ,MutableMap<Long, CartItemAdapter.CartItem>,  ArrayList<VoucherUsedAdapter.VoucherWithSavings>> {

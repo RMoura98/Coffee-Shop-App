@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -64,7 +65,9 @@ class ScannerFragment : Fragment(), ScannerHandler {
 
             viewModel.placeOrder(order, signature)
 
-            viewModel.order.observe(viewLifecycleOwner, Observer {
+            viewModel.order.observe(viewLifecycleOwner, Observer observe@{
+                if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED)
+                    return@observe
                 requireView().findNavController().navigate(R.id.action_scannerFragment_to_orderDetailsFragment);
             })
         } else {
