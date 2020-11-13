@@ -15,6 +15,8 @@ import androidx.lifecycle.Observer
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.databinding.FragmentPaymentMethodBinding
 import com.feup.cmov.acme_client.databinding.FragmentProfileBinding
+import com.feup.cmov.acme_client.screens.signup.SignupViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -40,10 +42,38 @@ class PaymentMethodFragment : Fragment(), PaymentMethodHandler {
         binding.handler = this
 
         viewModel.getUser().observe(viewLifecycleOwner, Observer {
-            // Format fields
-            //viewModel.updateFormatFields()
-            // Force bindings to update
             binding.invalidateAll()
+        })
+
+        viewModel.getUpdateUserResult().observe(viewLifecycleOwner, Observer observe@ {
+            clearErrors()
+
+            if (it is PaymentMethodViewModel.Companion.UpdateUserResult.INVALID_FORM) {
+                for(invalidField in it.invalidFields) {
+                    when(invalidField.fieldName) {
+                        "NIF" -> binding.profileFragmentNif.error = invalidField.msg
+                        "card_number" -> binding.profileFragmentCardNumber.error = invalidField.msg
+                        "card_cvc" -> binding.profileFragmentCardCVC.error = invalidField.msg
+                        "card_expiration" -> binding.profileFragmentCardExpiration.error = invalidField.msg
+                        "general" -> Snackbar.make(
+                            container!!,
+                            invalidField.msg,
+                            Snackbar.LENGTH_LONG
+                        ).show();
+                    }
+                }
+                return@observe
+            }
+
+            if (it is PaymentMethodViewModel.Companion.UpdateUserResult.NETWORK_ERROR) {
+                Snackbar.make(container!!, "No internet connection.", Snackbar.LENGTH_LONG).show();
+                return@observe
+            }
+
+            if (it is PaymentMethodViewModel.Companion.UpdateUserResult.SUCCESS) {
+                Snackbar.make(container!!, "Your changes have been saved.", Snackbar.LENGTH_LONG).show()
+                return@observe
+            }
         })
 
         val toolbar = binding.topAppBar
@@ -98,5 +128,12 @@ class PaymentMethodFragment : Fragment(), PaymentMethodHandler {
                 s.insert(s.length - 1, "/")
             }
         }
+    }
+
+    private fun clearErrors() {
+        binding.profileFragmentNif.error = null
+        binding.profileFragmentCardNumber.error = null
+        binding.profileFragmentCardCVC.error = null
+        binding.profileFragmentCardExpiration.error = null
     }
 }

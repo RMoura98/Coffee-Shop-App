@@ -13,6 +13,7 @@ import com.feup.cmov.acme_client.network.responses.SignupResponse
 import javax.inject.Inject
 import com.feup.cmov.acme_client.network.Result
 import com.feup.cmov.acme_client.network.requests.UpdateUserRequest
+import com.feup.cmov.acme_client.network.responses.UpdateUserResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -118,18 +119,21 @@ class UserRepository
             return appDatabaseDao.loadUserAsync(userName)
     }
 
-    fun updateUser(user: User) {
-        GlobalScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    appDatabaseDao.updateUser(user)
+    suspend fun updateUser(user: User): Result<Nothing?> {
+        return withContext(Dispatchers.IO) {
+            try {
+                appDatabaseDao.updateUser(user)
 
-                    val req = UpdateUserRequest(
-                        user.name, user.phone_number, user.NIF, user.card_number, user.card_expiration, user.card_cvc
-                    )
-                    webService.updateUser(user.uuid, req)
-                } catch (e: Throwable) {
-                    Log.e("UserRepository", "updateUser: $e")
+                val req = UpdateUserRequest(
+                    user.name, user.phone_number, user.NIF, user.card_number, user.card_expiration, user.card_cvc
+                )
+
+                webService.updateUser(user.uuid, req)
+                Result.Success(null)
+            } catch (e: Throwable) {
+                when (e) {
+                    is IOException -> Result.NetworkError
+                    else -> Result.OtherError(e)
                 }
             }
         }
