@@ -16,6 +16,7 @@ import com.feup.cmov.acme_terminal.databinding.FragmentOrderDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.ceil
 import kotlin.math.floor
+import kotlin.math.max
 
 @AndroidEntryPoint
 class OrderDetailsFragment: Fragment(), OrderDetailsHandler {
@@ -113,7 +114,7 @@ class OrderDetailsFragment: Fragment(), OrderDetailsHandler {
     private fun inflateOrderSummary(subTotalPrice: Float, totalPrice: Float) {
         val priceStringFormat: String =
                 AcmeApplication.getAppContext().getString(R.string.cart_price)
-        val savings = subTotalPrice - totalPrice
+        val savings = max(0f,subTotalPrice - totalPrice)
 
         binding.subtotalPrice.text = priceStringFormat.format(subTotalPrice)
         binding.voucherPrice.text = priceStringFormat.format(savings)
