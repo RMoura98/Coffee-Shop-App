@@ -20,19 +20,10 @@ class PaymentMethodViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     private var user = userRepository.getLoggedInUser()
-
     fun getUser(): LiveData<User> = user
 
     private var updateUserResult = MutableLiveData<UpdateUserResult>()
-
     fun getUpdateUserResult(): LiveData<UpdateUserResult> = updateUserResult
-
-    fun updateFormatFields() {
-        // Credit card
-        val cardNumber = user.value!!.card_number
-        val creditCardParts = arrayOf(cardNumber.subSequence(0, 4), cardNumber.subSequence(4, 8), cardNumber.subSequence(8, 12), cardNumber.subSequence(12, 16))
-        user.value!!.card_number = TextUtils.join(" ", creditCardParts)
-    }
 
     fun saveChanges() {
         val invalidFields = ArrayList<InvalidField>()
@@ -43,6 +34,7 @@ class PaymentMethodViewModel @ViewModelInject constructor(
             updateUserResult.postValue(UpdateUserResult.INVALID_FORM(invalidFields))
             return
         }
+
         viewModelScope.launch {
             val result: Result<Nothing?> = userRepository.updateUser(user.value!!)
 

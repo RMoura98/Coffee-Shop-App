@@ -16,6 +16,8 @@ import androidx.lifecycle.Observer
 import com.feup.cmov.acme_client.R
 import com.feup.cmov.acme_client.database.models.User
 import com.feup.cmov.acme_client.databinding.FragmentProfileBinding
+import com.feup.cmov.acme_client.screens.settings.payment_method.PaymentMethodViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -45,6 +47,35 @@ class ProfileFragment : Fragment(), ProfileHandler {
             binding.invalidateAll()
         })
 
+        viewModel.getUpdateUserResult().observe(viewLifecycleOwner, Observer observe@ {
+            clearErrors()
+
+            if (it is ProfileViewModel.Companion.UpdateUserResult.INVALID_FORM) {
+                for(invalidField in it.invalidFields) {
+                    when(invalidField.fieldName) {
+                        "name" -> binding.profileFragmentName.error = invalidField.msg
+                        "phone_number" -> binding.profileFragmentPhoneNumber.error = invalidField.msg
+                        "general" -> Snackbar.make(
+                            container!!,
+                            invalidField.msg,
+                            Snackbar.LENGTH_LONG
+                        ).show();
+                    }
+                }
+                return@observe
+            }
+
+            if (it is ProfileViewModel.Companion.UpdateUserResult.NETWORK_ERROR) {
+                Snackbar.make(container!!, "No internet connection.", Snackbar.LENGTH_LONG).show();
+                return@observe
+            }
+
+            if (it is ProfileViewModel.Companion.UpdateUserResult.SUCCESS) {
+                Snackbar.make(container!!, "Your changes have been saved.", Snackbar.LENGTH_LONG).show()
+                return@observe
+            }
+        })
+
         val toolbar = binding.topAppBar
 
         toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
@@ -57,5 +88,10 @@ class ProfileFragment : Fragment(), ProfileHandler {
 
     override fun onSaveButtonClick(v: View) {
         viewModel.saveChanges()
+    }
+
+    private fun clearErrors() {
+        binding.profileFragmentName.error = null
+        binding.profileFragmentPhoneNumber.error = null
     }
 }
