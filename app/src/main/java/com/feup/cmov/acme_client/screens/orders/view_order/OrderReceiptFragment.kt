@@ -17,6 +17,7 @@ import com.feup.cmov.acme_client.screens.checkout.cart.VoucherUsedAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.ceil
 import kotlin.math.floor
+import kotlin.math.max
 
 @AndroidEntryPoint
 class OrderReceiptFragment : Fragment() {
@@ -115,7 +116,7 @@ class OrderReceiptFragment : Fragment() {
     private fun inflateOrderSummary(subTotalPrice: Float, totalPrice: Float) {
         val priceStringFormat: String =
             AcmeApplication.getAppContext().getString(R.string.cart_price)
-        val savings = subTotalPrice - totalPrice
+        val savings =  max(0f,subTotalPrice - totalPrice)
 
         binding.subtotalPrice.text = priceStringFormat.format(subTotalPrice)
         binding.voucherPrice.text = priceStringFormat.format(savings)
