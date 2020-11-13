@@ -116,9 +116,40 @@ async function createOrder(orderId, userId, orderItems, orderItemsQuantities, vo
   return orderWithItems;
 }
 
+async function allOrders() {
+  const orders = await Order.findAll();
+
+  const completeOrders = await Promise.all(orders.map(async (order) => {
+    let completeOrderItems = await order.getOrderItems();
+    completeOrderItems = completeOrderItems.map((orderItem) => orderItem.dataValues);
+
+    const itemsWithInfo = [];
+
+    for (const orderItem of completeOrderItems) {
+      const menuItem = await menuService.getMenuItemById(orderItem.item_id);
+      itemsWithInfo.push({ orderItem, menuItem: menuItem.dataValues });
+    }
+
+    let vouchers = await voucherService.getVouchersUsedOnOrder(order.order_id);
+    vouchers = vouchers.map((voucher) => voucher.dataValues);
+    let earnedVouchers = await voucherService.getVouchersReceivedFromOrder(order.order_id);
+    earnedVouchers = earnedVouchers.map((voucher) => voucher.dataValues);
+
+    return {
+      ...order.dataValues,
+      orderItems: itemsWithInfo,
+      vouchers,
+      earnedVouchers,
+    };
+  }));
+
+  return completeOrders;
+}
+
 module.exports = {
   getOrders,
   getOrderItems,
   getOrder,
   createOrder,
+  allOrders,
 };

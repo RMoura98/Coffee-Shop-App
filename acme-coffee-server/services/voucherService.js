@@ -51,6 +51,18 @@ async function getVouchersReceivedFromOrder(order_id) {
   return vouchers;
 }
 
+async function getVouchersUsedOnOrder(order_id) {
+  const vouchers = await Voucher.findAll({
+    where: {
+      [Op.and]: [
+        { used_on_order_id: order_id },
+      ],
+    },
+  });
+
+  return vouchers;
+}
+
 /**
  * Marks a voucher as used on the given order
  * @param {String} voucherId the voucher's ID
@@ -117,6 +129,7 @@ module.exports = {
   getVouchers,
   getUnusedVouchersByIDs,
   getVouchersReceivedFromOrder,
+  getVouchersUsedOnOrder,
   useVoucher,
   emitVouchers,
 };
