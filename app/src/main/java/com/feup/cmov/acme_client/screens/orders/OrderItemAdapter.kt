@@ -34,8 +34,8 @@ class OrderItemAdapter(private val ordersHistoryHandler: OrdersHistoryHandler) :
     var data = listOf<OrderWithItems>()
         set(value) {
             field = value
-            completed_orders = data.filter { item -> item.order.completed }
-            ongoing_orders = data.filter { item -> !item.order.completed }
+            completed_orders = data.filter { item -> item.order.completed }.sortedByDescending { it.order.order_sequential_id }
+            ongoing_orders = data.filter { item -> !item.order.completed }.sortedByDescending { it.order.createdAt }
             notifyDataSetChanged()
         }
 
