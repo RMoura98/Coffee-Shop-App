@@ -15,12 +15,17 @@
             app:destination="@id/orderDetailsFragment" />
         <action
             android:id="@+id/action_scannerFragment_to_orderHistoryFragment"
-            app:destination="@id/orderHistoryFragment" />
+            app:destination="@id/orderHistoryFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/orderDetailsFragment"
         android:name="com.feup.cmov.acme_terminal.screens.order_details.OrderDetailsFragment"
-        android:label="OrderDetailsFragment" />
+        android:label="OrderDetailsFragment" >
+        <action
+            android:id="@+id/action_orderDetailsFragment_to_orderHistoryFragment"
+            app:destination="@id/orderHistoryFragment" />
+    </fragment>
     <fragment
         android:id="@+id/orderHistoryFragment"
         android:name="com.feup.cmov.acme_terminal.screens.order_history.OrdersHistoryFragment"
@@ -29,5 +34,10 @@
         <action
             android:id="@+id/action_orderHistoryFragment_to_orderDetailsFragment"
             app:destination="@id/orderDetailsFragment" />
+        <action
+            android:id="@+id/action_orderHistoryFragment_to_scannerFragment"
+            app:destination="@id/scannerFragment"
+            app:popUpTo="@id/scannerFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

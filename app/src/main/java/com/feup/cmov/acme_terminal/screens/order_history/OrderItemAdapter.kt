@@ -13,46 +13,32 @@ import com.feup.cmov.acme_terminal.database.models.OrderWithItems
 
 class OrderItemAdapter(private val ordersHistoryHandler: OrdersHistoryHandler) : RecyclerView.Adapter<OrderItemAdapter.ViewHolder>() {
 
-    enum class SHOWING {
-        COMPLETED_ORDERS, ONGOING_ORDERS
-    }
-
-    var showing = SHOWING.COMPLETED_ORDERS
-        set(value) {
-            if(field != value)
-                notifyDataSetChanged()
-            field = value
-        }
-
-    var completed_orders = listOf<OrderWithItems>()
-    var ongoing_orders = listOf<OrderWithItems>()
+    private var isFirstTimeShowing: Boolean = true
 
     var data = listOf<OrderWithItems>()
         set(value) {
-            field = value
-            completed_orders = data.filter { item -> item.order.completed }.sortedByDescending { it.order.order_sequential_id }
-            ongoing_orders = data.filter { item -> !item.order.completed }.sortedByDescending { it.order.createdAt }
-            notifyDataSetChanged()
+            var sortedValue = value.sortedByDescending { it.order.order_sequential_id }
+            if(field != sortedValue)
+                notifyDataSetChanged()
+            field = sortedValue
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderItemAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
     override fun getItemCount(): Int {
-        if(showing == SHOWING.COMPLETED_ORDERS)
-            return completed_orders.size
-        else
-            return ongoing_orders.size
+        return data.size
+    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item: OrderWithItems = data[position]
+
+        holder.bind(item, ordersHistoryHandler, shouldShowAnimation(position))
+        if (isFirstTimeShowing) isFirstTimeShowing = false
     }
 
-    override fun onBindViewHolder(holder: OrderItemAdapter.ViewHolder, position: Int) {
-        val item: OrderWithItems
-        if(showing == SHOWING.COMPLETED_ORDERS)
-            item = completed_orders[position]
-        else
-            item = ongoing_orders[position]
-        holder.bind(item, ordersHistoryHandler)
+    private fun shouldShowAnimation(position: Int): Boolean {
+        return position == 0 && ordersHistoryHandler.wasAnOrderAdded() && isFirstTimeShowing
     }
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -62,29 +48,27 @@ class OrderItemAdapter(private val ordersHistoryHandler: OrdersHistoryHandler) :
         private val orderItemDescription: TextView = itemView.findViewById(R.id.order_info)
         private val orderCompletedIcon: ImageView = itemView.findViewById(R.id.orderCompletedIcon)
 
-        fun bind(item: OrderWithItems, ordersHistoryHandler: OrdersHistoryHandler) {
-            if(item.order.completed) {
-                mainText.text = "Order #${item.order.order_sequential_id}"
-                orderDateText.text = item.order.formatCompletedDate()
-            }
-            else {
-                mainText.text = "Order Pending"
-                orderDateText.text = item.order.formatCreationDate()
-            }
+        fun bind(item: OrderWithItems, ordersHistoryHandler: OrdersHistoryHandler, showAnimation: Boolean) {
+            mainText.text = "Order #${item.order.order_sequential_id}"
+            orderDateText.text = item.order.formatCompletedDate()
 
             val numberOfItems = item.getNumberOfItemsBought()
             val totalPrice = item.order.total
             orderItemDescription.text = "${numberOfItems} ${if(numberOfItems == 1L) "item" else "items"} | ${String.format("%.2f", totalPrice)} €"
 
-            if(item.order.completed) {
-                orderCompletedIcon.setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
-                orderCompletedIcon.setColorFilter(ContextCompat.getColor(AcmeApplication.getAppContext(), R.color.green_800), android.graphics.PorterDuff.Mode.SRC_IN);
-            } else {
-                orderCompletedIcon.setImageResource(R.drawable.ic_outline_play_circle_outline_24)
-                orderCompletedIcon.setColorFilter(ContextCompat.getColor(AcmeApplication.getAppContext(), R.color.orange_800), android.graphics.PorterDuff.Mode.SRC_IN);
-            }
+            orderCompletedIcon.setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
+            orderCompletedIcon.setColorFilter(ContextCompat.getColor(AcmeApplication.getAppContext(), R.color.green_800), android.graphics.PorterDuff.Mode.SRC_IN)
+
             container.setOnClickListener {
                 ordersHistoryHandler.viewOrder(itemView, item)
+            }
+
+            if (showAnimation) {
+                itemView.translationY = -250f
+                with(itemView.animate()){
+                    translationY(0f)
+                    setDuration(250)
+                }
             }
         }
         companion object {

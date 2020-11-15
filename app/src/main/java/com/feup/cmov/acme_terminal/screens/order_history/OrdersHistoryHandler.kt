@@ -5,4 +5,5 @@ import com.feup.cmov.acme_terminal.database.models.OrderWithItems
 
 interface OrdersHistoryHandler {
     fun viewOrder(v: View, order: OrderWithItems)
+    fun wasAnOrderAdded(): Boolean
 }

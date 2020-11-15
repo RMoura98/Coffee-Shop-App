@@ -5,10 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import com.feup.cmov.acme_terminal.AcmeApplication
 import com.feup.cmov.acme_terminal.R
 import com.feup.cmov.acme_terminal.database.models.OrderWithItems
@@ -37,10 +40,21 @@ class OrderDetailsFragment: Fragment(), OrderDetailsHandler {
 
         val toolbar = binding.topAppBar
 
-        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
-        toolbar.setNavigationOnClickListener {
-            activity?.onBackPressed();
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if(arguments?.getString("changeBackButton") == null) {
+                isEnabled = false
+                activity?.onBackPressed()
+            } else
+                container!!.findNavController()
+                    .navigate(
+                        R.id.action_orderDetailsFragment_to_orderHistoryFragment,
+                        bundleOf("changeBackButton" to "true")
+                    )
         }
+
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+        toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
 
         binding.cartItemList.adapter = cartItemAdapter
         binding.cartVoucherList.adapter = voucherUsedAdapter

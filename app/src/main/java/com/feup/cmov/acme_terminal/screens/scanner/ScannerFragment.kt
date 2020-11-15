@@ -73,7 +73,10 @@ class ScannerFragment : Fragment(), ScannerHandler {
                 requireView().findNavController()
                     .navigate(
                         R.id.action_scannerFragment_to_orderDetailsFragment,
-                        bundleOf("order" to OrderWithItems.serialize(it))
+                        bundleOf(
+                            "order" to OrderWithItems.serialize(it),
+                            "changeBackButton" to "true"
+                        )
                     )
             })
         } else {
