@@ -9,7 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.feup.cmov.acme_terminal.database.models.OrderWithItems
 import com.feup.cmov.acme_terminal.network.responses.PlaceOrderResponse
 import com.feup.cmov.acme_terminal.repositories.OrderRepository
+import com.feup.cmov.acme_terminal.utils.ShowFeedback
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class OrdersHistoryViewModel @ViewModelInject constructor(
     private val orderRepository: OrderRepository
@@ -20,8 +22,13 @@ class OrdersHistoryViewModel @ViewModelInject constructor(
 
     fun getAllOrders() {
         viewModelScope.launch {
-            val allOrdersRetrieved = orderRepository.getAllOrders()
-            allOrders.postValue(allOrdersRetrieved)
+            try {
+                val allOrdersRetrieved = orderRepository.getAllOrders() ?: throw Exception("No orders retrieved.")
+                if (allOrders.value != allOrdersRetrieved)
+                    allOrders.postValue(allOrdersRetrieved)
+            } catch (e: Throwable) {
+                ShowFeedback.makeSnackbar("Failed to fetch orders.")
+            }
         }
     }
 }
