@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./index.js",
+    "start": "node ./index.js",
     "reset": "node ./utils/resetDb.js",
     "seed": "npx sequelize-cli db:seed:all",
-    "lint": "eslint --fix --ext .js,.jsx ."
+    "lint": "eslint --fix --ext .js,.jsx .",
+    "start-dev": "nodemon ./index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
