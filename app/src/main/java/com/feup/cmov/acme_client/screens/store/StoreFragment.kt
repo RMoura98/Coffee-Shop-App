@@ -87,8 +87,6 @@ class StoreFragment() : Fragment(), StoreHandler {
     }
 
     override fun addToCartOnClick(item: MenuItem, x: Float, y: Float, drawable: Drawable) {
-        // Log.e("StoreFragment X", x.toString())
-        // Log.e("StoreFragment Y", y.toString())
 
         val imageView = ImageView(this.context)
         imageView.layoutParams = LinearLayout.LayoutParams(120, 120) // value is in pixels
@@ -101,30 +99,8 @@ class StoreFragment() : Fragment(), StoreHandler {
 
         imageView.setImageDrawable(drawable)
         binding.newImageLayout.addView(imageView)
-
-//        Log.e("height", binding.wrapperLayout.height.toString())
-//        Log.e("y", y.toString())
-//        Log.e("minus", (binding.wrapperLayout.height.toFloat() - y).toString())
-
+        
         val howFarAway = (binding.wrapperLayout.height.toFloat() - y * 0.69) / (binding.wrapperLayout.height.toFloat())
-
-        val up_y = ThreadLocalRandom.current().nextInt(50, 250)
-        val translate_x = ThreadLocalRandom.current().nextInt(-250, 500)
-
-//        val go_up_y = ObjectAnimator
-//            .ofFloat(imageView, View.TRANSLATION_Y, 0f, -up_y.toFloat())
-//            .setDuration(500);
-//
-//        val go_some_pos_x = ObjectAnimator
-//            .ofFloat(imageView, View.TRANSLATION_X, 0f, translate_x.toFloat())
-//            .setDuration(500);
-//
-//        imageView.pivotX = imageView.width / 2f;
-//        imageView.pivotY = imageView.height / 2f;
-//
-//        val rotate = ObjectAnimator
-//            .ofFloat(imageView, View.ROTATION, 0f, 720f)
-//            .setDuration(1000);
 
         val go_down = ObjectAnimator
             .ofFloat(imageView, View.TRANSLATION_Y, 0f, binding.wrapperLayout.height.toFloat() * 2)
@@ -135,11 +111,6 @@ class StoreFragment() : Fragment(), StoreHandler {
             go_down
         );
         animatorSet.start()
-
-//        with(imageView.animate()){
-//            translationY(binding.wrapperLayout.height.toFloat() * 2)
-//            setDuration(1000)
-//        }
 
         GlobalScope.launch(Dispatchers.Main) {
             delay((1000 * howFarAway).toLong() - 150)
