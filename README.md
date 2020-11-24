@@ -61,6 +61,6 @@ The Android apps were built with **Kotlin** using the **Android Jetpack** librar
 The Web Server uses Node.js and relies on Express.js. See [main branch](https://github.com/Erroler/Coffee-Shop-App/tree/main).
 
 ## Developed by
-* Fábio Oliveira (up201604796@fe.up.pt) 🠈 Me
+* Fábio Oliveira (up201604796@fe.up.pt)
 * Francisco Almeida (up201909574@fe.up.pt)
-* Ricardo Moura (up201604912@fe.up.pt)
+* Ricardo Moura (up201604912@fe.up.pt) 🠈 Me
