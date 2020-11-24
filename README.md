@@ -16,6 +16,24 @@ This project was developed as a course assignment of the [Mobile Computing](http
 The project is composed by two Android applications and an Express.js Web Server. See [Architecture](https://i.imgur.com/RPOlSkC.png).
 
 ## Android Applications
+<table>
+ <tbody>
+  <tr>
+   <td>
+<img src="https://i.imgur.com/aoIJrH5.png" alt="Login" width="150"/>
+   </td>
+   <td>
+<img src="https://i.imgur.com/Pf8l6A6.png" alt="Store" width="150"/>
+   </td>
+   <td>
+<img src="https://i.imgur.com/5BmRfVs.png" alt="Checkout" width="150"/>
+   </td>
+   <td>
+<img src="https://i.imgur.com/M46yVEi.png" alt="Pending Order" width="150"/>
+   </td>
+  </tr>
+ </tbody>
+</table>
 
 The Android apps were built with **Kotlin** using the **Android Jetpack** libraries.
 
@@ -43,6 +61,6 @@ The Android apps were built with **Kotlin** using the **Android Jetpack** librar
 The Web Server uses Node.js and relies on Express.js. See [main branch](https://github.com/Erroler/Coffee-Shop-App/tree/main).
 
 ## Developed by
-* Fábio Oliveira (up201604796@fe.up.pt)
+* Fábio Oliveira (up201604796@fe.up.pt) 🠈 Me
 * Francisco Almeida (up201909574@fe.up.pt)
-* Ricardo Moura (up201604912@fe.up.pt) 🠈 Me
+* Ricardo Moura (up201604912@fe.up.pt)
