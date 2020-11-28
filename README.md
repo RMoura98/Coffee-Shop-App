@@ -1,4 +1,4 @@
-<div align="center"><img src="https://i.imgur.com/tfXskRz.png" alt="drawing" width="100"/></div>
+<div align="center"><img src="https://i.imgur.com/tfXskRz.png" alt="drawing" width="100"/><hr></div>
 
 The **ACME Coffee Shop is a fictituous store which sells coffee, beverages, ice cream, cookies and many other products**. 
 
